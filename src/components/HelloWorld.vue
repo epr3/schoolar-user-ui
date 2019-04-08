@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <label>Email<input type="email" v-model="email" /></label>
+    <label>Password<input type="password" v-model="password" /></label>
+    <button @click="loginMethod">Login</button>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -34,10 +37,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 
 @Component
 export default class HelloWorld extends Vue {
+  private email = '';
+  private password = '';
   @Prop() private msg!: string;
+  @Action('login', {namespace: 'Auth'}) private login: any;
+
+  private loginMethod() {
+    this.login({ email: this.email, password: this.password });
+  }
 }
 </script>
 
