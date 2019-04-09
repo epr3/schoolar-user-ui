@@ -10,15 +10,16 @@ const create = () => {
   });
 
   const postLogin = (loginObj: object) => api.post('/login', loginObj);
-  const postLogout = () => api.post('/logout');
+  const getProfile = () => api.get('/profile');
+  const deleteLogout = () => api.delete('/logout');
 
   api.interceptors.request.use(
     config => {
-      if (!['/login', '/register'].some(item => item === config.url)) {
+      if (config.url !== '/login') {
         const accessToken = localStorage.getItem(
           process.env.VUE_APP_ACCESS_TOKEN
         );
-        config.headers.Authorization = accessToken;
+        config.headers.Authorization = `JWT ${accessToken}`;
       }
       return config;
     },
@@ -42,7 +43,8 @@ const create = () => {
 
   return {
     postLogin,
-    postLogout
+    getProfile,
+    deleteLogout
   };
 };
 

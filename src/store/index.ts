@@ -15,7 +15,7 @@ export const API = api();
 const database = new VuexORM.Database();
 database.register(UserModel);
 
-export default new Vuex.Store({
+export default new Vuex.Store<{}>({
   state: {},
   mutations: {
     LOGOUT() {
