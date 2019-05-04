@@ -1,5 +1,5 @@
 {
-  "name": "schoolar-user-ui",
+  "name": "user-ui-donor",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,35 +9,33 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@vuex-orm/core": "^0.31.8",
+    "@vuex-orm/core": "^0.31.10",
     "axios": "^0.18.0",
+    "bulma": "^0.7.4",
     "core-js": "^2.6.5",
+    "luxon": "^1.12.1",
     "register-service-worker": "^1.6.2",
-    "vue": "^2.6.6",
-    "vue-class-component": "^6.0.0",
-    "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vuex-class": "^0.3.2"
+    "vue": "^2.6.10",
+    "vue-portal": "^1.0.0",
+    "vue-router": "^3.0.3",
+    "vuelidate": "^0.7.4",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.1.4",
-    "@types/normalizr": "^2.0.18",
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-pwa": "^3.5.0",
-    "@vue/cli-plugin-typescript": "^3.5.0",
-    "@vue/cli-plugin-unit-jest": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-plugin-pwa": "^3.7.0",
+    "@vue/cli-plugin-unit-jest": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
-    "prettier": "^1.16.4",
     "sass-loader": "^7.1.0",
-    "ts-jest": "^23.0.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.2.1",
-    "vue-template-compiler": "^2.5.21",
-    "vuex-module-decorators": "^0.9.8"
+    "vue-template-compiler": "^2.5.21"
   }
 }

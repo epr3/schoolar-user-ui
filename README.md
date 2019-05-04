@@ -1,4 +1,4 @@
-# schoolar-user-ui
+# user-ui-donor
 
 ## Project setup
 ```
