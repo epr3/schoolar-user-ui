@@ -4,6 +4,8 @@ import VuexORM from '@vuex-orm/core';
 
 import Auth from './modules/Auth';
 
+import Modal from './modules/Modal';
+
 import api from '../services/api';
 
 Vue.use(Vuex);
@@ -15,14 +17,12 @@ const database = new VuexORM.Database();
 export default new Vuex.Store({
   state: {},
   mutations: {
-    AUTH_CHECK_LOGOUT() {
-    },
-    LOGOUT() {
-    }
+    AUTH_CHECK_LOGOUT() {},
+    LOGOUT() {}
   },
-  actions: {},
   modules: {
-    Auth
+    Auth,
+    Modal
   },
   plugins: [VuexORM.install(database)]
 });

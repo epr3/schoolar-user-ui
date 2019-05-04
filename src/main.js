@@ -5,6 +5,8 @@ import store from './store';
 import './registerServiceWorker';
 import './plugins/portal-vue';
 
+import 'bulma/css/bulma.min.css';
+
 Vue.config.productionTip = false;
 
 new Vue({
