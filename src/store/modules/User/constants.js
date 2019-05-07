@@ -1,7 +1,4 @@
-export const LOGIN = 'LOGIN';
-export const AUTH_CHECK_LOGIN = 'AUTH_CHECK_LOGIN';
-export const AUTH_CHECK_LOGOUT = 'AUTH_CHECK_LOGOUT';
-export const LOGOUT = 'LOGOUT';
+export const GET_USER = 'GET_USER';
 
 export const SET_ERROR = 'SET_ERROR';
 export const UNSET_ERROR = 'UNSET_ERROR';

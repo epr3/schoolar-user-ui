@@ -1,5 +1,5 @@
 <template>
-  <router-link tag="button" v-if="routerPath" :to="routerPath" class="btn" :class="btnStyle">
+  <router-link tag="button" v-if="routerPath" :to="routerPath" class="button" :class="btnStyle">
     <slot></slot>
   </router-link>
   <button
@@ -7,7 +7,7 @@
     @click="$emit('click')"
     type="button"
     :disabled="disabled"
-    class="btn"
+    class="button"
     :class="btnStyle"
   >
     <slot></slot>
@@ -30,7 +30,15 @@ export default {
       type: Boolean,
       default: false
     },
-    block: {
+    inverted: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
+      type: Boolean,
+      default: false
+    },
+    rounded: {
       type: Boolean,
       default: false
     },
@@ -48,23 +56,23 @@ export default {
       let style = '';
 
       if (this.size) {
-        style += `btn-${this.size} `;
+        style += `is-${this.size} `;
+      }
+
+      if (this.inverted) {
+        style += 'is-inverted';
+      }
+
+      if (this.outlined) {
+        style += 'is-outlined';
+      }
+
+      if (this.rounded) {
+        style += 'is-rounded';
       }
 
       if (this.type) {
-        if (this.outline) {
-          style += `btn-outline-${this.type} `;
-        } else {
-          style += `btn-${this.type} `;
-        }
-      }
-
-      if (this.block) {
-        style += 'btn-block ';
-      }
-
-      if (this.disabled) {
-        style += 'btn-disabled ';
+        style += `is-${this.type} `;
       }
 
       return style.slice(0, -1);

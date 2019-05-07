@@ -1,16 +1,18 @@
 <template>
-  <div class="form-group">
-    <label v-if="label">{{ label }}</label>
-    <input
-      :type="type"
-      class="form-control"
-      :class="{
-        'is-invalid': v.$error
+  <div class="field">
+    <label class="label" v-if="label">{{ label }}</label>
+    <div class="control">
+      <input
+        :type="type"
+        class="input"
+        :class="{
+        'is-danger': v.$error
       }"
-      v-model="model"
-      :placeholder="placeholder"
-    >
-    <div v-if="v.$error" class="invalid-feedback">Field is invalid!</div>
+        v-model="model"
+        :placeholder="placeholder"
+      >
+    </div>
+    <div v-if="v.$error" class="help is-danger">Field is invalid!</div>
   </div>
 </template>
 

@@ -14,6 +14,8 @@ const create = () => {
   const postLogin = loginObj => api.post('/login', loginObj);
   const getProfile = () => api.get('/profile');
   const deleteLogout = () => api.delete('/logout');
+  const postResetPassword = resetPassObj =>
+    api.post('/reset-password', resetPassObj);
 
   const getProfessors = () => api.get('/professors');
 
@@ -94,6 +96,7 @@ const create = () => {
     postLogin,
     getProfile,
     deleteLogout,
+    postResetPassword,
     getFacultyById,
     getFaculties,
     getGroupsByFacultyId,

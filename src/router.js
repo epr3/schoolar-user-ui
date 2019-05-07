@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
+import ResetPassword from './views/ResetPassword.vue';
 
 Vue.use(Router);
 
@@ -16,6 +17,11 @@ const router = new Router({
       meta: {
         guest: true
       }
+    },
+    {
+      path: '/reset-password',
+      name: 'resetPassword',
+      component: ResetPassword
     },
     {
       path: '/',
@@ -47,6 +53,8 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ name: 'home' });
     }
+  } else {
+    next();
   }
 });
 

@@ -42,5 +42,15 @@ export default {
     } catch (e) {
       commit(constants.SET_ERROR, e);
     }
+  },
+  async resetPassword({ commit }, payload) {
+    commit(constants.START_LOADING);
+    try {
+      await API.postResetPassword(payload);
+      commit(constants.RESET_PASSWORD);
+      router.replace('/login');
+    } catch (e) {
+      commit(constants.SET_ERROR, e);
+    }
   }
 };
