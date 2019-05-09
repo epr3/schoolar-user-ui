@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import './registerServiceWorker';
 import './plugins/portal-vue';
+import './plugins/vue-fontawesome';
 
 import 'bulma/css/bulma.min.css';
 

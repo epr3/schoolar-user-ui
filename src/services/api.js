@@ -25,7 +25,7 @@ const create = () => {
   const getGroupById = id => api.get(`/groups/${id}`);
   const getGroupsByFacultyId = id => api.get(`/faculties/${id}/groups`);
   const getSubjectsByFacultyId = id => api.get(`/faculties/${id}/subjects`);
-  const getEventsByGroupId = id => api.get(`/groups/${id}/events`);
+  const getEvents = (id, query) => api.get(`/events?${query}`);
 
   const getEventTypes = () => api.get('/event_types');
 
@@ -101,7 +101,7 @@ const create = () => {
     getFaculties,
     getGroupsByFacultyId,
     getSubjectsByFacultyId,
-    getEventsByGroupId,
+    getEvents,
     getGroupById,
     getProfessors,
     getEventTypes
