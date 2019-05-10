@@ -1,0 +1,7 @@
+mutation UpdateEventType($eventType: UpdateEventTypeInput!) {
+  updateEventType(eventType: $eventType) {
+    id
+    type
+    color
+  }
+}

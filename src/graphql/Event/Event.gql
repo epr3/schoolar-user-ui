@@ -1,0 +1,18 @@
+query Event($id: ID!) {
+  event(id: $id) {
+    id
+    room
+    interval
+    frequency
+    startDate
+    endDate
+    startTime
+    endTime
+    isFullDay
+    isNotifiable
+    subjectId
+    groupId
+    professorId
+    eventTypeId
+  }
+}

@@ -1,0 +1,6 @@
+mutation PostFaculty($faculty: FacultyInput!) {
+  postFaculty(faculty: $faculty) {
+    id
+    name
+  }
+}

@@ -8,21 +8,14 @@
           </div>
           <div class="card-content">
             <form>
-              <base-input
-                label="New Password"
-                type="password"
-                :v="$v.password"
-                v-model="password"
-              />
+              <base-input label="New Password" type="password" :v="$v.password" v-model="password"/>
               <base-input
                 label="Repeat new password"
                 type="password"
                 :v="$v.confirmPassword"
                 v-model="confirmPassword"
               />
-              <base-button type="primary" @click="resetMethod">
-                Reset password
-              </base-button>
+              <base-button type="primary" @click="resetMethod">Reset password</base-button>
             </form>
           </div>
         </div>
@@ -32,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import RESET_PASS from '../graphql/Auth/ResetPass.gql';
 import { validationMixin } from 'vuelidate';
 import { required, sameAs } from 'vuelidate/lib/validators';
 
@@ -63,13 +56,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('Auth', ['resetPassword']),
     resetMethod() {
       if (!this.$v.$invalid && this.$route.query.token) {
-        this.resetPassword({
-          token: this.$route.query.token,
-          password: this.password
+        this.$apollo.mutate({
+          mutation: RESET_PASS,
+          variables: {
+            password: this.password,
+            confirmPassword: this.confirmPassword,
+            token: this.$route.query.token
+          }
         });
+        this.$router.replace('/login');
       }
     }
   }

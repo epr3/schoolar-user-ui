@@ -10,7 +10,7 @@
         }"
         :checked="value"
         v-model="model"
-      >
+      />
       <label :for="id" class="custom-control-label">{{ label }}</label>
     </div>
   </div>
@@ -50,4 +50,3 @@ export default {
   }
 };
 </script>
-

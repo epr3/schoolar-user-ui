@@ -1,0 +1,8 @@
+mutation UpdateSubject($subject: UpdateSubjectInput!) {
+  updateSubject(subject: $subject) {
+    id
+    name
+    credits
+    facultyId
+  }
+}

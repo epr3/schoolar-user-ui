@@ -11,7 +11,6 @@
 </style>
 
 <script>
-
 export default {
   name: 'guest-layout'
 };

@@ -1,0 +1,11 @@
+query Professor($id: ID!) {
+  professor(id: $id) {
+    email
+    id
+    name
+    surname
+    title
+    telephone
+    userId
+  }
+}

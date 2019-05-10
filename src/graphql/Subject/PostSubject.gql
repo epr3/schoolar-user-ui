@@ -1,0 +1,8 @@
+mutation PostSubject($subject: SubjectInput!) {
+  postSubject(subject: $subject) {
+    id
+    name
+    credits
+    facultyId
+  }
+}

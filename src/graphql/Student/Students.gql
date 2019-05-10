@@ -1,0 +1,11 @@
+query Students($groupId: ID!) {
+  students: studentsByGroupId(groupId: $groupId) {
+    id
+    email
+    name
+    surname
+    groupId
+    telephone
+    userId
+  }
+}

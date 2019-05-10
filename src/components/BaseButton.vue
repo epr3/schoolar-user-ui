@@ -1,5 +1,11 @@
 <template>
-  <router-link tag="button" v-if="routerPath" :to="routerPath" class="button" :class="btnStyle">
+  <router-link
+    tag="button"
+    v-if="routerPath"
+    :to="routerPath"
+    class="button"
+    :class="btnStyle"
+  >
     <slot></slot>
   </router-link>
   <button

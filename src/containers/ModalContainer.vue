@@ -7,7 +7,7 @@
       :class="{ fade: modalOpen, show: modalOpen }"
     >
       <div @click.stop class="modal-dialog">
-        <component :is="modalComponent" v-bind="modalProps"/>
+        <component :is="modalComponent" v-bind="modalProps" />
       </div>
     </div>
   </portal>

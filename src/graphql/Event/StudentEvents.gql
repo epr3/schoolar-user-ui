@@ -1,0 +1,34 @@
+query Events(
+  $groupId: ID!,
+  $startDate: String!
+  $endDate: String!
+) {
+  events: eventsByQuery(
+    groupId: $groupId
+    startDate: $startDate
+    endDate: $endDate
+  ) {
+    id
+    room
+    date
+    startTime
+    endTime
+    isFullDay
+    isNotifiable
+    subjectId
+    eventTypeId
+    professorId
+    professor {
+      title
+      name
+      surname
+    }
+    subject {
+      name
+    }
+    eventType {
+      type
+      color
+    }
+  }
+}

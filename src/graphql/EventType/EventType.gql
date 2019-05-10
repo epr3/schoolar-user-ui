@@ -1,0 +1,7 @@
+query EventType($id: ID!) {
+  eventType(id: $id) {
+    id
+    type
+    color
+  }
+}

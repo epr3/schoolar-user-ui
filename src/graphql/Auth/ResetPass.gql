@@ -1,0 +1,11 @@
+mutation ResetPass(
+  $password: String!
+  $confirmPassword: String!
+  $token: String!
+) {
+  resetPass(
+    password: $password
+    passwordConfirmation: $confirmPassword
+    token: $token
+  )
+}

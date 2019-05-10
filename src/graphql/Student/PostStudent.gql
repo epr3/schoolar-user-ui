@@ -1,0 +1,11 @@
+mutation PostStudent($student: StudentInput!) {
+  postStudent(student: $student) {
+    id
+    name
+    surname
+    email
+    groupId
+    telephone
+    userId
+  }
+}

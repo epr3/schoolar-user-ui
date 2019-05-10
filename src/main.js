@@ -7,14 +7,13 @@ import './plugins/portal-vue';
 import './plugins/vue-fontawesome';
 
 import 'bulma/css/bulma.min.css';
+import { createProvider } from './plugins/vue-apollo';
 
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
-  mounted() {
-    store.dispatch('Auth/authCheck');
-  },
+  apolloProvider: createProvider(),
   render: h => h(App)
 }).$mount('#app');

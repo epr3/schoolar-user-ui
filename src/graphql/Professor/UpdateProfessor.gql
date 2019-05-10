@@ -1,0 +1,10 @@
+mutation UpdateProfessor($professor: UpdateProfessorInput!) {
+  updateProfessor(professor: $professor) {
+    id
+    name
+    surname
+    email
+    title
+    telephone
+  }
+}

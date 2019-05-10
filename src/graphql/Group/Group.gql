@@ -1,0 +1,8 @@
+query Group($id: ID!) {
+  groupById(id: $id) {
+    id
+    number
+    year
+    facultyId
+  }
+}

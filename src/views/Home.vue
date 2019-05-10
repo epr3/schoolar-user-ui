@@ -1,29 +1,27 @@
 <template>
-  <div class="home">
+  <auth-layout>
     <img alt="Vue logo" src="../assets/logo.png">
-    {{ user }}
-    <p v-if="user && user.role === 'PROFESSOR'">Professor</p>
-    <p v-if="user && user.role === 'STUDENT'">Student</p>
-  </div>
+    {{ profile }}
+    <p v-if="profile && profile.role === 'PROFESSOR'">Professor</p>
+    <p v-if="profile && profile.role === 'STUDENT'">Student</p>
+  </auth-layout>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
+
+import AuthLayout from '../layouts/AuthLayout.vue';
+
 export default {
   name: 'home',
-  mounted() {
-    this.getUser();
+  data: () => ({
+    profile: null
+  }),
+  apollo: {
+    profile: PROFILE_QUERY
   },
-  computed: {
-    ...mapGetters({
-      userQuery: 'entities/users/query'
-    }),
-    user() {
-      return this.userQuery().first();
-    }
-  },
-  methods: {
-    ...mapActions('User', ['getUser'])
+  components: {
+    AuthLayout
   }
 };
 </script>

@@ -1,0 +1,7 @@
+query EventTypes {
+  eventTypes {
+    id
+    type
+    color
+  }
+}

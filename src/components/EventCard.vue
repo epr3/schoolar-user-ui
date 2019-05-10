@@ -5,7 +5,9 @@
     </div>
     <div class="card-content">
       <p>{{ subject }}</p>
-      <p>{{ professor }}</p>
+      <p v-if="professor">{{ professor }}</p>
+      <p v-if="group">Group {{ group }}</p>
+      <p>Room {{ room }}</p>
       <p>{{ startTime }} - {{ endTime }}</p>
     </div>
   </div>
@@ -23,9 +25,15 @@ export default {
       type: String,
       required: true
     },
-    professor: {
+    room: {
       type: String,
       required: true
+    },
+    group: {
+      type: String
+    },
+    professor: {
+      type: String
     },
     startTime: {
       type: String,

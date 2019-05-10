@@ -1,0 +1,11 @@
+mutation PostProfessor($professor: ProfessorInput!) {
+  postProfessor(professor: $professor) {
+    id
+    name
+    surname
+    email
+    title
+    telephone
+    userId
+  }
+}

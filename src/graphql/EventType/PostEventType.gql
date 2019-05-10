@@ -1,0 +1,7 @@
+mutation PostEventType($eventType: EventTypeInput!) {
+  postEventType(eventType: $eventType) {
+    id
+    type
+    color
+  }
+}

@@ -1,37 +1,35 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
-      <router-link class="navbar-brand" to="/">Schoolar</router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        aria-label="Toggle navigation"
-        @click="toggleNavbar"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <router-link class="navbar-item" to="/">
+          <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+        </router-link>
 
-      <div class="collapse navbar-collapse" :class="{ show: showNavbar }">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <router-link class="nav-link" to="/">
-              Home
-              <span class="sr-only">(current)</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/accounts">Accounts</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/faculties">Faculties</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/groups">Groups</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/schedule">Schedule</router-link>
-          </li>
-        </ul>
+        <a
+          role="button"
+          class="navbar-burger burger"
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="navbarBasicExample"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <router-link class="navbar-item" to="/">Home</router-link>
+          <router-link class="navbar-item" to="/schedule">Schedule</router-link>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <base-button type="primary" @click="logout">Log out</base-button>
+          </div>
+        </div>
       </div>
     </nav>
     <slot></slot>
@@ -39,14 +37,25 @@
 </template>
 
 <script>
+import { onLogout } from '../plugins/vue-apollo.js';
+
+import BaseButton from '../components/BaseButton.vue';
+
 export default {
   name: 'auth-layout',
   data: () => ({
     showNavbar: false
   }),
+  components: {
+    BaseButton
+  },
   methods: {
     toggleNavbar() {
       this.showNavbar = !this.showNavbar;
+    },
+    async logout() {
+      await onLogout(this.$apolloProvider.defaultClient);
+      this.$router.replace('/login');
     }
   }
 };

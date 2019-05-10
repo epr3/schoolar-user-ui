@@ -1,0 +1,25 @@
+query Profile {
+  profile {
+    user {
+      userId
+      email
+      role
+    }
+    professor {
+      id
+      name
+      surname
+      title
+      telephone
+      userId
+    }
+    student {
+      id
+      name
+      surname
+      telephone
+      groupId
+      userId
+    }
+  }
+}

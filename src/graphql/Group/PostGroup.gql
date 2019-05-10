@@ -1,0 +1,8 @@
+mutation PostGroup($group: GroupInput!) {
+  postGroup(group: $group) {
+    id
+    number
+    year
+    facultyId
+  }
+}

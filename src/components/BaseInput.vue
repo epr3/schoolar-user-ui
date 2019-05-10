@@ -6,11 +6,11 @@
         :type="type"
         class="input"
         :class="{
-        'is-danger': v.$error
-      }"
+          'is-danger': v.$error
+        }"
         v-model="model"
         :placeholder="placeholder"
-      >
+      />
     </div>
     <div v-if="v.$error" class="help is-danger">Field is invalid!</div>
   </div>
@@ -54,4 +54,3 @@ export default {
   }
 };
 </script>
-
