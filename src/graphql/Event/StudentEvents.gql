@@ -19,14 +19,17 @@ query Events(
     eventTypeId
     professorId
     professor {
+      id
       title
       name
       surname
     }
     subject {
+      id
       name
     }
     eventType {
+      id
       type
       color
     }

@@ -15,12 +15,15 @@ query Events($professorId: ID!, $startDate: String!, $endDate: String!) {
     groupId
     eventTypeId
     group {
+      id
       number
     }
     subject {
+      id
       name
     }
     eventType {
+      id
       type
       color
     }
