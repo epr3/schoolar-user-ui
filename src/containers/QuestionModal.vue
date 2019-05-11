@@ -24,7 +24,6 @@ import { mapState, mapMutations } from 'vuex';
 
 import POST_QUESTION from '../graphql/Question/PostQuestion.gql';
 import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
-import SESSION_QUERY from '../graphql/Session/Session.gql';
 
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
@@ -83,20 +82,6 @@ export default {
                   description: this.description,
                   userId: this.profile.user.id
                 }
-              },
-              update: (store, { data: { postQuestion } }) => {
-                const data = store.readQuery({
-                  query: SESSION_QUERY,
-                  variables: {
-                    id: this.$route.params.id
-                  }
-                });
-                data.session.questions.push(postQuestion);
-                store.writeQuery({
-                  query: SESSION_QUERY,
-                  data,
-                  variables: { id: this.$route.params.id }
-                });
               }
             });
           } catch (e) {
