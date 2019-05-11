@@ -1,8 +1,0 @@
-mutation UpdateGroup($group: UpdateGroupInput!) {
-  updateGroup(group: $group) {
-    id
-    number
-    year
-    facultyId
-  }
-}

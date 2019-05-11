@@ -1,3 +1,0 @@
-mutation DeleteEventType($id: ID!) {
-  deleteEventType(id: $id)
-}

@@ -1,3 +1,0 @@
-mutation DeleteSubject($id: ID!) {
-  deleteSubject(id: $id)
-}

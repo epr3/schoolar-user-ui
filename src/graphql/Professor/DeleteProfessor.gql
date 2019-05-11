@@ -1,3 +1,0 @@
-mutation DeleteProfessor($id: ID!, $userId: ID!) {
-  deleteProfessor(id: $id, userId: $userId)
-}
