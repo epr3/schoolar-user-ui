@@ -1,0 +1,18 @@
+query Session($id: ID!) {
+  session: session(id: $id) {
+    id
+    code
+    questions {
+      id
+      description
+      rating
+      isVoted
+      sessionId
+      answer {
+        id
+        description
+        questionId
+      }
+    }
+  }
+}

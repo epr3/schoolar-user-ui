@@ -26,6 +26,7 @@
         </div>
 
         <div class="navbar-end">
+          <div class="navbar-item">{{ name }}</div>
           <div class="navbar-item">
             <base-button type="primary" @click="logout">Log out</base-button>
           </div>
@@ -33,21 +34,46 @@
       </div>
     </nav>
     <slot></slot>
+    <modal-container />
   </div>
 </template>
 
 <script>
 import { onLogout } from '../plugins/vue-apollo.js';
 
+import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
+
+import ModalContainer from '../containers/ModalContainer.vue';
+
 import BaseButton from '../components/BaseButton.vue';
 
 export default {
   name: 'auth-layout',
   data: () => ({
-    showNavbar: false
+    showNavbar: false,
+    profile: null
   }),
+  apollo: {
+    profile: PROFILE_QUERY
+  },
   components: {
-    BaseButton
+    BaseButton,
+    ModalContainer
+  },
+  computed: {
+    name() {
+      if (this.profile) {
+        if (this.profile.student) {
+          return `${this.profile.student.name} ${this.profile.student.surname}`;
+        }
+        if (this.profile.professor) {
+          return `${this.profile.professor.title} ${
+            this.profile.professor.name
+          } ${this.profile.professor.surname}`;
+        }
+      }
+      return '';
+    }
   },
   methods: {
     toggleNavbar() {

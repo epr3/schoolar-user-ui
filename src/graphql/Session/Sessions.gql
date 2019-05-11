@@ -1,0 +1,21 @@
+query Sessions($eventId: ID!) {
+  sessions: sessions(eventId: $eventId) {
+    id
+    code
+    eventId
+    event {
+      id
+      subjectId
+      eventTypeId
+      subject {
+        id
+        name
+      }
+      eventType {
+        id
+        type
+        color
+      }
+    }
+  }
+}

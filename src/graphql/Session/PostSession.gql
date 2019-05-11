@@ -1,0 +1,21 @@
+mutation PostSession($session: SessionInput!) {
+  postSession(session: $session) {
+    id
+    code
+    eventId
+    event {
+      id
+      subjectId
+      eventTypeId
+      subject {
+        id
+        name
+      }
+      eventType {
+        id
+        type
+        color
+      }
+    }
+  }
+}

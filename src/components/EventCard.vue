@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="$emit('click')">
     <div class="card-header" :style="{ backgroundColor: color }">
       <h5 class="card-header-title">{{ type }}</h5>
     </div>

@@ -5,7 +5,6 @@ import store from './store';
 import './registerServiceWorker';
 import './plugins/portal-vue';
 import './plugins/vue-fontawesome';
-import './plugins/vue-pusher';
 import { createProvider } from './plugins/vue-apollo';
 
 import 'bulma/css/bulma.min.css';

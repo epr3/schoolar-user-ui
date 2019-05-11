@@ -1,22 +1,15 @@
 <template>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5>{{ modalTitle }}</h5>
-      <button
-        @click="modalCloseAction"
-        type="button"
-        class="close"
-        aria-label="Close"
-      >
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <div v-if="$slots['modal-body']" class="modal-body">
+  <div class="modal-card" @click.stop>
+    <header class="modal-card-head">
+      <p class="modal-card-title">{{ modalTitle }}</p>
+      <button class="delete" @click="modalCloseAction" aria-label="close" />
+    </header>
+    <section v-if="$slots['modal-body']" class="modal-card-body">
       <slot name="modal-body" />
-    </div>
-    <div v-if="$slots['modal-footer']" class="modal-footer">
+    </section>
+    <footer v-if="$slots['modal-footer']" class="modal-card-foot">
       <slot name="modal-footer" />
-    </div>
+    </footer>
   </div>
 </template>
 

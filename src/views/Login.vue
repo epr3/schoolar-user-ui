@@ -64,7 +64,6 @@ export default {
               password: this.password
             },
             update: (_, { data: { login } }) => {
-              console.log(this.$apolloProvider);
               onLogin(
                 this.$apolloProvider.defaultClient,
                 login.accessToken,

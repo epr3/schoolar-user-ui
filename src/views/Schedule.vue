@@ -1,7 +1,7 @@
 <template>
   <auth-layout>
-    <div class="container-fluid">
-      <div class="card">
+    <div class="container-fluid" :style="{ padding: '1rem' }">
+      <div class="card" :style="{ padding: '1rem' }">
         <div class="card-header">
           <div class="columns">
             <div class="column" v-for="day in days" :key="day">{{ day }}</div>
@@ -25,6 +25,7 @@
                 :start-time="event.startTime"
                 :end-time="event.endTime"
                 :color="event.color"
+                @click="$router.push(`/schedule/${event.id}`)"
               />
             </div>
           </div>

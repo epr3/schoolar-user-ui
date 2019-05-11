@@ -1,14 +1,16 @@
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
-import { createApolloClient } from 'vue-cli-plugin-apollo/graphql-client';
-import store from '../store';
+import {
+  createApolloClient,
+  restartWebsockets
+} from 'vue-cli-plugin-apollo/graphql-client';
 
 // Install the vue plugin
 Vue.use(VueApollo);
 
 // Http endpoint
 const httpEndpoint =
-  process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:4000/graphql';
+  process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:3000/graphql';
 
 // Config
 const defaultOptions = {
@@ -16,7 +18,7 @@ const defaultOptions = {
   httpEndpoint,
   // You can use `wss` for secure connection (recommended in production)
   // Use `null` to disable subscriptions
-  wsEndpoint: null,
+  wsEndpoint: process.env.VUE_APP_GRAPHQL_WS || 'ws://localhost:3000/graphql',
   // LocalStorage token
   tokenName: process.env.VUE_APP_ACCESS_TOKEN,
   // Enable Automatic Query persisting with Apollo Engine
@@ -25,7 +27,8 @@ const defaultOptions = {
   // You need to pass a `wsEndpoint` for this to work
   websocketsOnly: false,
   // Is being rendered on the server?
-  ssr: false
+  ssr: false,
+  connectToDevTools: true
 
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
@@ -48,10 +51,12 @@ const defaultOptions = {
 // Call this in the Vue app file
 export function createProvider(options = {}) {
   // Create apollo client
-  const { apolloClient } = createApolloClient({
+  const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
     ...options
   });
+
+  apolloClient.wsClient = wsClient;
 
   // Create vue apollo provider
   const apolloProvider = new VueApollo({
@@ -81,6 +86,7 @@ export async function onLogin(apolloClient, accessToken, refreshToken) {
     localStorage.setItem(process.env.VUE_APP_ACCESS_TOKEN, accessToken);
     localStorage.setItem(process.env.VUE_APP_REFRESH_TOKEN, refreshToken);
   }
+  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.cache.reset();
   } catch (e) {
@@ -95,6 +101,7 @@ export async function onLogout(apolloClient) {
     localStorage.removeItem(process.env.VUE_APP_ACCESS_TOKEN);
     localStorage.removeItem(process.env.VUE_APP_REFRESH_TOKEN);
   }
+  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient);
   try {
     await apolloClient.cache.reset();
   } catch (e) {

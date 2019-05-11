@@ -1,0 +1,14 @@
+query Question($id: ID!) {
+  question: question(id: $id) {
+    id
+    description
+    rating
+    userId
+    isVoted
+    answers {
+      id
+      description
+      questionId
+    }
+  }
+}

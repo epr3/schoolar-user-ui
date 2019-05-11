@@ -1,0 +1,15 @@
+mutation PostQuestion($question: QuestionInput!) {
+  postQuestion(question: $question) {
+    id
+    description
+    rating
+    userId
+    isVoted
+    sessionId
+    answer {
+      id
+      description
+      questionId
+    }
+  }
+}

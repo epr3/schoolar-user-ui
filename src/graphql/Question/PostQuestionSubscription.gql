@@ -1,0 +1,15 @@
+subscription PostQuestionSubscription {
+  postQuestion {
+    id
+    description
+    rating
+    userId
+    isVoted
+    sessionId
+    answer {
+      id
+      description
+      questionId
+    }
+  }
+}

@@ -4,23 +4,13 @@
       class="modal"
       v-if="modalOpen"
       @click="modalClose"
-      :class="{ fade: modalOpen, show: modalOpen }"
+      :class="{ 'is-active': modalOpen }"
     >
-      <div @click.stop class="modal-dialog">
-        <component :is="modalComponent" v-bind="modalProps" />
-      </div>
+      <div class="modal-background"></div>
+      <component :is="modalComponent" v-bind="modalProps" />
     </div>
   </portal>
 </template>
-
-<style lang="scss">
-.modal {
-  &.show {
-    display: block;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-}
-</style>
 
 <script>
 import { mapState, mapMutations } from 'vuex';

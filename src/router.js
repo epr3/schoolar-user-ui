@@ -19,6 +19,24 @@ const router = new Router({
       }
     },
     {
+      path: '/sessions/:id',
+      name: 'session',
+      component: () =>
+        import(/* webpackChunkName: "session" */ './views/Session.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/schedule/:id',
+      name: 'eventQA',
+      component: () =>
+        import(/* webpackChunkName: "eventQA" */ './views/EventQA.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/schedule',
       name: 'schedule',
       component: () =>
