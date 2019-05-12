@@ -1,0 +1,7 @@
+subscription UpdateAnswerSubscription {
+  updateAnswer {
+    id
+    description
+    questionId
+  }
+}

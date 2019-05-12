@@ -8,18 +8,13 @@
 </template>
 
 <script>
-import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
-
 import AuthLayout from '../layouts/AuthLayout.vue';
+
+import profileQueryMixin from '../mixins/profileQueryMixin';
 
 export default {
   name: 'home',
-  data: () => ({
-    profile: null
-  }),
-  apollo: {
-    profile: PROFILE_QUERY
-  },
+  mixins: [profileQueryMixin],
   components: {
     AuthLayout
   }

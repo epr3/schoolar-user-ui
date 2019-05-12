@@ -16,7 +16,6 @@
 <script>
 import shortid from 'shortid';
 
-import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
 import SESSIONS_QUERY from '../graphql/Session/Sessions.gql';
 import POST_SESSION from '../graphql/Session/PostSession.gql';
 
@@ -25,15 +24,11 @@ import AuthLayout from '../layouts/AuthLayout.vue';
 import SessionList from '../containers/SessionList.vue';
 
 import BaseButton from '../components/BaseButton.vue';
+import profileQueryMixin from '../mixins/profileQueryMixin';
 
 export default {
   name: 'event-qa',
-  data: () => ({
-    profile: null
-  }),
-  apollo: {
-    profile: PROFILE_QUERY
-  },
+  mixins: [profileQueryMixin],
   components: {
     AuthLayout,
     SessionList,

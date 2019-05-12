@@ -1,0 +1,7 @@
+mutation PostRating($rating: RatingInput!) {
+  postRating(rating: $rating) {
+    id
+    questionId
+    userId
+  }
+}

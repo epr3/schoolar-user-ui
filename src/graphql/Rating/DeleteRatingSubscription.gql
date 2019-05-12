@@ -1,0 +1,7 @@
+subscription DeleteRatingSubscription {
+  deleteRating {
+    id
+    questionId
+    userId
+  }
+}

@@ -1,0 +1,6 @@
+query Answer($id: ID!) {
+  answer: answer(id: $id) {
+    id
+    description
+  }
+}

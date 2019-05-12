@@ -1,0 +1,7 @@
+mutation UpdateAnswer($answer: AnswerInput!) {
+  updateAnswer(answer: $answer) {
+    id
+    description
+    questionId
+  }
+}

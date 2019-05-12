@@ -1,0 +1,7 @@
+mutation PostAnswer($answer: AnswerInput!) {
+  postAnswer(answer: $answer) {
+    id
+    description
+    questionId
+  }
+}

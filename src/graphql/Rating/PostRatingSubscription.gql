@@ -1,0 +1,7 @@
+subscription PostRatingSubscription {
+  postRating {
+    id
+    userId
+    questionId
+  }
+}

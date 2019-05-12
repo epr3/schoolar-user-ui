@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import { onLogout } from '../plugins/vue-apollo.js';
+import { onLogout } from '../plugins/vue-apollo';
 
-import PROFILE_QUERY from '../graphql/Auth/Profile.gql';
+import profileQueryMixin from '../mixins/profileQueryMixin';
 
 import ModalContainer from '../containers/ModalContainer.vue';
 
@@ -50,12 +50,9 @@ import BaseButton from '../components/BaseButton.vue';
 export default {
   name: 'auth-layout',
   data: () => ({
-    showNavbar: false,
-    profile: null
+    showNavbar: false
   }),
-  apollo: {
-    profile: PROFILE_QUERY
-  },
+  mixins: [profileQueryMixin],
   components: {
     BaseButton,
     ModalContainer

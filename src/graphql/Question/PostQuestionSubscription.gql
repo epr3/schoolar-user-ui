@@ -6,6 +6,11 @@ subscription PostQuestionSubscription {
     userId
     isVoted
     sessionId
+    ratingObj {
+      id
+      userId
+      questionId
+    }
     answer {
       id
       description

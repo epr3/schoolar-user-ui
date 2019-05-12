@@ -1,0 +1,5 @@
+mutation DeleteRating($id: ID!) {
+  deleteRating(id: $id) {
+    id
+  }
+}

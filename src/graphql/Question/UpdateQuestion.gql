@@ -1,5 +1,5 @@
-mutation PostQuestion($question: QuestionInput!) {
-  postQuestion(question: $question) {
+mutation UpdateQuestion($question: QuestionInput!) {
+  updateQuestion(question: $question) {
     id
     description
     rating

@@ -5,7 +5,12 @@ query Question($id: ID!) {
     rating
     userId
     isVoted
-    answers {
+    ratingObj {
+      id
+      userId
+      questionId
+    }
+    answer {
       id
       description
       questionId

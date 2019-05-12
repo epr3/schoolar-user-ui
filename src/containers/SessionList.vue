@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul v-if="sessions.length">
+    <ul v-if="sessions && sessions.length">
       <li v-for="item in sessions" :key="item.id">
         <session-item
           :code="item.code"

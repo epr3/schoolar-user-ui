@@ -1,11 +1,11 @@
-mutation PostQuestion($question: QuestionInput!) {
-  postQuestion(question: $question) {
+query Questions($sessionId: ID!) {
+  questions: questions(sessionId: $sessionId) {
     id
     description
     rating
-    userId
     isVoted
     sessionId
+    userId
     ratingObj {
       id
       userId

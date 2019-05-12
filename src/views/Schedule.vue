@@ -70,35 +70,41 @@ export default {
     profile: null
   }),
   async mounted() {
-    const profileResponse = await this.$apollo.query({ query: PROFILE_QUERY });
-    this.profile = profileResponse.data.profile;
-    const query = {};
-    let queryName = '';
-    if (this.profile.professor) {
-      query.professorId = this.profile.professor.id;
-      queryName = gql`
-        ${PROFESSOR_EVENTS_QUERY}
-      `;
-    }
-    if (this.profile.student) {
-      query.groupId = this.profile.student.groupId;
-      queryName = gql`
-        ${STUDENT_EVENTS_QUERY}
-      `;
-    }
-    const eventsResponse = await this.$apollo.query({
-      query: queryName,
-      variables: {
-        ...query,
-        startDate: DateTime.local()
-          .startOf('week')
-          .toFormat('dd-LL-yyyy'),
-        endDate: DateTime.local()
-          .endOf('week')
-          .toFormat('dd-LL-yyyy')
+    try {
+      const profileResponse = await this.$apollo.query({
+        query: PROFILE_QUERY
+      });
+      this.profile = profileResponse.data.profile;
+      const query = {};
+      let queryName = '';
+      if (this.profile.professor) {
+        query.professorId = this.profile.professor.id;
+        queryName = gql`
+          ${PROFESSOR_EVENTS_QUERY}
+        `;
       }
-    });
-    this.events = [...eventsResponse.data.events];
+      if (this.profile.student) {
+        query.groupId = this.profile.student.groupId;
+        queryName = gql`
+          ${STUDENT_EVENTS_QUERY}
+        `;
+      }
+      const eventsResponse = await this.$apollo.query({
+        query: queryName,
+        variables: {
+          ...query,
+          startDate: DateTime.local()
+            .startOf('week')
+            .toFormat('dd-LL-yyyy'),
+          endDate: DateTime.local()
+            .endOf('week')
+            .toFormat('dd-LL-yyyy')
+        }
+      });
+      this.events = [...eventsResponse.data.events];
+    } catch (e) {
+      throw new Error(e);
+    }
   },
   components: {
     AuthLayout,
