@@ -1,0 +1,14 @@
+query TestsQuery {
+  tests {
+    id
+    name
+    subjectId
+    subject {
+      id
+      name
+    }
+    questions {
+      id
+    }
+  }
+}

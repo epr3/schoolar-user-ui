@@ -23,6 +23,20 @@
         <div class="navbar-start">
           <router-link class="navbar-item" to="/">Home</router-link>
           <router-link class="navbar-item" to="/schedule">Schedule</router-link>
+          <router-link
+            v-if="this.profile && this.profile.professor"
+            class="navbar-item"
+            to="/tests"
+          >
+            Tests
+          </router-link>
+          <router-link
+            v-if="this.profile && this.profile.student"
+            class="navbar-item"
+            to="/tests/join"
+          >
+            Join test
+          </router-link>
         </div>
 
         <div class="navbar-end">
@@ -34,7 +48,7 @@
       </div>
     </nav>
     <slot></slot>
-    <modal-container />
+    <modal-container/>
   </div>
 </template>
 
