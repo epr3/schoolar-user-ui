@@ -5,7 +5,9 @@
         v-if="profile && profile.student"
         type="primary"
         @click="openQuestionModal"
-      >Post Question</base-button>
+      >
+        Post Question
+      </base-button>
       <div>
         <question-list />
       </div>

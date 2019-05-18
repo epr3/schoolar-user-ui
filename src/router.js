@@ -28,6 +28,24 @@ const router = new Router({
       }
     },
     {
+      path: '/tests/:id',
+      name: 'test',
+      component: () =>
+        import(/* webpackChunkName: "test" */ './views/Test.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/tests',
+      name: 'tests',
+      component: () =>
+        import(/* webpackChunkName: "tests" */ './views/Tests.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/schedule/:id',
       name: 'eventQA',
       component: () =>

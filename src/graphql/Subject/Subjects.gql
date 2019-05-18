@@ -1,5 +1,5 @@
-query Subjects($facultyId: ID!) {
-  subjects: subjectsByFacultyId(facultyId: $facultyId) {
+query Subjects {
+  subjects {
     id
     name
     credits

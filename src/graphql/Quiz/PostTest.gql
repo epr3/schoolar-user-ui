@@ -1,5 +1,5 @@
-query TestsQuery {
-  tests {
+mutation PostTest($test: QuizTestInput!) {
+  postTest(test: $test) {
     id
     title
     description

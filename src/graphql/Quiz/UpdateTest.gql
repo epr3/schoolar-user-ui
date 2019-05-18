@@ -1,5 +1,5 @@
-query TestsQuery {
-  tests {
+mutation UpdateTest($test: QuizTestInput!) {
+  updateTest(test: $test) {
     id
     title
     description
@@ -10,6 +10,7 @@ query TestsQuery {
     }
     questions {
       id
+      description
     }
   }
 }

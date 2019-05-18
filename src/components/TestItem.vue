@@ -2,15 +2,18 @@
   <div class="box">
     <article class="media">
       <div class="media-content">
-        <p>
-          <strong>{{ name }}</strong>
+        <div>
+          <strong>{{ title }}</strong>
+          <p>{{ description }}</p>
           <small>@{{ subject }}</small>
-        </p>
+        </div>
         <div class="level">
           <div class="level-left">
-            <div class="level-item">{{ numberOfQuestions }}</div>
-            <div class="level-item">Edit</div>
-            <div class="level-item">Delete</div>
+            <div class="level-item" @click="$router.push(`/tests/${id}`)">
+              {{ numberOfQuestions }}
+            </div>
+            <div class="level-item" @click="editTestAction(id)">Edit</div>
+            <div class="level-item" @click="deleteTestAction(id)">Delete</div>
           </div>
         </div>
       </div>
@@ -19,6 +22,10 @@
 </template>
 
 <script>
+import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
+import DELETE_TEST from '../graphql/Quiz/DeleteTest.gql';
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'test-item',
   props: {
@@ -26,7 +33,11 @@ export default {
       type: String,
       required: true
     },
-    name: {
+    title: {
+      type: String,
+      required: true
+    },
+    description: {
       type: String,
       required: true
     },
@@ -37,6 +48,38 @@ export default {
     subject: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    ...mapMutations({
+      openModal: 'Modal/OPEN_MODAL'
+    }),
+    openModalAction(props) {
+      this.openModal({
+        component: () => import('@/containers/TestModal.vue'),
+        props
+      });
+    },
+    editTestAction(id) {
+      this.openModalAction({ id });
+    },
+    deleteTestAction(id) {
+      this.$apollo.mutate({
+        mutation: DELETE_TEST,
+        variables: {
+          id
+        },
+        update: store => {
+          const data = store.readQuery({ query: TESTS_QUERY });
+          store.writeQuery({
+            query: TESTS_QUERY,
+            data: {
+              ...data,
+              tests: data.tests.filter(item => item.id !== id)
+            }
+          });
+        }
+      });
     }
   }
 };

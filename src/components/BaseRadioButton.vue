@@ -1,7 +1,13 @@
 <template>
   <div class="field">
-    <label class="checkbox">
-      <input type="checkbox" v-model="model" :checked="value" />
+    <label class="radio">
+      <input
+        :name="name"
+        type="radio"
+        v-model="model"
+        :checked="model === value"
+        :value="inputValue"
+      />
       {{ label }}
     </label>
   </div>
@@ -9,15 +15,23 @@
 
 <script>
 export default {
-  name: 'base-checkbox',
+  name: 'base-radio-button',
   props: {
     label: {
       type: String,
       required: true
     },
+    name: {
+      type: String,
+      required: true
+    },
     value: {
-      type: Boolean,
-      default: false
+      type: String,
+      required: true
+    },
+    inputValue: {
+      type: String,
+      required: true
     },
     v: {
       type: Object,

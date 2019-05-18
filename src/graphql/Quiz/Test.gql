@@ -1,5 +1,5 @@
-query TestsQuery {
-  tests {
+query TestQuery($id: ID!) {
+  test: test(id: $id) {
     id
     title
     description
@@ -10,6 +10,7 @@ query TestsQuery {
     }
     questions {
       id
+      description
     }
   }
 }
