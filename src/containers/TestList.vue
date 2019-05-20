@@ -1,18 +1,23 @@
 <template>
   <div class="container">
     <base-button type="primary" @click="openTestModal">Create test</base-button>
-    <ul v-if="tests.length">
-      <li v-for="item in tests" :key="item.id">
-        <test-item
-          :id="item.id"
-          :title="item.title"
-          :description="item.description"
-          :subject="item.subject.name"
-          :number-of-questions="item.questions ? item.questions.length : 0"
-        />
-      </li>
-    </ul>
-    <div v-else class="notification">No tests to show.</div>
+    <div class="columns">
+      <div class="column">
+        <ul v-if="tests.length">
+          <li v-for="item in tests" :key="item.id">
+            <test-item
+              :id="item.id"
+              :title="item.title"
+              :description="item.description"
+              :subject="item.subject.name"
+              :number-of-questions="item.questions ? item.questions.length : 0"
+            />
+          </li>
+        </ul>
+        <div v-else class="notification">No tests to show.</div>
+      </div>
+      <div class="column">{{ sessions }}</div>
+    </div>
   </div>
 </template>
 
@@ -20,6 +25,7 @@
 import { mapMutations } from 'vuex';
 
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
+import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
 
 import TestItem from '../components/TestItem';
 import BaseButton from '../components/BaseButton';
@@ -31,10 +37,12 @@ export default {
     TestItem
   },
   data: () => ({
-    tests: []
+    tests: [],
+    sessions: []
   }),
   apollo: {
-    tests: TESTS_QUERY
+    tests: TESTS_QUERY,
+    sessions: SESSIONS_QUERY
   },
   methods: {
     ...mapMutations({

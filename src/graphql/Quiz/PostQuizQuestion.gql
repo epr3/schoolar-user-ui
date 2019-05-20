@@ -1,0 +1,8 @@
+mutation PostQuizQuestion($question: QuizQuestionInput!) {
+  postQuizQuestion(question: $question) {
+    id
+    description
+    imagePath
+    score
+  }
+}

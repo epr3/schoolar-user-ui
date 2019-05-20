@@ -1,12 +1,14 @@
 <template>
   <auth-layout>
     <div class="container">
-      <div class="card">
+      <div v-if="test" class="card">
         <div class="card-header">
-          <div class="card-header-title">{{ test && test.title }}</div>
+          <div class="card-header-title">{{ test.title }}</div>
         </div>
         <div class="card-content">
-          <p v-if="test">{{ test.description }}</p>
+          <p>{{ test.description }}</p>
+          <base-button type="primary" @click="openModalAction">Add question</base-button>
+          <quiz-question-list :questions="test.questions ? test.questions : []"/>
         </div>
       </div>
     </div>
@@ -14,15 +16,22 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import gql from 'graphql-tag';
 import TEST_QUERY from '../graphql/Quiz/Test.gql';
+import DELETE_QUIZ_QUESTION from '../graphql/Quiz/DeleteQuizQuestion.gql';
 
 import AuthLayout from '../layouts/AuthLayout';
+
+import BaseButton from '../components/BaseButton';
+import QuizQuestionList from '../components/QuizQuestionList';
 
 export default {
   name: 'test',
   components: {
-    AuthLayout
+    AuthLayout,
+    QuizQuestionList,
+    BaseButton
   },
   data() {
     return {
@@ -40,6 +49,60 @@ export default {
           id: this.routeParam
         };
       }
+    }
+  },
+  methods: {
+    ...mapMutations({
+      openModal: 'Modal/OPEN_MODAL',
+      modalClose: 'Modal/CLOSE_MODAL'
+    }),
+    openModalAction(props) {
+      this.openModal({
+        component: () => import('@/containers/QuizQuestionModal.vue'),
+        props
+      });
+    },
+    openConfirmationModal(props) {
+      this.openModal({
+        component: () => import('@/components/ConfirmationModal.vue'),
+        props
+      });
+    },
+    deleteQuizQuestionAction(id) {
+      this.openConfirmationModal({
+        modalTitle: 'Delete subject',
+        modalCloseAction: this.modalClose,
+        modalSuccessAction: async () => {
+          try {
+            this.$apollo.mutate({
+              mutation: DELETE_QUIZ_QUESTION,
+              variables: {
+                id
+              },
+              update: store => {
+                const data = store.readQuery({
+                  query: TEST_QUERY,
+                  variables: { id: this.$route.params.id }
+                });
+                const response = data.test.questions.filter(
+                  item => item.id !== id
+                );
+                store.writeQuery({
+                  query: TEST_QUERY,
+                  variables: { id: this.$route.params.id },
+                  data: {
+                    ...data,
+                    test: { ...data.test, questions: [...response] }
+                  }
+                });
+              }
+            });
+            this.modalClose();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      });
     }
   }
 };

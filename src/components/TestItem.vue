@@ -14,6 +14,7 @@
             </div>
             <div class="level-item" @click="editTestAction(id)">Edit</div>
             <div class="level-item" @click="deleteTestAction(id)">Delete</div>
+            <div class="level-item">Create session</div>
           </div>
         </div>
       </div>

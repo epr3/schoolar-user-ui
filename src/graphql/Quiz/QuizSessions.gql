@@ -1,0 +1,24 @@
+query QuizSessions {
+  quizSessions {
+    id
+    code
+    duration
+    eventId
+    event {
+      subjectId
+      eventTypeId
+      subject {
+        name
+      }
+      eventType {
+        type
+      }
+    }
+    startPeriod
+    endPeriod
+    test {
+      id
+      description
+    }
+  }
+}

@@ -7,7 +7,7 @@
       <form>
         <base-input
           label="Title"
-          type="test"
+          type="text"
           :v="$v.test.title"
           placeholder="Title"
           v-model="test.title"

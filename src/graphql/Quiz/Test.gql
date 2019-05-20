@@ -11,6 +11,8 @@ query TestQuery($id: ID!) {
     questions {
       id
       description
+      imagePath
+      score
     }
   }
 }

@@ -88,6 +88,7 @@ export default {
                 }
               }
             });
+            this.description = '';
             this.$emit('reset:form');
           } catch (e) {
             console.error(e);

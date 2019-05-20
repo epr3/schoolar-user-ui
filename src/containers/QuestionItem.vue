@@ -187,6 +187,7 @@ export default {
               }
             });
             this.modalClose();
+            this.showAnswerForm = true;
           } catch (e) {
             console.error(e);
           }
