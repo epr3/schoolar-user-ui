@@ -1,5 +1,5 @@
-query QuizSessions {
-  sessions: quizSessions {
+mutation PostQuizSession($session: QuizSessionInput!) {
+  postQuizSession(session: $session) {
     id
     code
     duration

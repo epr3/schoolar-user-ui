@@ -16,7 +16,22 @@
         </ul>
         <div v-else class="notification">No tests to show.</div>
       </div>
-      <div class="column">{{ sessions }}</div>
+      <div class="column">
+        <ul v-if="sessions.length">
+          <li v-for="item in sessions" :key="item.id">
+            <quiz-session-item
+              :id="item.id"
+              :code="item.code"
+              :score="item.score"
+              :duration="item.duration"
+              :subject="item.event.subject.name"
+              :start-period="item.startPeriod"
+              :end-period="item.endPeriod"
+            />
+          </li>
+        </ul>
+        <div v-else class="notification">No sessions to show.</div>
+      </div>
     </div>
   </div>
 </template>
@@ -28,13 +43,15 @@ import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
 import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
 
 import TestItem from '../components/TestItem';
+import QuizSessionItem from '../components/QuizSessionItem';
 import BaseButton from '../components/BaseButton';
 
 export default {
   name: 'test-list',
   components: {
     BaseButton,
-    TestItem
+    TestItem,
+    QuizSessionItem
   },
   data: () => ({
     tests: [],

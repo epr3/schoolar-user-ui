@@ -78,7 +78,7 @@ export default {
       const query = {};
       let queryName = '';
       if (this.profile.professor) {
-        query.professorId = this.profile.professor.id;
+        query.userId = this.profile.professor.userId;
         queryName = gql`
           ${PROFESSOR_EVENTS_QUERY}
         `;

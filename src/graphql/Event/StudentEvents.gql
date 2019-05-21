@@ -17,7 +17,7 @@ query Events(
     isNotifiable
     subjectId
     eventTypeId
-    professorId
+    userId
     professor {
       id
       title

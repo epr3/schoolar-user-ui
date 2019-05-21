@@ -4,7 +4,6 @@
       <quiz-question-item
         :description="item.description"
         :image-path="item.imagePath"
-        :score="item.score"
         :delete-action="() => deleteQuestion(item.id)"
       />
     </li>

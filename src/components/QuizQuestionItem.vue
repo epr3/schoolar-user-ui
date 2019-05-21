@@ -3,20 +3,21 @@
     <div class="card-content">
       <div class="media">
         <div class="media-left">
-          <img :src="imagePath" alt="questionImage" class="image is-128x128" />
+          <img
+            :src="imagePath || 'https://via.placeholder.com/128/128'"
+            alt="questionImage"
+            class="image is-128x128"
+          />
         </div>
         <div class="media-content">
           <div class="content">
             <p>
               <strong>{{ description }}</strong>
             </p>
-            <p>
-              <strong>{{ score }}</strong>
-            </p>
           </div>
         </div>
         <div class="media-right">
-          <button class="delete" @click="deleteAction" />
+          <button class="delete" @click="deleteAction"/>
         </div>
       </div>
     </div>
@@ -33,10 +34,6 @@ export default {
     },
     description: {
       type: String,
-      required: true
-    },
-    score: {
-      type: Number,
       required: true
     },
     deleteAction: {

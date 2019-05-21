@@ -15,8 +15,20 @@
                 placeholder="test@test.com"
                 v-model="email"
               />
-              <base-input label="Password" type="password" :v="$v.password" v-model="password"/>
-              <base-button type="primary" @click="loginMethod">Login</base-button>
+              <base-input
+                label="Password"
+                type="password"
+                :v="$v.password"
+                v-model="password"
+              />
+              <base-button type="primary" @click="loginMethod">
+                Login
+              </base-button>
+              <div class="field">
+                <router-link to="/forgot-password">
+                  Forgot your password?
+                </router-link>
+              </div>
             </form>
           </div>
         </div>

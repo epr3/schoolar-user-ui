@@ -1,5 +1,8 @@
 <template>
-  <base-modal-content modal-title="Add new question" :modal-close-action="modalClose">
+  <base-modal-content
+    modal-title="Add new question"
+    :modal-close-action="modalClose"
+  >
     <template #modal-body>
       <form>
         <picture-input
@@ -22,14 +25,11 @@
           placeholder="Type your question here"
           v-model="description"
         />
-        <base-input
-          label="Score"
-          type="number"
-          :v="$v.score"
-          placeholder="Type your answer here"
-          v-model="score"
-        />
-        <div class="field is-grouped" v-for="(item, index) in answers" :key="index">
+        <div
+          class="field is-grouped"
+          v-for="(item, index) in answers"
+          :key="index"
+        >
           <base-input
             :label="`Answer ${index + 1}`"
             type="text"
@@ -75,7 +75,6 @@ export default {
   data: () => ({
     description: '',
     imagePath: '',
-    score: 0,
     correctAnswer: '',
     answers: [
       { description: '' },
@@ -111,7 +110,6 @@ export default {
               question: {
                 description: this.description,
                 imagePath: this.imagePath,
-                score: parseInt(this.score),
                 answers: this.answers.map((item, index) => ({
                   ...item,
                   isCorrect: this.correctAnswer == index
@@ -135,8 +133,8 @@ export default {
         } catch (e) {
           console.error(e);
         }
+        this.modalClose();
       }
-      this.modalClose();
     }
   },
   components: {
@@ -149,12 +147,6 @@ export default {
   },
   validations: {
     description: {
-      required
-    },
-    imagePath: {
-      required
-    },
-    score: {
       required
     },
     correctAnswer: {

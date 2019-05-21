@@ -39,6 +39,8 @@ export default {
         }
       });
       this.description = response.data.answer.description;
+    } else {
+      this.description = '';
     }
   },
   props: {

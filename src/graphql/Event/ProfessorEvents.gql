@@ -1,6 +1,6 @@
-query Events($professorId: ID!, $startDate: String!, $endDate: String!) {
+query Events($userId: ID!, $startDate: String, $endDate: String) {
   events: eventsByQuery(
-    professorId: $professorId
+    userId: $userId
     startDate: $startDate
     endDate: $endDate
   ) {

@@ -12,7 +12,6 @@ query TestQuery($id: ID!) {
       id
       description
       imagePath
-      score
     }
   }
 }

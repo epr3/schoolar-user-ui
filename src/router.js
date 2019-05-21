@@ -19,6 +19,15 @@ const router = new Router({
       }
     },
     {
+      path: '/forgot-password',
+      name: 'forgotPass',
+      component: () =>
+        import(/* webpackChunkName: "forgot-pass" */ './views/ForgotPassword.vue'),
+      meta: {
+        guest: true
+      }
+    },
+    {
       path: '/sessions/:id',
       name: 'session',
       component: () =>

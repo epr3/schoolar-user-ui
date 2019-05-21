@@ -14,7 +14,7 @@
             </div>
             <div class="level-item" @click="editTestAction(id)">Edit</div>
             <div class="level-item" @click="deleteTestAction(id)">Delete</div>
-            <div class="level-item">Create session</div>
+            <div class="level-item" @click="openSessionModal">Create session</div>
           </div>
         </div>
       </div>
@@ -58,6 +58,12 @@ export default {
     openModalAction(props) {
       this.openModal({
         component: () => import('@/containers/TestModal.vue'),
+        props
+      });
+    },
+    openSessionModal(props) {
+      this.openModal({
+        component: () => import('@/containers/QuizSessionModal.vue'),
         props
       });
     },

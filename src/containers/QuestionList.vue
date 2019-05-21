@@ -1,5 +1,5 @@
 <template>
-  <ul v-if="questions">
+  <ul v-if="questions.length && profile">
     <li v-for="item in sortedQuestions" :key="item.id">
       <question-item
         :id="item.id"
@@ -8,8 +8,8 @@
         :rating="item.rating"
         :rating-obj="item.ratingObj"
         :is-voted="item.isVoted"
-        :is-professor="profile && !!profile.professor"
-        :is-student="profile && !!profile.student"
+        :is-professor="!!profile.professor"
+        :is-student="!!profile.student"
         :is-owner="profile.user.id === item.userId"
       />
     </li>

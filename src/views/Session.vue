@@ -8,6 +8,15 @@
       >
         Post Question
       </base-button>
+      <div class="card" v-else-if="session">
+        <div class="card-header">
+          <div class="card-header-title">
+            <h2 class="title">
+              Code: <strong>{{ session.code }}</strong>
+            </h2>
+          </div>
+        </div>
+      </div>
       <div>
         <question-list />
       </div>
