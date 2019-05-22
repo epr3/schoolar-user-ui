@@ -10,14 +10,6 @@ query ProfessorQuizSession($id: ID!) {
       id
       userId
       joinedAt
-      student {
-        name
-        surname
-        groupId
-        group {
-          number
-        }
-      }
     }
   }
 }

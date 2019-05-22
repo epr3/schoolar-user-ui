@@ -58,6 +58,15 @@ export function createProvider(options = {}) {
     ...options
   });
 
+  // Override connection params
+  wsClient.connectionParams = () => {
+    return {
+      token: localStorage.getItem(process.env.VUE_APP_ACCESS_TOKEN)
+        ? `Bearer ${localStorage.getItem(process.env.VUE_APP_ACCESS_TOKEN)}`
+        : ''
+    };
+  };
+
   apolloClient.wsClient = wsClient;
 
   // Create vue apollo provider
@@ -65,7 +74,7 @@ export function createProvider(options = {}) {
     defaultClient: apolloClient,
     defaultOptions: {
       $query: {
-        fetchPolicy: 'cache-first',
+        fetchPolicy: 'cache-and-network',
         errorPolicy: 'all'
       }
     },

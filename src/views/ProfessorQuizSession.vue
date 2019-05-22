@@ -1,6 +1,13 @@
 <template>
   <auth-layout>
     <p>{{ quizSession }}</p>
+    <div v-if="quizSession">
+      <user-quiz-session-item
+        v-for="item in quizSession.userSessions"
+        :key="item.id"
+        :user-id="item.userId"
+      />
+    </div>
   </auth-layout>
 </template>
 
@@ -9,6 +16,8 @@ import gql from 'graphql-tag';
 
 import QUIZ_SESSION from '../graphql/Quiz/ProfessorQuizSession.gql';
 import JOIN_QUIZ_SESSION_SUBSCRIPTION from '../graphql/Quiz/ProfessorQuizSessionSubscription.gql';
+
+import UserQuizSessionItem from '../containers/UserQuizSessionItem';
 
 import AuthLayout from '../layouts/AuthLayout';
 
@@ -19,7 +28,8 @@ export default {
   data() {
     return {
       quizSession: null,
-      routeParam: this.$route.params.id
+      routeParam: this.$route.params.id,
+      userSessions: []
     };
   },
   apollo: {
@@ -42,22 +52,27 @@ export default {
                 data: { postJoinQuizSession }
               }
             }
-          ) => ({
-            ...previousData,
-            quizSession: {
-              ...previousData.quizSession,
-              userSessions: previousData.quizSession.userSessions.concat(
-                postJoinQuizSession
-              )
-            }
-          })
+          ) => {
+            const {
+              quizSession: { userSessions }
+            } = previousData;
+
+            return {
+              ...previousData,
+              quizSession: {
+                ...previousData.quizSession,
+                userSessions: userSessions.concat(postJoinQuizSession)
+              }
+            };
+          }
         }
       ]
     }
   },
   components: {
     BaseTable,
-    AuthLayout
+    AuthLayout,
+    UserQuizSessionItem
   }
 };
 </script>

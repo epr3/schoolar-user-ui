@@ -1,11 +1,11 @@
-query Student($id: ID!) {
-  student(id: $id) {
-    email
+query Student($userId: ID!) {
+  student: studentByUserId(userId: $userId) {
     id
     name
     surname
     groupId
-    telephone
-    userId
+    group {
+      number
+    }
   }
 }
