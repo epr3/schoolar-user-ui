@@ -1,0 +1,15 @@
+subscription ProfessorQuizSessionSubscription {
+  postJoinQuizSession {
+      id
+      userId
+      joinedAt
+      student {
+        name
+        surname
+        groupId
+        group {
+          number
+        }
+      }
+  }
+}

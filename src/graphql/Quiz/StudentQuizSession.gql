@@ -1,0 +1,28 @@
+query StudentQuizSession($code: String!) {
+  quizSession: quizSession(id: $id) {
+    id
+    code
+    duration
+    score
+    startPeriod
+    endPeriod
+    testId
+    test {
+      title
+      description
+      subjectId
+      subject {
+        name
+      }
+      questions {
+        id
+        imagePath
+        description
+        answers {
+          id
+          description
+        }
+      }
+    }
+  }
+}

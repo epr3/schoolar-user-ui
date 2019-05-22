@@ -1,0 +1,3 @@
+mutation PostJoinQuizSession($code: String!) {
+  postJoinQuizSession(code: $code)
+}

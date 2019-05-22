@@ -1,0 +1,23 @@
+query ProfessorQuizSession($id: ID!) {
+  quizSession: quizSession(id: $id) {
+    id
+    code
+    duration
+    score
+    startPeriod
+    endPeriod
+    userSessions {
+      id
+      userId
+      joinedAt
+      student {
+        name
+        surname
+        groupId
+        group {
+          number
+        }
+      }
+    }
+  }
+}

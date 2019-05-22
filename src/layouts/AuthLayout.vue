@@ -33,7 +33,7 @@
           <router-link
             v-if="this.profile && this.profile.student"
             class="navbar-item"
-            to="/tests/join"
+            to="/quizes/join"
           >
             Join test
           </router-link>

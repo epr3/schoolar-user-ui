@@ -105,7 +105,6 @@ export default {
               }
             }
           ) => {
-            console.log(previousData);
             return {
               ...previousData,
               questions: previousData.questions.filter(
