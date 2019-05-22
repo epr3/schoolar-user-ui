@@ -7,13 +7,11 @@
             :src="imagePath || 'https://via.placeholder.com/128/128'"
             alt="questionImage"
             class="image is-128x128"
-          />
+          >
         </div>
         <div class="media-content">
           <div class="content">
-            <p>
-              <strong>{{ description }}</strong>
-            </p>
+            <p v-html="previewText" />
           </div>
         </div>
         <div class="media-right">
@@ -25,6 +23,8 @@
 </template>
 
 <script>
+import marked from 'marked';
+
 export default {
   name: 'quiz-question-item',
   props: {
@@ -39,6 +39,21 @@ export default {
     deleteAction: {
       type: Function,
       required: true
+    }
+  },
+  computed: {
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false
+      });
+      return marked(this.description);
     }
   }
 };

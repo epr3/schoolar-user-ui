@@ -1,5 +1,5 @@
 query QuizSessions {
-  sessions: quizSessions {
+  quizSessions {
     id
     code
     duration

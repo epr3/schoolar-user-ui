@@ -17,8 +17,8 @@
         <div v-else class="notification">No tests to show.</div>
       </div>
       <div class="column">
-        <ul v-if="sessions.length">
-          <li v-for="item in sessions" :key="item.id">
+        <ul v-if="quizSessions.length">
+          <li v-for="item in quizSessions" :key="item.id">
             <quiz-session-item
               :id="item.id"
               :code="item.code"
@@ -55,11 +55,11 @@ export default {
   },
   data: () => ({
     tests: [],
-    sessions: []
+    quizSessions: []
   }),
   apollo: {
     tests: TESTS_QUERY,
-    sessions: SESSIONS_QUERY
+    quizSessions: SESSIONS_QUERY
   },
   methods: {
     ...mapMutations({

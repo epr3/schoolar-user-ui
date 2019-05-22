@@ -1,8 +1,5 @@
 <template>
-  <base-modal-content
-    modal-title="Add new question"
-    :modal-close-action="modalClose"
-  >
+  <base-modal-content modal-title="Add new question" :modal-close-action="modalClose">
     <template #modal-body>
       <form>
         <picture-input
@@ -19,31 +16,28 @@
           }"
           @change="onChange"
         />
-        <base-textarea
+        <base-markdown-editor
           label="Description"
           :v="$v.description"
           placeholder="Type your question here"
           v-model="description"
         />
-        <div
-          class="field is-grouped"
-          v-for="(item, index) in answers"
-          :key="index"
-        >
-          <base-input
-            :label="`Answer ${index + 1}`"
-            type="text"
-            :v="$v.answers.$each[index].description"
-            placeholder="Type your answer here"
-            v-model="item.description"
-          />
-          <base-radio-button
-            :input-value="index.toString()"
-            v-model="correctAnswer"
-            name="isCorrect"
-            label="Is Correct?"
-            :v="$v.correctAnswer"
-          />
+        <div class="card" v-for="(item, index) in answers" :key="index">
+          <div class="card-content">
+            <base-markdown-editor
+              :label="`Answer ${index + 1}`"
+              :v="$v.answers.$each[index].description"
+              placeholder="Type your answer here"
+              v-model="item.description"
+            />
+            <base-radio-button
+              :input-value="index.toString()"
+              v-model="correctAnswer"
+              name="isCorrect"
+              label="Is Correct?"
+              :v="$v.correctAnswer"
+            />
+          </div>
         </div>
       </form>
     </template>
@@ -62,8 +56,7 @@ import TEST_QUERY from '../graphql/Quiz/Test.gql';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
-import BaseInput from '@/components/BaseInput.vue';
-import BaseTextarea from '@/components/BaseTextarea.vue';
+import BaseMarkdownEditor from '@/components/BaseMarkdownEditor.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseRadioButton from '@/components/BaseRadioButton.vue';
 import PictureInput from 'vue-picture-input';
@@ -140,9 +133,8 @@ export default {
   components: {
     BaseModalContent,
     BaseButton,
-    BaseTextarea,
+    BaseMarkdownEditor,
     PictureInput,
-    BaseInput,
     BaseRadioButton
   },
   validations: {

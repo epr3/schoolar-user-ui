@@ -5,20 +5,15 @@
         <div>
           <strong>{{ code }}</strong>
           <p>{{ duration }} minutes</p>
-          <small>@{{ subject }}</small>
-          <small>{{ startPeriod }} - {{ endPeriod }}</small>
+          <p>
+            <small>@{{ subject }}</small>
+          </p>
+          <small>{{ startPeriod | humanDate }} - {{ endPeriod | humanDate}}</small>
         </div>
         <div class="level">
           <div class="level-left">
-            <div
-              class="level-item"
-              @click="$router.push(`/quiz-sessions/${id}`)"
-            >
-              Test overview
-            </div>
-            <div class="level-item" @click="deleteSessionAction(id)">
-              Delete
-            </div>
+            <div class="level-item" @click="$router.push(`/quiz-sessions/${id}`)">Test overview</div>
+            <div class="level-item" @click="deleteSessionAction(id)">Delete</div>
           </div>
         </div>
       </div>
@@ -27,11 +22,18 @@
 </template>
 
 <script>
+import { DateTime } from 'luxon';
+
 import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
 import DELETE_QUIZ_SESSION from '../graphql/Quiz/DeleteQuizSession.gql';
 
 export default {
   name: 'test-item',
+  filters: {
+    humanDate(value) {
+      return DateTime.fromISO(value).toFormat('dd MMM yyyy HH:mm');
+    }
+  },
   props: {
     id: {
       type: String,
@@ -71,7 +73,7 @@ export default {
             query: SESSIONS_QUERY,
             data: {
               ...data,
-              tests: data.tests.filter(item => item.id !== id)
+              quizSessions: data.quizSessions.filter(item => item.id !== id)
             }
           });
         }

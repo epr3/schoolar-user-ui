@@ -94,7 +94,7 @@ export default {
     const query = {};
     let queryName = '';
     if (this.profile && this.profile.professor) {
-      query.professorId = this.profile.professor.id;
+      query.userId = this.profile.user.id;
       queryName = gql`
         ${EVENTS_QUERY}
       `;
@@ -147,14 +147,14 @@ export default {
                 duration: parseInt(this.duration),
                 score: parseInt(this.score),
                 eventId: this.eventId,
-                startPeriod: DateTime.fromJSDate(this.startPeriod).toISODate(),
-                endPeriod: DateTime.fromJSDate(this.endPeriod).toISODate(),
+                startPeriod: DateTime.fromJSDate(this.startPeriod).toISO(),
+                endPeriod: DateTime.fromJSDate(this.endPeriod).toISO(),
                 testId: this.testId
               }
             },
             update: (store, { data: { postQuizSession } }) => {
               const data = store.readQuery({ query: SESSIONS_QUERY });
-              data.sessions.push(postQuizSession);
+              data.quizSessions.push(postQuizSession);
               store.writeQuery({ query: SESSIONS_QUERY, data });
             }
           });
