@@ -2,6 +2,7 @@ subscription ProfessorQuizSessionSubscription {
   postJoinQuizSession {
     id
     userId
+    status
     joinedAt
   }
 }

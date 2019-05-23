@@ -1,0 +1,10 @@
+subscription SubmitQuestionAnswerSubscription {
+  submitQuestionAnswer {
+    id
+    userId
+    answerId
+    sessionId
+    questionId
+    isCorrect
+  }
+}

@@ -80,6 +80,7 @@ export function createProvider(options = {}) {
     },
     errorHandler(error) {
       // eslint-disable-next-line no-console
+      console.log({ ...error });
       error.networkError.result.errors.forEach(async error => {
         if (error.extensions.code === 'UNAUTHENTICATED') {
           await onLogout(apolloClient);

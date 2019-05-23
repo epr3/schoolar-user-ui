@@ -3,10 +3,10 @@
     <div class="hero is-fullheight is-light">
       <div class="hero-body">
         <div class="container">
-          <h2 class="title">Join test</h2>
+          <h2 class="title">Join Quiz</h2>
           <form>
             <base-input label="Code" :v="$v.code" v-model="code" type="text"/>
-            <base-button type="info" @click="submit">Join test</base-button>
+            <base-button type="info" @click="submit">Join</base-button>
           </form>
         </div>
       </div>

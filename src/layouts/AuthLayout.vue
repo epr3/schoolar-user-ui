@@ -28,14 +28,21 @@
             class="navbar-item"
             to="/tests"
           >
-            Tests
+            Quizes
           </router-link>
           <router-link
             v-if="this.profile && this.profile.student"
             class="navbar-item"
             to="/quiz/join"
           >
-            Join test
+            Join quiz
+          </router-link>
+          <router-link
+            v-if="this.profile && this.profile.student"
+            class="navbar-item"
+            to="/quiz/results"
+          >
+            Results
           </router-link>
         </div>
 

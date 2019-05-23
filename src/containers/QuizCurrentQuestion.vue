@@ -2,29 +2,28 @@
   <div class="card">
     <div class="card-content">
       <div class="content">
-        <img
-          v-if="question.imagePath"
-          :src="question.imagePath"
-          alt="question-image"
-        />
-        <p v-html="previewText" />
+        <img v-if="question.imagePath" :src="question.imagePath" alt="question-image">
+        <p v-html="previewText"/>
       </div>
-      <base-radio-button
-        v-for="item in question.answers"
-        :input-value="item.id"
-        v-model="currentAnswer"
-        name="currentAnswer"
-        :label="item.description"
-        :v="$v.currentAnswer"
-        :key="item.id"
-      />
-      <base-button type="primary">Submit</base-button>
+      <div class="field is-grouped" v-for="item in question.answers" :key="item.id">
+        <base-radio-button
+          :input-value="item.id"
+          v-model="currentAnswer"
+          name="currentAnswer"
+          :v="$v.currentAnswer"
+        />
+        <p v-html="convertToHTML(item.description)"/>
+      </div>
+
+      <base-button type="primary" @click="submitAnswer">Submit</base-button>
     </div>
   </div>
 </template>
 
 <script>
 import marked from 'marked';
+
+import SUBMIT_ANSWER from '../graphql/Quiz/SubmitQuizQuestionAnswer.gql';
 
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
@@ -47,6 +46,10 @@ export default {
     question: {
       type: Object,
       required: true
+    },
+    sessionId: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -66,6 +69,38 @@ export default {
         smartypants: false
       });
       return marked(this.question.description);
+    }
+  },
+  methods: {
+    async submitAnswer() {
+      try {
+        await this.$apollo.mutate({
+          mutation: SUBMIT_ANSWER,
+          variables: {
+            answer: {
+              sessionId: this.sessionId,
+              answerId: this.currentAnswer,
+              questionId: this.question.id
+            }
+          }
+        });
+        this.$emit('question:answer');
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    convertToHTML(text) {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false
+      });
+      return marked(text);
     }
   }
 };

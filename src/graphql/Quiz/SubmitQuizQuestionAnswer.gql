@@ -1,0 +1,3 @@
+mutation SubmitQuizQuestionAnswer($answer: StudentAnswer!) {
+  submitQuizQuestionAnswer(answer: $answer)
+}

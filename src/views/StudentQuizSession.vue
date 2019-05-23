@@ -16,6 +16,8 @@
     <student-question-view
       v-if="quizSession && !testFinished"
       :questions="quizSession.test.questions"
+      :session-id="quizSession.id"
+      @test:end="endTest"
     />
   </auth-layout>
 </template>
@@ -26,12 +28,12 @@ import gql from 'graphql-tag';
 import { DateTime } from 'luxon';
 
 import QUIZ_SESSION_QUERY from '../graphql/Quiz/StudentQuizSession.gql';
+import END_QUIZ from '../graphql/Quiz/EndQuiz.gql';
 
 import AuthLayout from '../layouts/AuthLayout';
 
 import TimeRemaining from '../components/TimeRemaining';
 import StudentQuestionView from '../components/StudentQuestionView';
-import BaseButton from '../components/BaseButton';
 
 export default {
   name: 'student-quiz-session',
@@ -66,11 +68,19 @@ export default {
     StudentQuestionView
   },
   methods: {
-    endTest() {
+    async endTest() {
       this.testFinished = true;
-      console.log(this.quizSession.id);
-      this.$router.replace('/quiz/join');
-      console.log('testEnd');
+      try {
+        await this.$apollo.mutate({
+          mutation: END_QUIZ,
+          variables: {
+            sessionId: this.quizSession.id
+          }
+        });
+        this.$router.replace('/quiz/results');
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 };

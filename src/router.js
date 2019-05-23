@@ -37,6 +37,15 @@ const router = new Router({
       }
     },
     {
+      path: '/quiz/results',
+      name: 'quizResults',
+      component: () =>
+        import(/* webpackChunkName: "quizResults" */ './views/Results.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/quiz/:code',
       name: 'studentQuiz',
       component: () =>

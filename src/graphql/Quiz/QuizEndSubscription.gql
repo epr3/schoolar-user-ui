@@ -1,0 +1,9 @@
+subscription QuizEndSubscription {
+  endQuizSession {
+    id
+    joinedAt
+    sessionId
+    status
+    userId
+  }
+}

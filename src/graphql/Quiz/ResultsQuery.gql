@@ -1,0 +1,35 @@
+query ResultsQuery {
+  results {
+    id
+    score
+    eventId
+    startPeriod
+    endPeriod
+    testId
+    event {
+      id
+      subjectId
+      subject {
+        id
+        name
+      }
+      eventTypeId
+      eventType {
+        id
+        type
+      }
+    }
+    test {
+      id
+      title
+      description
+      questions {
+        id
+      }
+    }
+    sessionAnswers {
+      id
+      isCorrect
+    }
+  }
+}
