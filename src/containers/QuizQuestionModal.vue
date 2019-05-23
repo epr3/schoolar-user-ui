@@ -1,5 +1,8 @@
 <template>
-  <base-modal-content modal-title="Add new question" :modal-close-action="modalClose">
+  <base-modal-content
+    modal-title="Add new question"
+    :modal-close-action="modalClose"
+  >
     <template #modal-body>
       <form>
         <picture-input

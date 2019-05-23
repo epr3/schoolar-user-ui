@@ -1,0 +1,3 @@
+mutation endQuiz($sessionId: ID!) {
+  endQuiz(sessionId: $sessionId)
+}

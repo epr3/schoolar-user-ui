@@ -28,10 +28,19 @@ const router = new Router({
       }
     },
     {
-      path: '/quizes/join',
+      path: '/quiz/join',
       name: 'quizJoin',
       component: () =>
         import(/* webpackChunkName: "quizJoin" */ './views/JoinTest.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/quiz/:code',
+      name: 'studentQuiz',
+      component: () =>
+        import(/* webpackChunkName: "studentQuiz" */ './views/StudentQuizSession.vue'),
       meta: {
         auth: true
       }

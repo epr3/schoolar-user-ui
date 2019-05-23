@@ -6,9 +6,17 @@ query ProfessorQuizSession($id: ID!) {
     score
     startPeriod
     endPeriod
+    eventId
+    event {
+      subjectId
+      subject {
+        name
+      }
+    }
     userSessions {
       id
       userId
+      status
       joinedAt
     }
   }

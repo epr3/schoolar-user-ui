@@ -1,5 +1,5 @@
 query StudentQuizSession($code: String!) {
-  quizSession: quizSession(id: $id) {
+  quizSession: quizSessionByCode(code: $code) {
     id
     code
     duration
@@ -7,6 +7,16 @@ query StudentQuizSession($code: String!) {
     startPeriod
     endPeriod
     testId
+    userSession {
+      joinedAt
+    }
+    eventId
+    event {
+      subjectId
+      subject {
+        name
+      }
+    }
     test {
       title
       description
