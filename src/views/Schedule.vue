@@ -9,11 +9,7 @@
         </div>
         <div class="card-body">
           <div class="columns" v-if="eventsComputed">
-            <div
-              class="column"
-              v-for="(item, index) in eventsComputed"
-              :key="index"
-            >
+            <div class="column" v-for="(item, index) in eventsComputed" :key="index">
               <event-card
                 v-for="event in item"
                 :key="event.id"
@@ -25,8 +21,16 @@
                 :start-time="event.startTime"
                 :end-time="event.endTime"
                 :color="event.color"
-                @click="$router.push(`/schedule/${event.id}`)"
-              />
+              >
+                <template #footer>
+                  <div
+                    class="card-footer-item"
+                    @click="$router.push(`/schedule/${event.id}`)"
+                  >
+                    Sessions
+                  </div>
+                </template>
+              </event-card>
             </div>
           </div>
         </div>

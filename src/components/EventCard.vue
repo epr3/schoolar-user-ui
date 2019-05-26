@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="$emit('click')">
+  <div class="card" @click="$emit('click')" :style="{ marginBottom: '10px' }">
     <div class="card-header" :style="{ backgroundColor: color }">
       <h5 class="card-header-title">{{ type }}</h5>
     </div>
@@ -9,6 +9,9 @@
       <p v-if="group">Group {{ group }}</p>
       <p>Room {{ room }}</p>
       <p>{{ startTime }} - {{ endTime }}</p>
+    </div>
+    <div class="card-footer">
+      <slot name="footer" />
     </div>
   </div>
 </template>

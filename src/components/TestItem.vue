@@ -9,12 +9,17 @@
         </div>
         <div class="level">
           <div class="level-left">
-            <div class="level-item" @click="$router.push(`/tests/${id}`)">
-              {{ numberOfQuestions }}
-            </div>
+            <div
+              class="level-item"
+              @click="$router.push(`/tests/${id}`)"
+            ># of questions: {{ numberOfQuestions }}</div>
             <div class="level-item" @click="editTestAction(id)">Edit</div>
             <div class="level-item" @click="deleteTestAction(id)">Delete</div>
-            <div class="level-item" @click="openSessionModal">Create session</div>
+            <div
+              class="level-item"
+              v-if="numberOfQuestions > 0"
+              @click="openSessionModal"
+            >Create session</div>
           </div>
         </div>
       </div>
