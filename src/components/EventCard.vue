@@ -1,17 +1,27 @@
 <template>
   <div class="card" @click="$emit('click')" :style="{ marginBottom: '10px' }">
-    <div class="card-header" :style="{ backgroundColor: color }">
-      <h5 class="card-header-title">{{ type }}</h5>
-    </div>
+    <div class="card-header" :style="{ backgroundColor: color, height: '20px' }"/>
     <div class="card-content">
-      <p>{{ subject }}</p>
-      <p v-if="professor">{{ professor }}</p>
-      <p v-if="group">Group {{ group }}</p>
-      <p>Room {{ room }}</p>
-      <p>{{ startTime }} - {{ endTime }}</p>
+      <p>{{ subject }} - {{ type }}</p>
+      <p v-if="professor">
+        <font-awesome-icon icon="user-tie"/>
+        {{ professor }}
+      </p>
+      <p v-if="group">
+        <font-awesome-icon icon="users"/>
+        {{ group }}
+      </p>
+      <p>
+        <font-awesome-icon icon="building"/>
+        {{ room }}
+      </p>
+      <p>
+        <font-awesome-icon icon="clock"/>
+        {{ startTime }} - {{ endTime }}
+      </p>
     </div>
     <div class="card-footer">
-      <slot name="footer" />
+      <slot name="footer"/>
     </div>
   </div>
 </template>

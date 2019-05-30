@@ -2,7 +2,7 @@
   <guest-layout>
     <div class="columns">
       <div class="column is-6 is-offset-3">
-        <div class="card card__login">
+        <div class="card">
           <div class="card-header">
             <h5 class="card-header-title">Login</h5>
           </div>
@@ -36,12 +36,6 @@
     </div>
   </guest-layout>
 </template>
-
-<style lang="scss">
-.card__login {
-  margin-top: 50%;
-}
-</style>
 
 <script>
 import LOGIN from '../graphql/Auth/Login.gql';

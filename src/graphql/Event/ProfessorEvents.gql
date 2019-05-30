@@ -1,8 +1,9 @@
-query Events($userId: ID!, $startDate: String, $endDate: String) {
+query Events($userId: ID, $startDate: String, $endDate: String, $groupId: ID) {
   events: eventsByQuery(
     userId: $userId
     startDate: $startDate
     endDate: $endDate
+    groupId: $groupId
   ) {
     id
     room
@@ -14,6 +15,7 @@ query Events($userId: ID!, $startDate: String, $endDate: String) {
     subjectId
     groupId
     eventTypeId
+    userId
     group {
       id
       number

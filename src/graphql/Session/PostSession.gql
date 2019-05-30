@@ -1,7 +1,7 @@
 mutation PostSession($session: SessionInput!) {
   postSession(session: $session) {
     id
-    code
+    status
     eventId
     event {
       id

@@ -1,17 +1,32 @@
 <template>
-  <div>
-    <ul v-if="sessions && sessions.length">
-      <li v-for="item in sessions" :key="item.id">
-        <session-item
-          :code="item.code"
-          :subject="item.event.subject.name"
-          :type="item.event.eventType.type"
-          @click="$router.push(`/sessions/${item.id}`)"
-        />
-      </li>
-    </ul>
-    <div v-else class="notification">
-      No sessions were created for this event.
+  <div class="columns">
+    <div class="column">
+      <ul v-if="openSessions.length">
+        <li v-for="item in openSessions" :key="item.id">
+          <session-item
+            :subject="item.event.subject.name"
+            :type="item.event.eventType.type"
+            @click="$router.push(`/sessions/${item.id}`)"
+          />
+        </li>
+      </ul>
+      <div v-else class="notification">
+        No sessions were created for this event.
+      </div>
+    </div>
+    <div class="column">
+      <ul v-if="closedSessions.length">
+        <li v-for="item in closedSessions" :key="item.id">
+          <session-item
+            :subject="item.event.subject.name"
+            :type="item.event.eventType.type"
+            @click="$router.push(`/sessions/${item.id}`)"
+          />
+        </li>
+      </ul>
+      <div v-else class="notification">
+        No sessions were finished for this event yet.
+      </div>
     </div>
   </div>
 </template>
@@ -44,6 +59,14 @@ export default {
   },
   components: {
     SessionItem
+  },
+  computed: {
+    openSessions() {
+      return this.sessions.filter(item => item.status === 'open');
+    },
+    closedSessions() {
+      return this.sessions.filter(item => item.status === 'closed');
+    }
   }
 };
 </script>

@@ -100,15 +100,6 @@ const router = new Router({
       }
     },
     {
-      path: '/schedule',
-      name: 'schedule',
-      component: () =>
-        import(/* webpackChunkName: "schedule" */ './views/Schedule.vue'),
-      meta: {
-        auth: true
-      }
-    },
-    {
       path: '/reset-password',
       name: 'resetPassword',
       component: ResetPassword,

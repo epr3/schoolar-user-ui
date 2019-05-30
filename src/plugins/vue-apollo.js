@@ -5,7 +5,7 @@ import {
   restartWebsockets
 } from 'vue-cli-plugin-apollo/graphql-client';
 
-import router from '../router';
+import errorHandler from '../utils/errorHandler';
 
 // Install the vue plugin
 Vue.use(VueApollo);
@@ -78,21 +78,8 @@ export function createProvider(options = {}) {
         errorPolicy: 'all'
       }
     },
-    errorHandler(error) {
-      // eslint-disable-next-line no-console
-      console.log({ ...error });
-      error.networkError.result.errors.forEach(async error => {
-        if (error.extensions.code === 'UNAUTHENTICATED') {
-          await onLogout(apolloClient);
-          router.replace('/login');
-        }
-      });
-      console.log(
-        '%cError',
-        'background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;',
-        error.message,
-        error.networkError.result.errors
-      );
+    errorHandler(e) {
+      errorHandler(e);
     }
   });
 

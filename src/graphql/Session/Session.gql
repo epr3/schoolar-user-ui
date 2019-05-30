@@ -1,6 +1,6 @@
 query Session($id: ID!) {
   session: session(id: $id) {
     id
-    code
+    status
   }
 }

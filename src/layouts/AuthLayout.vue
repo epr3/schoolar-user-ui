@@ -1,9 +1,9 @@
 <template>
   <div>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-      <!-- <div class="navbar-brand">
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
         <router-link class="navbar-item" to="/">
-          <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+          Schoolar
         </router-link>
 
         <a
@@ -17,12 +17,11 @@
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
-      </div> -->
+      </div>
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
           <router-link class="navbar-item" to="/">Home</router-link>
-          <router-link class="navbar-item" to="/schedule">Schedule</router-link>
           <router-link
             v-if="this.profile && this.profile.professor"
             class="navbar-item"
@@ -54,12 +53,30 @@
         </div>
       </div>
     </nav>
+    <div class="alert-list" v-if="errors.length">
+      <base-alert
+        v-for="(error, index) in errors"
+        :key="index"
+        :message="error"
+        type="danger"
+      />
+    </div>
     <slot></slot>
-    <modal-container/>
+    <modal-container />
   </div>
 </template>
 
+<style lang="scss" scoped>
+.alert-list {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  z-index: 9999;
+}
+</style>
+
 <script>
+import { mapState } from 'vuex';
 import { onLogout } from '../plugins/vue-apollo';
 
 import profileQueryMixin from '../mixins/profileQueryMixin';
@@ -67,6 +84,7 @@ import profileQueryMixin from '../mixins/profileQueryMixin';
 import ModalContainer from '../containers/ModalContainer.vue';
 
 import BaseButton from '../components/BaseButton.vue';
+import BaseAlert from '../components/BaseAlert';
 
 export default {
   name: 'auth-layout',
@@ -76,9 +94,11 @@ export default {
   mixins: [profileQueryMixin],
   components: {
     BaseButton,
-    ModalContainer
+    ModalContainer,
+    BaseAlert
   },
   computed: {
+    ...mapState('Error', ['errors']),
     name() {
       if (this.profile) {
         if (this.profile.student) {

@@ -1,7 +1,7 @@
 query Sessions($eventId: ID!) {
   sessions: sessions(eventId: $eventId) {
     id
-    code
+    status
     eventId
     event {
       id

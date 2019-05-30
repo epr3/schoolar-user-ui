@@ -1,7 +1,7 @@
 <template>
   <guest-layout>
     <div class="columns">
-      <div class="column is-6">
+      <div class="column is-6 is-offset-3">
         <div class="card">
           <div class="card-header">
             <h5 class="card-header-title">Reset password</h5>

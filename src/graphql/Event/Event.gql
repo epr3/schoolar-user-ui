@@ -1,22 +1,11 @@
 query Events(
-  $groupId: ID,
-  $startDate: String!
-  $endDate: String!,
-  $userId: ID
+  $id: ID!
 ) {
-  events: eventsByQuery(
-    groupId: $groupId
-    startDate: $startDate
-    endDate: $endDate,
-    userId: $userId
-  ) {
+  event(id: $id) {
     id
     room
-    date
     startTime
     endTime
-    isFullDay
-    isNotifiable
     subjectId
     eventTypeId
     userId
@@ -33,7 +22,6 @@ query Events(
     eventType {
       id
       type
-      color
     }
   }
 }
