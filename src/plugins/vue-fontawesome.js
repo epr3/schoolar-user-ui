@@ -9,7 +9,10 @@ import {
   faClock,
   faBuilding,
   faUsers,
-  faUserTie
+  faUserTie,
+  faThumbsUp,
+  faThumbsDown,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -22,7 +25,10 @@ library.add(
   faClock,
   faBuilding,
   faUsers,
-  faUserTie
+  faUserTie,
+  faThumbsUp,
+  faThumbsDown,
+  faStar
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

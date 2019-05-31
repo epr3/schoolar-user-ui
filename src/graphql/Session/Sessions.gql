@@ -3,6 +3,7 @@ query Sessions($eventId: ID!) {
     id
     status
     eventId
+    createdAt
     event {
       id
       subjectId

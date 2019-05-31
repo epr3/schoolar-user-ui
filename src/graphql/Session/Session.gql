@@ -2,5 +2,6 @@ query Session($id: ID!) {
   session: session(id: $id) {
     id
     status
+    createdAt
   }
 }

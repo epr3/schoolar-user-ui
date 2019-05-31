@@ -2,6 +2,7 @@
   <ul v-if="questions.length && profile">
     <li v-for="item in sortedQuestions" :key="item.id">
       <question-item
+        :question="item"
         :id="item.id"
         :answer="item.answer"
         :description="item.description"
@@ -11,6 +12,7 @@
         :is-professor="!!profile.professor"
         :is-student="!!profile.student"
         :is-owner="profile.user.id === item.userId"
+        :is-open="status === 'open'"
       />
     </li>
   </ul>
@@ -28,6 +30,12 @@ export default {
   mixins: [profileQueryMixin, questionQueryMixin],
   components: {
     QuestionItem
+  },
+  props: {
+    status: {
+      type: String,
+      required: true
+    }
   },
   computed: {
     sortedQuestions() {

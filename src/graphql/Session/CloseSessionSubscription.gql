@@ -1,0 +1,7 @@
+subscription CloseSessionSubscription {
+  closeSession {
+    id
+    status
+    createdAt
+  }
+}

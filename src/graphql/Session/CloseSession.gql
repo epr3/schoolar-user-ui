@@ -1,0 +1,3 @@
+mutation CloseSession($id: ID!) {
+  closeSession(id: $id)
+}

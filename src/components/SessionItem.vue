@@ -1,35 +1,46 @@
 <template>
-  <div class="level notification" @click="$emit('click')">
-    <div class="level-left">
-      <div class="level-item">{{ subject }}</div>
-      <div class="level-item">{{ type }}</div>
+  <div class="card">
+    <div class="card-content">
+      <p>
+        {{ subject }}
+        <span class="tag" :style="{ backgroundColor: color }">{{ type }}</span>
+      </p>
+
+      <p>
+        <font-awesome-icon icon="calendar"/>
+        <span>{{ date | toHumanDate }}</span>
+      </p>
     </div>
-    <div class="level-right">
-      <base-button type="primary" @click="$emit('click')">
-        Join session
-      </base-button>
+    <div class="card-footer">
+      <div class="card-footer-item" @click="$emit('click')">Join session</div>
     </div>
   </div>
 </template>
 
 <script>
-import BaseButton from './BaseButton';
+import { DateTime } from 'luxon';
 
 export default {
   name: 'session-item',
-  components: {
-    BaseButton
+  filters: {
+    toHumanDate(value) {
+      return DateTime.fromISO(value).toFormat('dd-LL-yyyy HH:mm');
+    }
   },
   props: {
-    code: {
-      type: String,
-      required: true
-    },
     subject: {
       type: String,
       required: true
     },
+    color: {
+      type: String,
+      required: true
+    },
     type: {
+      type: String,
+      required: true
+    },
+    date: {
       type: String,
       required: true
     }

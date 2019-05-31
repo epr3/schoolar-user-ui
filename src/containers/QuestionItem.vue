@@ -1,40 +1,52 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      <span class="card-header-title">Rating: {{ rating }}</span>
-      <div class="buttons" v-if="permitShowVoted && !permitShowQuestionActions">
-        <base-button v-if="!isVoted" type="primary" @click="postRating">
-          Vote
-        </base-button>
-        <base-button type="danger" v-else @click="deleteRating">
-          Unvote
-        </base-button>
+  <div class="box">
+    <div class="media">
+      <div class="media-left">
+        <h5 class="is-size-4 has-text-centered">{{ rating }}</h5>
+        <font-awesome-icon icon="star" size="lg" />
       </div>
-    </div>
-    <div class="card-content">
-      <p class="title">{{ description }}</p>
-      <p v-if="answer" class="subtitle">{{ answer.description }}</p>
-      <answer-form
-        v-if="showAnswerForm"
-        :question-id="id"
-        :id="answer && answer.id"
-        @reset:form="resetForm"
-      />
-    </div>
-    <div v-if="!showAnswerForm && permitShowAnswerForm" class="card-footer">
-      <div class="card-footer-item" @click="showAnswerForm = !showAnswerForm">
-        Edit answer
-      </div>
-      <div class="card-footer-item" @click="deleteAnswerAction(answer.id)">
-        Delete answer
-      </div>
-    </div>
-    <div v-if="permitShowQuestionActions" class="card-footer">
-      <div class="card-footer-item" @click="openQuestionModal({ id })">
-        Edit question
-      </div>
-      <div class="card-footer-item" @click="deleteQuestionAction(id)">
-        Delete question
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ description }}</strong>
+            <br />
+            <template v-if="answer">{{ answer.description }}</template>
+          </p>
+          <answer-form
+            v-if="showAnswerForm"
+            :question-id="id"
+            :id="answer && answer.id"
+            @reset:form="resetForm"
+          />
+        </div>
+        <div v-if="isOpen" class="level is-mobile">
+          <div class="level-left">
+            <template v-if="permitShowVoted">
+              <div v-if="!isVoted" class="level-item">
+                <font-awesome-icon @click="postRating" icon="thumbs-up"/>
+              </div>
+              <div v-else class="level-item">
+                <font-awesome-icon @click="deleteRating" icon="thumbs-down"/>
+              </div>
+            </template>
+            <template v-if="!showAnswerForm && permitShowAnswerForm">
+              <div class="level-item">
+                <font-awesome-icon @click="showAnswerForm = !showAnswerForm" icon="edit"/>
+              </div>
+              <div class="level-item">
+                <font-awesome-icon @click="deleteAnswerAction(answer.id)" icon="trash"/>
+              </div>
+            </template>
+            <template v-if="permitShowQuestionActions">
+              <div class="level-item">
+                <font-awesome-icon @click="openQuestionModal({ question })" icon="edit"/>
+              </div>
+              <div class="level-item">
+                <font-awesome-icon @click="deleteQuestionAction(id)" icon="trash"/>
+              </div>
+            </template>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,8 +60,6 @@ import DELETE_RATING from '../graphql/Rating/DeleteRating.gql';
 import DELETE_ANSWER from '../graphql/Answer/DeleteAnswer.gql';
 import DELETE_QUESTION from '../graphql/Question/DeleteQuestion.gql';
 
-import BaseButton from '../components/BaseButton.vue';
-
 import AnswerForm from '../containers/AnswerForm.vue';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 
@@ -59,16 +69,19 @@ export default {
     return {
       showAnswerForm: !this.answer && this.isProfessor,
       permitShowAnswerForm: this.isProfessor,
-      permitShowVoted: this.isStudent,
+      permitShowVoted: this.isStudent && !this.isOwner,
       permitShowQuestionActions: this.isOwner
     };
   },
   mixins: [profileQueryMixin],
   components: {
-    AnswerForm,
-    BaseButton
+    AnswerForm
   },
   props: {
+    question: {
+      type: Object,
+      required: true
+    },
     id: {
       type: String,
       require: true
@@ -102,6 +115,10 @@ export default {
       default: null
     },
     isVoted: {
+      type: Boolean,
+      required: true
+    },
+    isOpen: {
       type: Boolean,
       required: true
     }

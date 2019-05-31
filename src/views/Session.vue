@@ -1,33 +1,46 @@
 <template>
   <auth-layout>
     <div class="container">
-      <base-button
-        v-if="profile && profile.student"
-        type="primary"
-        @click="openQuestionModal"
-      >
-        Post Question
-      </base-button>
-      <div class="card" v-else-if="session">
+      <template v-if="session && session.status === 'open'">
+        <div class="card" v-if="profile && profile.student">
+          <div class="card-content">
+            <base-button type="primary" @click="openQuestionModal">Post Question</base-button>
+          </div>
+        </div>
+        <div class="card" v-if="profile && profile.professor">
+          <div class="card-content">
+            <base-button type="primary" @click="closeSession">Close Session</base-button>
+          </div>
+        </div>
+      </template>
+      <div class="card">
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title" v-if="session">
             <h2 class="title">
-              Code: <strong>{{ session.code }}</strong>
+              Session date:
+              <strong>{{ session.createdAt | toHumanDate }}</strong>
             </h2>
           </div>
         </div>
-      </div>
-      <div>
-        <question-list />
+        <div v-if="session" class="card-content">
+          <h3 class="subtitle">Session status: {{ session.status }}</h3>
+          <question-list :status="session.status"/>
+        </div>
       </div>
     </div>
   </auth-layout>
 </template>
 
 <script>
+import { DateTime } from 'luxon';
+
 import { mapMutations } from 'vuex';
+
 import gql from 'graphql-tag';
+
 import SESSION_QUERY from '../graphql/Session/Session.gql';
+import CLOSE_SESSION from '../graphql/Session/CloseSession.gql';
+import CLOSE_SESSION_SUBSCRIPTION from '../graphql/Session/CloseSessionSubscription.gql';
 
 import AuthLayout from '../layouts/AuthLayout.vue';
 
@@ -46,6 +59,11 @@ export default {
     };
   },
   mixins: [profileQueryMixin],
+  filters: {
+    toHumanDate(value) {
+      return DateTime.fromISO(value).toFormat('dd-MM-yyyy HH:mm');
+    }
+  },
   apollo: {
     session: {
       query: gql`
@@ -55,7 +73,23 @@ export default {
         return {
           id: this.routeParam
         };
-      }
+      },
+      subscribeToMore: [
+        {
+          document: CLOSE_SESSION_SUBSCRIPTION,
+          updateQuery: (
+            previousData,
+            {
+              subscriptionData: {
+                data: { closeSession }
+              }
+            }
+          ) => {
+            console.log(closeSession);
+            return previousData;
+          }
+        }
+      ]
     }
   },
   components: {
@@ -73,6 +107,17 @@ export default {
         component: () => import('@/containers/QuestionModal.vue'),
         props
       });
+    },
+    async closeSession() {
+      console.log(this.$route.params.id);
+      try {
+        await this.$apollo.mutate({
+          mutation: CLOSE_SESSION,
+          variables: { id: this.$route.params.id }
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 };

@@ -6,6 +6,8 @@
           <session-item
             :subject="item.event.subject.name"
             :type="item.event.eventType.type"
+            :date="item.createdAt"
+            :color="item.event.eventType.color"
             @click="$router.push(`/sessions/${item.id}`)"
           />
         </li>
@@ -20,6 +22,8 @@
           <session-item
             :subject="item.event.subject.name"
             :type="item.event.eventType.type"
+            :color="item.event.eventType.color"
+            :date="item.createdAt"
             @click="$router.push(`/sessions/${item.id}`)"
           />
         </li>
