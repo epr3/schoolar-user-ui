@@ -4,12 +4,7 @@
       <div class="card">
         <div class="card-content">
           <div class="field is-grouped">
-            <base-select
-              label="Group"
-              :v="$v.groupId"
-              v-model="groupId"
-              :options="groupSelect"
-            />
+            <base-select label="Group" :v="$v.groupId" v-model="groupId" :options="groupSelect"/>
             <base-select
               label="Professors"
               :v="$v.userId"
@@ -28,16 +23,8 @@
           </div>
         </div>
         <div class="card-content">
-          <div
-            class="columns"
-            v-if="eventsComputed"
-            :style="{ marginTop: '10px' }"
-          >
-            <div
-              class="column"
-              v-for="(item, index) in eventsComputed"
-              :key="index"
-            >
+          <div class="columns" v-if="eventsComputed" :style="{ marginTop: '10px' }">
+            <div class="column" v-for="(item, index) in eventsComputed" :key="index">
               <event-card
                 v-for="event in item"
                 :key="event.id"
@@ -53,17 +40,20 @@
                 <template #footer>
                   <div
                     class="card-footer-item"
-                    @click="$router.push(`/schedule/${event.id}`)"
+                    @click="$router.push(`/schedule/${event.id}/sessions`)"
                   >Sessions</div>
+                  <div
+                    v-if="profile && profile.student"
+                    @click="$router.push(`/schedule/${event.id}/results`)"
+                    class="card-footer-item"
+                  >Results</div>
                 </template>
               </event-card>
             </div>
           </div>
           <div v-else class="columns">
             <div class="column">
-              <div class="notification">
-                No events to show for current query.
-              </div>
+              <div class="notification">No events to show for current query.</div>
             </div>
           </div>
         </div>

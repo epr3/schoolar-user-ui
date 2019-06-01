@@ -3,13 +3,16 @@
     <div class="media">
       <div class="media-content">
         <div class="content">
-          <p>
+          <p v-if="subject && eventType">
             <strong>{{ subject }} - {{ eventType }}</strong>
           </p>
           <p>
-            <small>{{ date | humanDate }}</small>
+            <small>
+              <font-awesome-icon icon="calendar" />
+              {{ date | humanDate }}
+            </small>
           </p>
-          <p>Score: {{ (correctAnswers / noOfQuestions) * 100 }}%</p>
+          <strong>Score: {{ (correctAnswers / noOfQuestions) * 100 }}%</strong>
         </div>
       </div>
     </div>
@@ -29,7 +32,7 @@ export default {
   props: {
     subject: {
       type: String,
-      required: true
+      default: ''
     },
     date: {
       type: String,
@@ -37,7 +40,7 @@ export default {
     },
     eventType: {
       type: String,
-      required: true
+      default: ''
     },
     noOfQuestions: {
       type: Number,

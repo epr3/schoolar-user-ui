@@ -1,20 +1,9 @@
-query Events(
-  $id: ID!
-) {
+query Event($id: ID!) {
   event(id: $id) {
     id
     room
-    startTime
-    endTime
     subjectId
     eventTypeId
-    userId
-    professor {
-      id
-      title
-      name
-      surname
-    }
     subject {
       id
       name
@@ -22,6 +11,26 @@ query Events(
     eventType {
       id
       type
+    }
+    results {
+      id
+      testId
+      startPeriod
+      endPeriod
+      testId
+      eventId
+      test {
+        id
+        title
+        description
+        questions {
+          id
+        }
+      }
+      sessionAnswers {
+        id
+        isCorrect
+      }
     }
   }
 }

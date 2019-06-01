@@ -28,19 +28,19 @@ const router = new Router({
       }
     },
     {
-      path: '/quiz/join',
-      name: 'quizJoin',
+      path: '/quiz/results',
+      name: 'quizResults',
       component: () =>
-        import(/* webpackChunkName: "quizJoin" */ './views/JoinTest.vue'),
+        import(/* webpackChunkName: "quizResults" */ './views/Results.vue'),
       meta: {
         auth: true
       }
     },
     {
-      path: '/quiz/results',
-      name: 'quizResults',
+      path: '/quiz/join',
+      name: 'quizJoin',
       component: () =>
-        import(/* webpackChunkName: "quizResults" */ './views/Results.vue'),
+        import(/* webpackChunkName: "quizJoin" */ './views/JoinTest.vue'),
       meta: {
         auth: true
       }
@@ -100,7 +100,16 @@ const router = new Router({
       }
     },
     {
-      path: '/schedule/:id',
+      path: '/schedule/:id/results',
+      name: 'eventResults',
+      component: () =>
+        import(/* webpackChunkName: "eventResults" */ './views/EventResults.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/schedule/:id/sessions',
       name: 'eventQA',
       component: () =>
         import(/* webpackChunkName: "eventQA" */ './views/EventQA.vue'),
