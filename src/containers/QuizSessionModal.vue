@@ -64,6 +64,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseDateTimePicker from '@/components/BaseDatetimePicker.vue';
 import BaseModalContent from '@/components/BaseModalContent.vue';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'quiz-session-modal',
@@ -149,7 +150,7 @@ export default {
           });
           this.modalClose();
         } catch (e) {
-          console.error(e);
+          errorHandler(e);
         }
       }
     }

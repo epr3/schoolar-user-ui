@@ -86,6 +86,7 @@ import AuthLayout from '@/layouts/AuthLayout';
 
 import BaseSelect from '@/components/BaseSelect.vue';
 import EventCard from '@/components/EventCard.vue';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'schedule',
@@ -151,7 +152,7 @@ export default {
       });
       this.events = [...eventsResponse.data.events];
     } catch (e) {
-      throw new Error(e);
+      errorHandler(e);
     }
   },
   components: {

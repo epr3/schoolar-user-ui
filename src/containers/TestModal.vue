@@ -42,6 +42,7 @@ import BaseInput from '../components/BaseInput';
 import BaseSelect from '../components/BaseSelect';
 import BaseTextarea from '../components/BaseTextarea';
 import BaseButton from '../components/BaseButton';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'test-form',
@@ -142,7 +143,7 @@ export default {
               }
             });
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         } else {
           try {
@@ -162,7 +163,7 @@ export default {
               }
             });
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
         this.modalClose();

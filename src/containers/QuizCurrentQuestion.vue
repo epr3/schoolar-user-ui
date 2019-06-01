@@ -31,6 +31,7 @@ import { required } from 'vuelidate/lib/validators';
 
 import BaseRadioButton from '../components/BaseRadioButton';
 import BaseButton from '../components/BaseButton';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'quiz-current-question',
@@ -99,7 +100,7 @@ export default {
         });
         this.$emit('question:answer');
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     },
     convertToHTML(text) {

@@ -20,6 +20,7 @@ import { required } from 'vuelidate/lib/validators';
 
 import BaseTextarea from '../components/BaseTextarea.vue';
 import BaseButton from '../components/BaseButton.vue';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'answer-form',
@@ -77,7 +78,7 @@ export default {
             this.description = '';
             this.$emit('reset:form');
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         } else {
           try {
@@ -93,7 +94,7 @@ export default {
             this.description = '';
             this.$emit('reset:form');
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
       }

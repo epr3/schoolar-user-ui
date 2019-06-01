@@ -13,13 +13,9 @@
             <base-button
               type="primary"
               @click="$router.push(`/tests/${$route.params.id}/questions/new`)"
-            >
-              Add question
-            </base-button>
+            >Add question</base-button>
           </div>
-          <quiz-question-list
-            :questions="test.questions ? test.questions : []"
-          />
+          <quiz-question-list :questions="test.questions ? test.questions : []"/>
         </div>
       </div>
     </div>
@@ -36,6 +32,7 @@ import AuthLayout from '../layouts/AuthLayout';
 
 import BaseButton from '../components/BaseButton';
 import QuizQuestionList from '../components/QuizQuestionList';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'test',
@@ -104,7 +101,7 @@ export default {
             });
             this.modalClose();
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
       });

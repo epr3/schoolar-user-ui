@@ -33,6 +33,7 @@ import BaseButton from '@/components/BaseButton.vue';
 
 import BaseModalContent from '@/components/BaseModalContent.vue';
 import profileQueryMixin from '../mixins/profileQueryMixin';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'question-modal',
@@ -77,7 +78,7 @@ export default {
               }
             });
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         } else {
           try {
@@ -92,7 +93,7 @@ export default {
               }
             });
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
         this.modalClose();

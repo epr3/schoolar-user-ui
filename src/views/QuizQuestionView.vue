@@ -86,6 +86,7 @@ import BaseButton from '@/components/BaseButton.vue';
 import BaseRadioButton from '@/components/BaseRadioButton.vue';
 import PictureInput from 'vue-picture-input';
 import AuthLayout from '@/layouts/AuthLayout';
+import errorHandler from '../utils/errorHandler';
 export default {
   name: 'quiz-question-view',
   data: () => ({
@@ -161,7 +162,7 @@ export default {
           });
           this.$router.go(-1);
         } catch (e) {
-          console.error(e);
+          errorHandler(e);
         }
       }
     }

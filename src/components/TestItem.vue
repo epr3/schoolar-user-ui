@@ -41,6 +41,8 @@ import { mapMutations } from 'vuex';
 
 import BaseButton from './BaseButton';
 
+import errorHandler from '../utils/errorHandler';
+
 export default {
   name: 'test-item',
   components: {
@@ -106,7 +108,7 @@ export default {
           }
         });
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     }
   }

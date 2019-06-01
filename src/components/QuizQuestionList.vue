@@ -17,6 +17,8 @@ import QuizQuestionItem from '../components/QuizQuestionItem';
 import TEST_QUERY from '../graphql/Quiz/Test.gql';
 import DELETE_QUIZ_QUESTION from '../graphql/Quiz/DeleteQuizQuestion.gql';
 
+import errorHandler from '../utils/errorHandler';
+
 export default {
   name: 'quiz-question-list',
   components: {
@@ -55,7 +57,7 @@ export default {
           }
         });
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     }
   }

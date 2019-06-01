@@ -3,13 +3,13 @@
     <div class="media">
       <div class="media-left">
         <h5 class="is-size-4 has-text-centered">{{ rating }}</h5>
-        <font-awesome-icon icon="star" size="lg" />
+        <font-awesome-icon icon="star" size="lg"/>
       </div>
       <div class="media-content">
         <div class="content">
           <p>
             <strong>{{ description }}</strong>
-            <br />
+            <br>
             <template v-if="answer">{{ answer.description }}</template>
           </p>
           <answer-form
@@ -62,6 +62,7 @@ import DELETE_QUESTION from '../graphql/Question/DeleteQuestion.gql';
 
 import AnswerForm from '../containers/AnswerForm.vue';
 import profileQueryMixin from '../mixins/profileQueryMixin';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'question-item',
@@ -156,7 +157,7 @@ export default {
         });
         this.modalClose();
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     },
     deleteRating() {
@@ -169,7 +170,7 @@ export default {
         });
         this.modalClose();
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     },
     deleteQuestionAction(id) {
@@ -186,7 +187,7 @@ export default {
             });
             this.modalClose();
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
       });
@@ -206,7 +207,7 @@ export default {
             this.modalClose();
             this.showAnswerForm = true;
           } catch (e) {
-            console.error(e);
+            errorHandler(e);
           }
         }
       });

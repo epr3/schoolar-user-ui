@@ -47,6 +47,7 @@ import { required, email } from 'vuelidate/lib/validators';
 import GuestLayout from '@/layouts/GuestLayout.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'login',
@@ -79,7 +80,7 @@ export default {
             }
           });
         } catch (e) {
-          console.error(e);
+          errorHandler(e);
         }
       }
     }

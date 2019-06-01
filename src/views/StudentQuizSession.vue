@@ -52,6 +52,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import BaseButton from '../components/BaseButton';
 import TimeRemaining from '../components/TimeRemaining';
 import StudentQuestionView from '../components/StudentQuestionView';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'student-quiz-session',
@@ -132,7 +133,7 @@ export default {
           }
         });
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     },
     async startTest() {
@@ -164,7 +165,7 @@ export default {
           }
         });
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     }
   },

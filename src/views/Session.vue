@@ -49,6 +49,7 @@ import QuestionList from '../containers/QuestionList.vue';
 import BaseButton from '../components/BaseButton.vue';
 
 import profileQueryMixin from '../mixins/profileQueryMixin';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'session',
@@ -112,7 +113,7 @@ export default {
           variables: { id: this.$route.params.id }
         });
       } catch (e) {
-        console.error(e);
+        errorHandler(e);
       }
     }
   }

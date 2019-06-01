@@ -30,6 +30,7 @@ import AuthLayout from '../layouts/AuthLayout';
 
 import BaseInput from '../components/BaseInput';
 import BaseButton from '../components/BaseButton';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'join-test',
@@ -57,7 +58,7 @@ export default {
           });
           this.$router.push(`/quiz/${this.code}`);
         } catch (e) {
-          console.error(e);
+          errorHandler(e);
         }
       }
     }
