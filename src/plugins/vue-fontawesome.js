@@ -14,7 +14,9 @@ import {
   faThumbsDown,
   faStar,
   faQuestionCircle,
-  faSearch
+  faSearch,
+  faChevronLeft,
+  faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -32,7 +34,9 @@ library.add(
   faThumbsDown,
   faStar,
   faQuestionCircle,
-  faSearch
+  faSearch,
+  faChevronLeft,
+  faChevronRight
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

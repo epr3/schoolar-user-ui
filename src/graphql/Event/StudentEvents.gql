@@ -1,13 +1,13 @@
-query Events(
-  $groupId: ID,
+query StudentEvents(
+  $groupId: ID
   $startDate: String!
-  $endDate: String!,
+  $endDate: String!
   $userId: ID
 ) {
   events: eventsByQuery(
     groupId: $groupId
     startDate: $startDate
-    endDate: $endDate,
+    endDate: $endDate
     userId: $userId
   ) {
     id
@@ -15,11 +15,10 @@ query Events(
     date
     startTime
     endTime
-    isFullDay
-    isNotifiable
     subjectId
     eventTypeId
     userId
+    eventId
     professor {
       id
       title

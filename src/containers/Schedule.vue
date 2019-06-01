@@ -13,16 +13,32 @@
             />
           </div>
         </div>
+        <div class="content" :style="{ padding: '16px'}">
+          <div class="media">
+            <div class="media-left">
+              <font-awesome-icon icon="chevron-left" size="2x" @click="previousWeek"/>
+            </div>
+            <div class="media-content has-text-centered">
+              <strong
+                class="is-size-4"
+              >{{ weekHandles.startOfWeek | humanDate }} - {{ weekHandles.endOfWeek | humanDate }}</strong>
+            </div>
+            <div class="media-right">
+              <font-awesome-icon icon="chevron-right" size="2x" @click="nextWeek"/>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card" :style="{ padding: '1rem' }">
         <div class="card-header">
           <div class="columns">
-            <div class="column" v-for="day in days" :key="day">
+            <div class="column" v-for="day in daysComputed" :key="day">
               <h5 class="is-size-4 has-text-centered">{{ day }}</h5>
             </div>
           </div>
         </div>
         <div class="card-content">
+          <progress v-if="loading" class="progress is-small is-primary" max="100"/>
           <div class="columns" v-if="eventsComputed" :style="{ marginTop: '10px' }">
             <div class="column" v-for="(item, index) in eventsComputed" :key="index">
               <event-card
@@ -40,11 +56,11 @@
                 <template #footer>
                   <div
                     class="card-footer-item"
-                    @click="$router.push(`/schedule/${event.id}/sessions`)"
+                    @click="$router.push(`/schedule/${event.eventId}/sessions`)"
                   >Sessions</div>
                   <div
                     v-if="profile && profile.student"
-                    @click="$router.push(`/schedule/${event.id}/results`)"
+                    @click="$router.push(`/schedule/${event.eventId}/results`)"
                     class="card-footer-item"
                   >Results</div>
                 </template>
@@ -65,6 +81,14 @@
 <style lang="scss" scoped>
 .columns {
   width: 100%;
+}
+.card-content {
+  position: relative;
+}
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 </style>
 
@@ -91,16 +115,21 @@ import errorHandler from '../utils/errorHandler';
 export default {
   name: 'schedule',
   data() {
+    const dateArray = [];
+    for (let i = 0; i < 7; i++) {
+      dateArray.push(
+        DateTime.local()
+          .startOf('week')
+          .plus({ days: i })
+      );
+    }
     return {
-      days: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ],
+      days: dateArray,
+      weekHandles: {
+        startOfWeek: DateTime.local().startOf('week'),
+        endOfWeek: DateTime.local().endOf('week')
+      },
+      loading: false,
       events: [],
       profile: null,
       groupId: null,
@@ -109,6 +138,11 @@ export default {
       groups: [],
       queryName: null
     };
+  },
+  filters: {
+    humanDate(value) {
+      return DateTime.fromISO(value).toFormat('dd MMM yyyy');
+    }
   },
   mixins: [validationMixin],
   validations: {
@@ -137,20 +171,7 @@ export default {
           ${STUDENT_EVENTS_QUERY}
         `;
       }
-      const eventsResponse = await this.$apollo.query({
-        query: this.queryName,
-        variables: {
-          groupId: this.groupId,
-          userId: this.userId,
-          startDate: DateTime.local()
-            .startOf('week')
-            .toFormat('dd-LL-yyyy'),
-          endDate: DateTime.local()
-            .endOf('week')
-            .toFormat('dd-LL-yyyy')
-        }
-      });
-      this.events = [...eventsResponse.data.events];
+      await this.getEvents();
     } catch (e) {
       errorHandler(e);
     }
@@ -175,13 +196,20 @@ export default {
         label: item.number
       }));
     },
+    daysComputed() {
+      return this.days.map(item => item.toFormat('cccc'));
+    },
     eventsComputed() {
       if (this.events.length === 0) {
-        return {};
+        return [];
       }
-      return this.days.reduce((acc, val) => {
-        acc[val] = this.events
-          .filter(item => DateTime.fromISO(item.date).toFormat('cccc') === val)
+      return this.days.map(day => {
+        return this.events
+          .filter(
+            item =>
+              DateTime.fromISO(item.date).toFormat('cccc') ===
+              day.toFormat('cccc')
+          )
           .filter(item => (this.userId ? item.userId === this.userId : true))
           .map(item => ({
             id: item.id,
@@ -196,44 +224,54 @@ export default {
             group: item.group ? item.group.number : null,
             startTime: DateTime.fromISO(item.startTime).toFormat('HH:mm'),
             endTime: DateTime.fromISO(item.endTime).toFormat('HH:mm'),
-            color: item.eventType.color
+            color: item.eventType.color,
+            eventId: item.eventId
           }));
-        return acc;
-      }, {});
+      });
+    }
+  },
+  methods: {
+    nextWeek() {
+      this.weekHandles.startOfWeek = this.weekHandles.startOfWeek.plus({
+        days: 7
+      });
+      this.weekHandles.endOfWeek = this.weekHandles.endOfWeek.plus({ days: 7 });
+    },
+    previousWeek() {
+      this.weekHandles.startOfWeek = this.weekHandles.startOfWeek.minus({
+        days: 7
+      });
+      this.weekHandles.endOfWeek = this.weekHandles.endOfWeek.minus({
+        days: 7
+      });
+    },
+    async getEvents() {
+      this.loading = true;
+      const eventsResponse = await this.$apollo.query({
+        query: this.queryName,
+        variables: {
+          groupId: this.groupId,
+          userId: this.userId,
+          startDate: this.weekHandles.startOfWeek.toFormat('dd-LL-yyyy'),
+          endDate: this.weekHandles.endOfWeek.toFormat('dd-LL-yyyy')
+        }
+      });
+      this.events = [...eventsResponse.data.events];
+      this.loading = false;
     }
   },
   watch: {
+    weekHandles: {
+      async handler() {
+        await this.getEvents();
+      },
+      deep: true
+    },
     async groupId() {
-      const eventsResponse = await this.$apollo.query({
-        query: this.queryName,
-        variables: {
-          groupId: this.groupId,
-          userId: this.userId,
-          startDate: DateTime.local()
-            .startOf('week')
-            .toFormat('dd-LL-yyyy'),
-          endDate: DateTime.local()
-            .endOf('week')
-            .toFormat('dd-LL-yyyy')
-        }
-      });
-      this.events = [...eventsResponse.data.events];
+      await this.getEvents();
     },
     async userId() {
-      const eventsResponse = await this.$apollo.query({
-        query: this.queryName,
-        variables: {
-          groupId: this.groupId,
-          userId: this.userId,
-          startDate: DateTime.local()
-            .startOf('week')
-            .toFormat('dd-LL-yyyy'),
-          endDate: DateTime.local()
-            .endOf('week')
-            .toFormat('dd-LL-yyyy')
-        }
-      });
-      this.events = [...eventsResponse.data.events];
+      await this.getEvents();
     }
   }
 };
