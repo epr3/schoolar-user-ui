@@ -22,7 +22,8 @@ export default {
         .diff(DateTime.local(), ['hours', 'minutes', 'seconds'])
         .toObject(),
       timerInterval: null,
-      testFinished: false
+      testFinished: false,
+      testStarted: false
     };
   },
   mounted() {

@@ -1,7 +1,6 @@
 query ResultsQuery {
   results {
     id
-    score
     eventId
     startPeriod
     endPeriod

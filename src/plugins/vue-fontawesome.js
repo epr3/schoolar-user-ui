@@ -12,7 +12,9 @@ import {
   faUserTie,
   faThumbsUp,
   faThumbsDown,
-  faStar
+  faStar,
+  faQuestionCircle,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -28,7 +30,9 @@ library.add(
   faUserTie,
   faThumbsUp,
   faThumbsDown,
-  faStar
+  faStar,
+  faQuestionCircle,
+  faSearch
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

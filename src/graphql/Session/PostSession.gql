@@ -3,6 +3,7 @@ mutation PostSession($session: SessionInput!) {
     id
     status
     eventId
+    createdAt
     event {
       id
       subjectId

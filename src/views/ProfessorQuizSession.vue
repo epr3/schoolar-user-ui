@@ -1,6 +1,6 @@
 <template>
   <auth-layout>
-    <div class="hero is-info" v-if="quizSession">
+    <div class="hero is-dark" v-if="quizSession">
       <div class="hero-body">
         <div class="container">
           <h2 class="title">Code: {{ quizSession.code }}</h2>
@@ -17,7 +17,6 @@
         <!-- <GChart type="BarChart" :data="scoreChartData" :options="scoreChartOptions" /> -->
         <user-quiz-session-item
           v-for="item in quizSession.userSessions"
-          :score="quizSession.score"
           :key="item.id"
           :user-id="item.userId"
           :status="item.status"
@@ -37,6 +36,7 @@ import QUIZ_SESSION from '../graphql/Quiz/ProfessorQuizSession.gql';
 import JOIN_QUIZ_SESSION_SUBSCRIPTION from '../graphql/Quiz/ProfessorQuizSessionSubscription.gql';
 import SUBMIT_ANSWER_SUBSCRIPTION from '../graphql/Quiz/QuizAnswerSubscription.gql';
 import END_QUIZ_SUBSCRIPTION from '../graphql/Quiz/QuizEndSubscription.gql';
+import START_QUIZ_SUBSCRIPTION from '../graphql/Quiz/QuizStartSubscription.gql';
 
 import { DateTime } from 'luxon';
 
@@ -71,6 +71,25 @@ export default {
         };
       },
       subscribeToMore: [
+        {
+          document: START_QUIZ_SUBSCRIPTION,
+          updateQuery: (
+            previousData,
+            { subscriptionData: { data: startQuizSession } }
+          ) => ({
+            ...previousData,
+            quizSession: {
+              ...previousData.quizSession,
+              userSessions: previousData.quizSession.userSessions.map(item => {
+                if (item.id === startQuizSession.id) {
+                  return startQuizSession;
+                }
+
+                return item;
+              })
+            }
+          })
+        },
         {
           document: END_QUIZ_SUBSCRIPTION,
           updateQuery: (
@@ -145,11 +164,9 @@ export default {
         }
         return acc;
       }, {});
-      const correctAnswers = Object.keys(answers)
+      const correctAnswers = Object.keys(answers);
       const scores = Object.keys(correctAnswers).map(
-        item =>
-          (correctAnswers[item] * this.quizSession.score) /
-          this.quizSession.test.questions.length
+        item => correctAnswers[item] / this.quizSession.test.questions.length
       );
       const chartScores = scores.map(item => [
         Math.round(item / 10),

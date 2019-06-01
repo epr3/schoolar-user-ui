@@ -2,7 +2,7 @@
   <div class="field">
     <label class="label" v-if="label">{{ label }}</label>
     <div class="control">
-      <markdown-editor v-model="model" :configs="configs"/>
+      <markdown-editor v-model="model" :configs="configs" />
     </div>
     <div v-if="v.$error" class="help is-danger">Field is invalid!</div>
   </div>
@@ -10,6 +10,10 @@
 
 <style lang="scss">
 @import '~simplemde/dist/simplemde.min.css';
+.markdown-editor .CodeMirror {
+  min-height: 100px;
+  height: 100px;
+}
 </style>
 
 <script>

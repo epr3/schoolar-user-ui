@@ -9,7 +9,7 @@
           <p>
             <small>{{ date | humanDate }}</small>
           </p>
-          <p>Score: {{ (correctAnswers * score) / noOfQuestions }}%</p>
+          <p>Score: {{ (correctAnswers / noOfQuestions) * 100 }}%</p>
         </div>
       </div>
     </div>
@@ -27,10 +27,6 @@ export default {
     }
   },
   props: {
-    score: {
-      type: Number,
-      required: true
-    },
     subject: {
       type: String,
       required: true

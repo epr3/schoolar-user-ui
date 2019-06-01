@@ -1,27 +1,21 @@
 <template>
   <base-modal-content
-    :modal-title="`${id ? 'Edit Test' : 'Add new test'}`"
+    :modal-title="`${test ? 'Edit Test' : 'Add new test'}`"
     :modal-close-action="modalClose"
   >
     <template #modal-body>
       <form>
-        <base-input
-          label="Title"
-          type="text"
-          :v="$v.test.title"
-          placeholder="Title"
-          v-model="test.title"
-        />
+        <base-input label="Title" type="text" :v="$v.title" placeholder="Title" v-model="title"/>
         <base-textarea
           label="Description"
-          :v="$v.test.description"
+          :v="$v.description"
           placeholder="Describe your test here"
-          v-model="test.description"
+          v-model="description"
         />
         <base-select
-          :v="$v.test.subjectId"
+          :v="$v.subjectId"
           label="Subject"
-          v-model="test.subjectId"
+          v-model="subjectId"
           :options="subjectSelect"
         />
       </form>
@@ -37,7 +31,6 @@ import { mapState, mapMutations } from 'vuex';
 
 import POST_TEST from '../graphql/Quiz/PostTest.gql';
 import UPDATE_TEST from '../graphql/Quiz/UpdateTest.gql';
-import TEST_QUERY from '../graphql/Quiz/Test.gql';
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
 import SUBJECTS_QUERY from '../graphql/Subject/Subjects.gql';
 
@@ -54,11 +47,9 @@ export default {
   name: 'test-form',
   data() {
     return {
-      test: {
-        description: '',
-        title: '',
-        subjectId: null
-      },
+      description: '',
+      title: '',
+      subjectId: null,
       subjects: []
     };
   },
@@ -74,32 +65,27 @@ export default {
     BaseModalContent
   },
   validations: {
-    test: {
-      description: {
-        required
-      },
-      title: {
-        required
-      },
-      subjectId: {
-        required
-      }
+    description: {
+      required
+    },
+    title: {
+      required
+    },
+    subjectId: {
+      required
     }
   },
   props: {
-    id: {
-      type: String
+    test: {
+      type: Object,
+      default: null
     }
   },
-  async mounted() {
-    if (this.id) {
-      const response = await this.$apollo.query({
-        query: TEST_QUERY,
-        variables: { id: this.id }
-      });
-      this.test.title = response.data.test.title;
-      this.test.description = response.data.test.description;
-      this.test.subjectId = response.data.test.subject.id;
+  mounted() {
+    if (this.test) {
+      this.title = this.test.title;
+      this.description = this.test.description;
+      this.subjectId = this.test.subject.id;
     }
   },
   computed: {
@@ -121,14 +107,19 @@ export default {
     modalCloseAction() {
       this.modalClose();
     },
-    submitMethod() {
+    async submitMethod() {
       if (!this.$v.$invalid) {
         if (this.id) {
           try {
-            this.$apollo.mutate({
+            await this.$apollo.mutate({
               mutation: UPDATE_TEST,
               variables: {
-                test: { id: this.id, ...this.test }
+                test: {
+                  id: this.test.id,
+                  title: this.title,
+                  description: this.description,
+                  subjectId: this.subjectId
+                }
               },
               update: (store, { data: { updateTest } }) => {
                 const data = store.readQuery({ query: TESTS_QUERY });
@@ -155,10 +146,14 @@ export default {
           }
         } else {
           try {
-            this.$apollo.mutate({
+            await this.$apollo.mutate({
               mutation: POST_TEST,
               variables: {
-                test: this.test
+                test: {
+                  description: this.description,
+                  title: this.title,
+                  subjectId: this.subjectId
+                }
               },
               update: (store, { data: { postTest } }) => {
                 const data = store.readQuery({ query: TESTS_QUERY });

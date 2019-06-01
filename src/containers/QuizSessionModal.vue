@@ -1,8 +1,5 @@
 <template>
-  <base-modal-content
-    modal-title="Add new test session"
-    :modal-close-action="modalClose"
-  >
+  <base-modal-content modal-title="Add new test session" :modal-close-action="modalClose">
     <template #modal-body>
       <form>
         <base-input
@@ -12,41 +9,24 @@
           placeholder="1"
           v-model="duration"
         />
-        <base-input
-          label="Score"
-          type="number"
-          :v="$v.score"
-          placeholder="1"
-          v-model="score"
-        />
+        <base-select label="Event" :v="$v.eventId" v-model="eventId" :options="eventsSelect"/>
+        <base-select label="Test" :v="$v.testId" v-model="testId" :options="testsSelect"/>
         <div class="field is-grouped">
-          <base-select
-            label="Event"
-            :v="$v.eventId"
-            v-model="eventId"
-            :options="eventsSelect"
+          <base-date-time-picker
+            label="Start period"
+            :v="$v.startPeriod"
+            v-model="startPeriod"
+            type="datetime"
+            format="DD-MM-YYYY HH:mm"
           />
-          <base-select
-            label="Test"
-            :v="$v.testId"
-            v-model="testId"
-            :options="testsSelect"
+          <base-date-time-picker
+            label="End period"
+            :v="$v.endPeriod"
+            v-model="endPeriod"
+            type="datetime"
+            format="DD-MM-YYYY HH:mm"
           />
         </div>
-        <base-date-time-picker
-          label="Start period"
-          :v="$v.startPeriod"
-          v-model="startPeriod"
-          type="datetime"
-          format="DD-MM-YYYY HH:mm"
-        />
-        <base-date-time-picker
-          label="End period"
-          :v="$v.endPeriod"
-          v-model="endPeriod"
-          type="datetime"
-          format="DD-MM-YYYY HH:mm"
-        />
       </form>
     </template>
     <template #modal-footer>
@@ -54,6 +34,15 @@
     </template>
   </base-modal-content>
 </template>
+
+<style lang="scss" scoped>
+.modal-card {
+  overflow: visible;
+  /deep/ .modal-card-body {
+    overflow: visible;
+  }
+}
+</style>
 
 <script>
 import gql from 'graphql-tag';
@@ -81,7 +70,6 @@ export default {
   data() {
     return {
       duration: 0,
-      score: 0,
       eventId: null,
       startPeriod: '',
       endPeriod: '',
@@ -116,7 +104,9 @@ export default {
     eventsSelect() {
       return this.events.length
         ? this.events.map(item => ({
-            label: `${item.subject.name}-${item.eventType.type}`,
+            label: `${item.subject.name}-${item.eventType.type}-${
+              item.group.number
+            }`,
             value: item.id
           }))
         : [];
@@ -137,15 +127,14 @@ export default {
     modalCloseAction() {
       this.modalClose();
     },
-    submitMethod() {
+    async submitMethod() {
       if (!this.$v.$invalid) {
         try {
-          this.$apollo.mutate({
+          await this.$apollo.mutate({
             mutation: POST_SESSION,
             variables: {
               session: {
                 duration: parseInt(this.duration),
-                score: parseInt(this.score),
                 eventId: this.eventId,
                 startPeriod: DateTime.fromJSDate(this.startPeriod).toISO(),
                 endPeriod: DateTime.fromJSDate(this.endPeriod).toISO(),
@@ -158,11 +147,11 @@ export default {
               store.writeQuery({ query: SESSIONS_QUERY, data });
             }
           });
+          this.modalClose();
         } catch (e) {
           console.error(e);
         }
       }
-      this.modalClose();
     }
   },
   components: {
@@ -174,7 +163,6 @@ export default {
   },
   validations: {
     duration: { required },
-    score: { required },
     eventId: { required },
     startPeriod: { required },
     endPeriod: { required },

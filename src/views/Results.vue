@@ -4,7 +4,6 @@
       <results-item
         v-for="item in results"
         :key="item.id"
-        :score="item.score"
         :date="item.startPeriod"
         :subject="item.event.subject.name"
         :event-type="item.event.eventType.type"

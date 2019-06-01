@@ -1,6 +1,7 @@
 mutation endQuiz($sessionId: ID!) {
   endQuiz(sessionId: $sessionId) {
     id
-    userId
+    status
+    startedAt
   }
 }

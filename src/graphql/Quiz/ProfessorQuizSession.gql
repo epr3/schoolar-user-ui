@@ -3,7 +3,6 @@ query ProfessorQuizSession($id: ID!) {
     id
     code
     duration
-    score
     startPeriod
     endPeriod
     eventId
@@ -23,7 +22,7 @@ query ProfessorQuizSession($id: ID!) {
       id
       userId
       status
-      joinedAt
+      startedAt
     }
     userAnswers {
       id

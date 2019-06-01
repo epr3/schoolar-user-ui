@@ -7,7 +7,7 @@
       </p>
 
       <p>
-        <font-awesome-icon icon="calendar"/>
+        <font-awesome-icon icon="calendar" />
         <span>{{ date | toHumanDate }}</span>
       </p>
     </div>

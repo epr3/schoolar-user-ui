@@ -73,6 +73,15 @@ const router = new Router({
       }
     },
     {
+      path: '/tests/:id/questions/new',
+      name: 'newQuizQuestion',
+      component: () =>
+        import(/* webpackChunkName: "newQuizQuestion" */ './views/QuizQuestionView.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/tests/:id',
       name: 'test',
       component: () =>
@@ -120,10 +129,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.auth)) {
-    if (
-      localStorage.getItem(process.env.VUE_APP_ACCESS_TOKEN) &&
-      localStorage.getItem(process.env.VUE_APP_REFRESH_TOKEN)
-    ) {
+    if (localStorage.getItem(process.env.VUE_APP_ACCESS_TOKEN)) {
       next();
     } else {
       next({

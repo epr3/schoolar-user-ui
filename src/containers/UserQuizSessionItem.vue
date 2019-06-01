@@ -15,7 +15,7 @@
           <p>
             <strong>
               {{ correctAnswers }}/{{ noOfQuestions }} correct
-              {{ (correctAnswers * score) / noOfQuestions }}% score
+              {{ (correctAnswers / noOfQuestions) * 100 }}% score
             </strong>
           </p>
         </div>
@@ -59,10 +59,6 @@ export default {
       required: true
     },
     noOfQuestions: {
-      type: Number,
-      required: true
-    },
-    score: {
       type: Number,
       required: true
     }

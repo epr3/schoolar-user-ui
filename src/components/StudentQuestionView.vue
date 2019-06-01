@@ -1,6 +1,7 @@
 <template>
   <div class="container" v-if="remainingQuestions.length">
     <quiz-current-question
+      v-if="currentQuestion"
       :question="currentQuestion"
       :session-id="sessionId"
       @question:answer="answerQuestionAction"
@@ -18,18 +19,35 @@ export default {
   name: 'student-question-view',
   data() {
     return {
-      remainingQuestions: shuffle(this.questions),
+      remainingQuestions: shuffle(
+        this.questions.filter(
+          question =>
+            !this.answers.some(answer => answer.questionId === question.id)
+        )
+      ).map(question => ({ ...question, answers: shuffle(question.answers) })),
       currentQuestion: null
     };
   },
   mounted() {
-    if (this.questions.length === 0) {
-      this.$emit('test:end');
+    const currentQuestionId = localStorage.getItem('schoolar:question:current');
+    if (currentQuestionId) {
+      this.currentQuestion = this.remainingQuestions.find(
+        item => item.id === currentQuestionId
+      );
+    } else {
+      this.currentQuestion = this.remainingQuestions[0];
+      localStorage.setItem(
+        'schoolar:question:current',
+        this.currentQuestion.id
+      );
     }
-    this.currentQuestion = this.remainingQuestions[0];
   },
   props: {
     questions: {
+      type: Array,
+      required: true
+    },
+    answers: {
       type: Array,
       required: true
     },
@@ -44,13 +62,14 @@ export default {
   methods: {
     answerQuestionAction() {
       this.remainingQuestions.shift();
-      this.currentQuestion = { ...this.remainingQuestions[0] };
-    }
-  },
-  watch: {
-    remainingQuestions(val) {
-      if (val.length === 0) {
-        this.$emit('test:end');
+      if (this.remainingQuestions.length) {
+        this.currentQuestion = { ...this.remainingQuestions[0] };
+        localStorage.setItem(
+          'schoolar:question:current',
+          this.currentQuestion.id
+        );
+      } else {
+        localStorage.removeItem('schoolar:question:current');
       }
     }
   }

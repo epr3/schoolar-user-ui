@@ -3,12 +3,19 @@ query StudentQuizSession($code: String!) {
     id
     code
     duration
-    score
     startPeriod
     endPeriod
     testId
     userSession {
-      joinedAt
+      id
+      startedAt
+      status
+    }
+    userAnswers {
+      id
+      questionId
+      answerId
+      isCorrect
     }
     eventId
     event {

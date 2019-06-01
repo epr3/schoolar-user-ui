@@ -23,6 +23,7 @@
 <script>
 import marked from 'marked';
 
+import QUIZ_SESSION_QUERY from '../graphql/Quiz/StudentQuizSession.gql';
 import SUBMIT_ANSWER from '../graphql/Quiz/SubmitQuizQuestionAnswer.gql';
 
 import { validationMixin } from 'vuelidate';
@@ -82,6 +83,18 @@ export default {
               answerId: this.currentAnswer,
               questionId: this.question.id
             }
+          },
+          update: (store, { data: { submitQuizQuestionAnswer } }) => {
+            const data = store.readQuery({
+              query: QUIZ_SESSION_QUERY,
+              variables: { code: this.$route.params.code }
+            });
+            data.quizSession.userAnswers.push(submitQuizQuestionAnswer);
+            store.writeQuery({
+              query: QUIZ_SESSION_QUERY,
+              variables: { code: this.$route.params.code },
+              data
+            });
           }
         });
         this.$emit('question:answer');

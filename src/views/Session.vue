@@ -84,10 +84,7 @@ export default {
                 data: { closeSession }
               }
             }
-          ) => {
-            console.log(closeSession);
-            return previousData;
-          }
+          ) => ({ ...previousData, session: { ...closeSession } })
         }
       ]
     }
@@ -109,7 +106,6 @@ export default {
       });
     },
     async closeSession() {
-      console.log(this.$route.params.id);
       try {
         await this.$apollo.mutate({
           mutation: CLOSE_SESSION,

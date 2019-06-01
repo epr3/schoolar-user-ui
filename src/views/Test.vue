@@ -6,9 +6,20 @@
           <div class="card-header-title">{{ test.title }}</div>
         </div>
         <div class="card-content">
-          <p>{{ test.description }}</p>
-          <base-button type="primary" @click="openModalAction">Add question</base-button>
-          <quiz-question-list :questions="test.questions ? test.questions : []"/>
+          <div class="content">
+            <p>{{ test.description }}</p>
+          </div>
+          <div class="content">
+            <base-button
+              type="primary"
+              @click="$router.push(`/tests/${$route.params.id}/questions/new`)"
+            >
+              Add question
+            </base-button>
+          </div>
+          <quiz-question-list
+            :questions="test.questions ? test.questions : []"
+          />
         </div>
       </div>
     </div>
@@ -56,12 +67,6 @@ export default {
       openModal: 'Modal/OPEN_MODAL',
       modalClose: 'Modal/CLOSE_MODAL'
     }),
-    openModalAction(props) {
-      this.openModal({
-        component: () => import('@/containers/QuizQuestionModal.vue'),
-        props
-      });
-    },
     openConfirmationModal(props) {
       this.openModal({
         component: () => import('@/components/ConfirmationModal.vue'),
@@ -74,7 +79,7 @@ export default {
         modalCloseAction: this.modalClose,
         modalSuccessAction: async () => {
           try {
-            this.$apollo.mutate({
+            await this.$apollo.mutate({
               mutation: DELETE_QUIZ_QUESTION,
               variables: {
                 id

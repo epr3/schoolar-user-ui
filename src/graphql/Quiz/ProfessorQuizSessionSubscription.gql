@@ -3,6 +3,6 @@ subscription ProfessorQuizSessionSubscription {
     id
     userId
     status
-    joinedAt
+    startedAt
   }
 }

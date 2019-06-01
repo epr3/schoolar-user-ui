@@ -1,5 +1,5 @@
-subscription QuizEndSubscription {
-  endQuizSession {
+subscription QuizStartSubscription {
+  startQuizSession {
     id
     startedAt
     sessionId

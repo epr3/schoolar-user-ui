@@ -1,0 +1,7 @@
+mutation startQuiz($sessionId: ID!) {
+  startQuiz(sessionId: $sessionId) {
+    id
+    status
+    startedAt
+  }
+}

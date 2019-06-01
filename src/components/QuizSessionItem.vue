@@ -4,16 +4,26 @@
       <div class="media-content">
         <div>
           <strong>{{ code }}</strong>
-          <p>{{ duration }} minutes</p>
+          <p>
+            <font-awesome-icon icon="clock"/>
+            {{ duration }} minutes
+          </p>
           <p>
             <small>@{{ subject }}</small>
           </p>
-          <small>{{ startPeriod | humanDate }} - {{ endPeriod | humanDate}}</small>
+          <small>
+            <font-awesome-icon icon="calendar"/>
+            {{ startPeriod | humanDate }} - {{ endPeriod | humanDate}}
+          </small>
         </div>
         <div class="level">
           <div class="level-left">
-            <div class="level-item" @click="$router.push(`/quiz-sessions/${id}`)">Test overview</div>
-            <div class="level-item" @click="deleteSessionAction(id)">Delete</div>
+            <div class="level-item" @click="$router.push(`/quiz-sessions/${id}`)">
+              <font-awesome-icon icon="search"/>Test overview
+            </div>
+            <div class="level-item" @click="deleteSessionAction(id)">
+              <font-awesome-icon icon="trash"/>Delete
+            </div>
           </div>
         </div>
       </div>
