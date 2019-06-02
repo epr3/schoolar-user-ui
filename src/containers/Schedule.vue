@@ -39,7 +39,7 @@
         </div>
         <div class="card-content">
           <progress v-if="loading" class="progress is-small is-primary" max="100"/>
-          <div class="columns" v-if="eventsComputed" :style="{ marginTop: '10px' }">
+          <div class="columns" v-if="eventsComputed.length" :style="{ marginTop: '10px' }">
             <div class="column" v-for="(item, index) in eventsComputed" :key="index">
               <event-card
                 v-for="event in item"
