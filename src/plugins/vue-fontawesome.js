@@ -16,7 +16,9 @@ import {
   faQuestionCircle,
   faSearch,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faUpload,
+  faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -36,7 +38,9 @@ library.add(
   faQuestionCircle,
   faSearch,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faUpload,
+  faDownload
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);

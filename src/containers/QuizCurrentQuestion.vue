@@ -1,9 +1,13 @@
 <template>
   <div class="card">
     <div class="card-content">
-      <div class="content">
-        <img v-if="question.imagePath" :src="question.imagePath" alt="question-image">
-        <p v-html="previewText"/>
+      <div class="media">
+        <div class="media-left">
+          <img class="image" :style="{ width: '300px' }" v-if="question.imagePath" :src="question.imagePath" alt="question-image">
+        </div>
+        <div class="media-content">
+          <p v-html="previewText" />
+        </div>
       </div>
       <div class="field is-grouped" v-for="item in question.answers" :key="item.id">
         <base-radio-button

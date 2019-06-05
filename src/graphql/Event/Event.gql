@@ -4,6 +4,15 @@ query Event($id: ID!) {
     room
     subjectId
     eventTypeId
+    startTime
+    endTime
+    userId
+    professor {
+      id
+      name
+      surname
+      title
+    }
     subject {
       id
       name

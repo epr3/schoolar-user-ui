@@ -1,0 +1,3 @@
+mutation DeleteCourse($id: ID!, $courseFilename: String!) {
+  deleteCourse(id: $id, courseFilename: $courseFilename)
+}

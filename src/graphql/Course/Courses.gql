@@ -1,0 +1,9 @@
+query Courses {
+  courses {
+    id
+    name
+    coursePath
+    subjectId
+    userId
+  }
+}

@@ -2,9 +2,9 @@
   <div>
     <nav class="navbar is-info" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <router-link class="navbar-item" to="/">
+        <div class="navbar-item" @click="$router.push('/')">
           Schoolar
-        </router-link>
+        </div>
 
         <a
           role="button"
@@ -21,7 +21,8 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <router-link class="navbar-item" to="/">Home</router-link>
+          <router-link class="navbar-item" to="/" exact>Home</router-link>
+          <router-link class="navbar-item" to="/courses">Courses</router-link>
           <router-link
             v-if="this.profile && this.profile.professor"
             class="navbar-item"

@@ -1,0 +1,10 @@
+mutation PostCourse($course: CourseInput!) {
+  postCourse(course: $course) {
+    id
+    name
+    coursePath
+    courseFilename
+    subjectId
+    userId
+  }
+}

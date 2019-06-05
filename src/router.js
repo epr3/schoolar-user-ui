@@ -7,6 +7,8 @@ import ResetPassword from './views/ResetPassword.vue';
 Vue.use(Router);
 
 const router = new Router({
+  linkActiveClass: 'is-active',
+  linkExactActiveClass: 'is-active',
   base: process.env.BASE_URL,
   mode: 'history',
   routes: [
@@ -113,6 +115,24 @@ const router = new Router({
       name: 'eventQA',
       component: () =>
         import(/* webpackChunkName: "eventQA" */ './views/EventQA.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/courses/:id',
+      name: 'coursesList',
+      component: () =>
+        import(/* webpackChunkName: "coursesList" */ './views/CoursesList.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/courses',
+      name: 'courses',
+      component: () =>
+        import(/* webpackChunkName: "courses" */ './views/Courses.vue'),
       meta: {
         auth: true
       }
