@@ -29,51 +29,104 @@
           </div>
         </div>
       </div>
-      <div class="card" :style="{ padding: '1rem' }">
-        <div class="card-header">
-          <div class="columns">
-            <div class="column" v-for="day in daysComputed" :key="day">
-              <h5 class="is-size-4 has-text-centered">{{ day }}</h5>
+      <mq-layout :mq="['sm', 'md']">
+        <div class="card">
+          <div class="card-content">
+            <progress v-if="loading" class="progress is-small is-primary" max="100"/>
+            <div class="columns is-multiline" v-if="eventsComputed.length">
+              <div v-for="(item, index) in eventsComputed" :key="index" class="column is-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="card-header-title">{{ days[index] | day }}</h5>
+                    <span class="tag">{{ item.length }}</span>
+                  </div>
+                  <div class="card-content">
+                    <template v-if="item.length">
+                      <event-card
+                        v-for="event in item"
+                        :key="event.id"
+                        :type="event.type"
+                        :room="event.room"
+                        :subject="event.subject"
+                        :professor="event.professor"
+                        :group="event.group"
+                        :start-time="event.startTime"
+                        :end-time="event.endTime"
+                        :color="event.color"
+                      >
+                        <template #footer>
+                          <div
+                            class="card-footer-item"
+                            @click="$router.push(`/schedule/${event.eventId}/sessions`)"
+                          >Sessions</div>
+                          <div
+                            v-if="profile && profile.student"
+                            @click="$router.push(`/schedule/${event.eventId}/results`)"
+                            class="card-footer-item"
+                          >Results</div>
+                        </template>
+                      </event-card>
+                    </template>
+                    <div class="notification" v-else>No events for current day.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else class="columns">
+              <div class="column">
+                <div class="notification">No events to show for current query.</div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-content">
-          <progress v-if="loading" class="progress is-small is-primary" max="100"/>
-          <div class="columns" v-if="eventsComputed.length" :style="{ marginTop: '10px' }">
-            <div class="column" v-for="(item, index) in eventsComputed" :key="index">
-              <event-card
-                v-for="event in item"
-                :key="event.id"
-                :type="event.type"
-                :room="event.room"
-                :subject="event.subject"
-                :professor="event.professor"
-                :group="event.group"
-                :start-time="event.startTime"
-                :end-time="event.endTime"
-                :color="event.color"
-              >
-                <template #footer>
-                  <div
-                    class="card-footer-item"
-                    @click="$router.push(`/schedule/${event.eventId}/sessions`)"
-                  >Sessions</div>
-                  <div
-                    v-if="profile && profile.student"
-                    @click="$router.push(`/schedule/${event.eventId}/results`)"
-                    class="card-footer-item"
-                  >Results</div>
-                </template>
-              </event-card>
+      </mq-layout>
+      <mq-layout mq="lg+">
+        <div class="card" :style="{ padding: '1rem' }">
+          <div class="card-header">
+            <div class="columns">
+              <div class="column" v-for="day in daysComputed" :key="day">
+                <h5 class="is-size-4 has-text-centered">{{ day }}</h5>
+              </div>
             </div>
           </div>
-          <div v-else class="columns">
-            <div class="column">
-              <div class="notification">No events to show for current query.</div>
+          <div class="card-content">
+            <progress v-if="loading" class="progress is-small is-primary" max="100"/>
+            <div class="columns" v-if="eventsComputed.length" :style="{ marginTop: '10px' }">
+              <div class="column" v-for="(item, index) in eventsComputed" :key="index">
+                <event-card
+                  v-for="event in item"
+                  :key="event.id"
+                  :type="event.type"
+                  :room="event.room"
+                  :subject="event.subject"
+                  :professor="event.professor"
+                  :group="event.group"
+                  :start-time="event.startTime"
+                  :end-time="event.endTime"
+                  :color="event.color"
+                >
+                  <template #footer>
+                    <div
+                      class="card-footer-item"
+                      @click="$router.push(`/schedule/${event.eventId}/sessions`)"
+                    >Sessions</div>
+                    <div
+                      v-if="profile && profile.student"
+                      @click="$router.push(`/schedule/${event.eventId}/results`)"
+                      class="card-footer-item"
+                    >Results</div>
+                  </template>
+                </event-card>
+              </div>
+            </div>
+            <div v-else class="columns">
+              <div class="column">
+                <div class="notification">No events to show for current query.</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </mq-layout>
     </div>
   </auth-layout>
 </template>
@@ -142,6 +195,9 @@ export default {
   filters: {
     humanDate(value) {
       return DateTime.fromISO(value).toFormat('dd MMM yyyy');
+    },
+    day(value) {
+      return value.toFormat('cccc');
     }
   },
   mixins: [validationMixin],

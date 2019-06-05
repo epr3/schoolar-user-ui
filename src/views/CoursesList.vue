@@ -10,11 +10,17 @@
                 @click="() => openCourseModal({ subjectId: item.id })"
                 type="info"
                 v-if="profile && profile.professor"
-              >Add Course</base-button>
+              >
+                Add Course
+              </base-button>
             </div>
             <div class="card-content">
               <div class="columns is-multiline" v-if="item.courses.length">
-                <div class="column is-3" v-for="course in item.courses" :key="course.id">
+                <div
+                  class="column is-3"
+                  v-for="course in item.courses"
+                  :key="course.id"
+                >
                   <div class="card">
                     <div class="card-header" :style="{ alignItems: 'center' }">
                       <h5 class="card-header-title">{{ course.name }}</h5>
