@@ -8,8 +8,8 @@
           </h5>
         </div>
         <div class="card-content">
-          <div class="columns">
-            <div class="column is-8 is-offset-2">
+          <div class="columns is-multiline">
+            <div class="column is-4">
               <ul v-if="faculties.length">
                 <li v-for="item in faculties" :key="item.id">
                   <div class="box">

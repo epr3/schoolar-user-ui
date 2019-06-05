@@ -1,6 +1,6 @@
 <template>
   <auth-layout>
-    <div class="container" :style="{ marginTop: '16px' }">
+    <div class="container" :style="{ marginTop: '16px' }" v-if="subjects">
       <div class="columns" v-for="item in subjects" :key="item.id">
         <div class="column">
           <div class="card">
@@ -46,6 +46,11 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="notification">
+        Faculty does not have any subjects added.
       </div>
     </div>
   </auth-layout>
