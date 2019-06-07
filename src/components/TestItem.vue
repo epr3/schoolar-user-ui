@@ -21,7 +21,7 @@
               <font-awesome-icon icon="question-circle"/>
               {{ numberOfQuestions }}
             </div>
-            <div class="level-item" @click="editTestAction(id)">
+            <div class="level-item" @click="editTestAction({ id, title, description, subjectId })">
               <font-awesome-icon icon="edit"/>
             </div>
             <div class="level-item" @click="deleteTestAction(id)">
@@ -68,6 +68,10 @@ export default {
     subject: {
       type: String,
       required: true
+    },
+    subjectId: {
+      type: String,
+      required: true
     }
   },
   methods: {
@@ -86,8 +90,8 @@ export default {
         props
       });
     },
-    editTestAction(id) {
-      this.openModalAction({ id });
+    editTestAction(test) {
+      this.openModalAction({ test });
     },
     async deleteTestAction(id) {
       try {

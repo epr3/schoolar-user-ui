@@ -86,7 +86,7 @@ export default {
     if (this.test) {
       this.title = this.test.title;
       this.description = this.test.description;
-      this.subjectId = this.test.subject.id;
+      this.subjectId = this.test.subjectId;
     }
   },
   computed: {

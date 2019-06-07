@@ -19,6 +19,7 @@
                   :description="item.description"
                   :subject="item.subject.name"
                   :number-of-questions="item.questions ? item.questions.length : 0"
+                  :subject-id="item.subject.id"
                 />
               </li>
             </ul>
