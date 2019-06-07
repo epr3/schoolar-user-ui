@@ -30,6 +30,7 @@
                         <font-awesome-icon icon="download"/>Download file
                       </a>
                     </div>
+                    <p>By {{ course.professor.title }} {{ course.professor.name }} {{ course.professor.surname }}</p>
                     <div
                       class="card-footer"
                       v-if="profile && profile.professor && profile.user.id === course.userId"
@@ -61,7 +62,7 @@ import gql from 'graphql-tag';
 
 import { mapMutations } from 'vuex';
 
-import SUBJECTS_QUERY from '../graphql/Subject/Subjects.gql';
+import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByFacultyId.gql';
 import DELETE_COURSE from '../graphql/Course/DeleteCourse.gql';
 
 import profileQueryMixin from '../mixins/profileQueryMixin';

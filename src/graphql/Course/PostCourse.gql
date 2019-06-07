@@ -6,5 +6,11 @@ mutation PostCourse($course: CourseInput!) {
     courseFilename
     subjectId
     userId
+    professor {
+      id
+      name
+      surname
+      title
+    }
   }
 }

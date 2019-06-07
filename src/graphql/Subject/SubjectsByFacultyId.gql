@@ -1,0 +1,22 @@
+query SubjectsByFacultyId($facultyId: ID!) {
+  subjects: subjectsByFacultyId(facultyId: $facultyId) {
+    id
+    name
+    credits
+    facultyId
+    courses {
+      id
+      name
+      coursePath
+      courseFilename
+      subjectId
+      userId
+      professor {
+        id
+        name
+        surname
+        title
+      }
+    }
+  }
+}

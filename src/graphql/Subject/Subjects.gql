@@ -1,16 +1,8 @@
-query Subjects($facultyId: ID!) {
-  subjects: subjectsByFacultyId(facultyId: $facultyId) {
+query Subjects {
+  subjects {
     id
     name
     credits
     facultyId
-    courses {
-      id
-      name
-      coursePath
-      courseFilename
-      subjectId
-      userId
-    }
   }
 }
