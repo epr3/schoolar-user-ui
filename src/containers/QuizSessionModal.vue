@@ -30,7 +30,7 @@
       </form>
     </template>
     <template #modal-footer>
-      <base-button @click="submitMethod" type="primary">Submit</base-button>
+      <base-button @click="submitMethod" type="primary" :disabled="loading">Submit</base-button>
     </template>
   </base-modal-content>
 </template>
@@ -49,6 +49,8 @@ import gql from 'graphql-tag';
 import { mapState, mapMutations } from 'vuex';
 
 import { DateTime } from 'luxon';
+
+import loadingMixin from '../mixins/loadingMixin';
 
 import POST_SESSION from '../graphql/Quiz/PostQuizSession.gql';
 import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
@@ -99,7 +101,7 @@ export default {
   apollo: {
     tests: TESTS_QUERY
   },
-  mixins: [validationMixin, profileQueryMixin],
+  mixins: [validationMixin, profileQueryMixin, loadingMixin],
   computed: {
     ...mapState('Modal', ['modalOpen']),
     eventsSelect() {
@@ -130,6 +132,7 @@ export default {
     },
     async submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         try {
           await this.$apollo.mutate({
             mutation: POST_SESSION,
@@ -152,6 +155,7 @@ export default {
         } catch (e) {
           errorHandler(e);
         }
+        this.loading = false;
       }
     }
   },

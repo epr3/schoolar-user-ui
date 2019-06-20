@@ -15,7 +15,7 @@
                 :v="$v.confirmPassword"
                 v-model="confirmPassword"
               />
-              <base-button type="primary" @click="resetMethod">Reset password</base-button>
+              <base-button type="primary" @click="resetMethod" :disabled="loading">Reset password</base-button>
             </form>
           </div>
         </div>
@@ -26,6 +26,9 @@
 
 <script>
 import RESET_PASS from '../graphql/Auth/ResetPass.gql';
+
+import loadingMixin from '../mixins/loadingMixin';
+import errorHandler from '../utils/errorHandler';
 import { validationMixin } from 'vuelidate';
 import { required, sameAs } from 'vuelidate/lib/validators';
 
@@ -40,7 +43,7 @@ export default {
     password: '',
     confirmPassword: ''
   }),
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   components: {
     GuestLayout,
     BaseInput,
@@ -56,17 +59,23 @@ export default {
     }
   },
   methods: {
-    resetMethod() {
+    async resetMethod() {
       if (!this.$v.$invalid && this.$route.query.token) {
-        this.$apollo.mutate({
-          mutation: RESET_PASS,
-          variables: {
-            password: this.password,
-            confirmPassword: this.confirmPassword,
-            token: this.$route.query.token
-          }
-        });
-        this.$router.replace('/login');
+        this.loading = true;
+        try {
+          await this.$apollo.mutate({
+            mutation: RESET_PASS,
+            variables: {
+              password: this.password,
+              confirmPassword: this.confirmPassword,
+              token: this.$route.query.token
+            }
+          });
+          this.$router.replace('/login');
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     }
   }

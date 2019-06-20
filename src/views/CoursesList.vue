@@ -10,17 +10,11 @@
                 @click="() => openCourseModal({ subjectId: item.id })"
                 type="info"
                 v-if="profile && profile.professor"
-              >
-                Add Course
-              </base-button>
+              >Add Course</base-button>
             </div>
             <div class="card-content">
               <div class="columns is-multiline" v-if="item.courses.length">
-                <div
-                  class="column is-3"
-                  v-for="course in item.courses"
-                  :key="course.id"
-                >
+                <div class="column is-3" v-for="course in item.courses" :key="course.id">
                   <div class="card">
                     <div class="card-header" :style="{ alignItems: 'center' }">
                       <h5 class="card-header-title">{{ course.name }}</h5>
@@ -49,10 +43,8 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="notification">
-        Faculty does not have any subjects added.
-      </div>
+    <div class="container" v-else>
+      <div class="notification">Faculty does not have any subjects added.</div>
     </div>
   </auth-layout>
 </template>
@@ -65,6 +57,7 @@ import { mapMutations } from 'vuex';
 import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByFacultyId.gql';
 import DELETE_COURSE from '../graphql/Course/DeleteCourse.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 
 import BaseButton from '../components/BaseButton';
@@ -80,7 +73,7 @@ export default {
       facultyId: this.$route.params.id
     };
   },
-  mixins: [profileQueryMixin],
+  mixins: [profileQueryMixin, loadingMixin],
   apollo: {
     subjects: {
       query: gql`
@@ -108,37 +101,41 @@ export default {
       });
     },
     async deleteCourseAction(subjectId, id, courseFilename) {
-      try {
-        await this.$apollo.mutate({
-          mutation: DELETE_COURSE,
-          variables: {
-            id,
-            courseFilename
-          },
-          update: store => {
-            const data = store.readQuery({
-              query: SUBJECTS_QUERY,
-              variables: { facultyId: this.$route.params.id }
-            });
-            store.writeQuery({
-              query: SUBJECTS_QUERY,
-              data: {
-                ...data,
-                subjects: data.subjects.map(item => {
-                  if (item.id === subjectId) {
-                    item.courses = item.courses.filter(
-                      course => course.id !== id
-                    );
-                  }
-                  return item;
-                })
-              },
-              variables: { facultyId: this.$route.params.id }
-            });
-          }
-        });
-      } catch (e) {
-        errorHandler(e);
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          await this.$apollo.mutate({
+            mutation: DELETE_COURSE,
+            variables: {
+              id,
+              courseFilename
+            },
+            update: store => {
+              const data = store.readQuery({
+                query: SUBJECTS_QUERY,
+                variables: { facultyId: this.$route.params.id }
+              });
+              store.writeQuery({
+                query: SUBJECTS_QUERY,
+                data: {
+                  ...data,
+                  subjects: data.subjects.map(item => {
+                    if (item.id === subjectId) {
+                      item.courses = item.courses.filter(
+                        course => course.id !== id
+                      );
+                    }
+                    return item;
+                  })
+                },
+                variables: { facultyId: this.$route.params.id }
+              });
+            }
+          });
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     }
   }

@@ -78,6 +78,7 @@
 import POST_QUIZ_QUESTION from '../graphql/Quiz/PostQuizQuestion.gql';
 import TEST_QUERY from '../graphql/Quiz/Test.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -100,7 +101,7 @@ export default {
       { description: '' }
     ]
   }),
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   validations: {
     description: {
       required
@@ -133,6 +134,7 @@ export default {
     },
     async submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         try {
           await this.$apollo.mutate({
             mutation: POST_QUIZ_QUESTION,
@@ -164,6 +166,7 @@ export default {
         } catch (e) {
           errorHandler(e);
         }
+        this.loading = false;
       }
     }
   }

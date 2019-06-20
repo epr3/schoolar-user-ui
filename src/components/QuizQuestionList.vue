@@ -14,6 +14,7 @@
 <script>
 import QuizQuestionItem from '../components/QuizQuestionItem';
 
+import loadingMixin from '../mixins/loadingMixin';
 import TEST_QUERY from '../graphql/Quiz/Test.gql';
 import DELETE_QUIZ_QUESTION from '../graphql/Quiz/DeleteQuizQuestion.gql';
 
@@ -24,6 +25,7 @@ export default {
   components: {
     QuizQuestionItem
   },
+  mixins: [loadingMixin],
   props: {
     questions: {
       type: Array,
@@ -32,32 +34,38 @@ export default {
   },
   methods: {
     deleteQuestion(id) {
-      try {
-        this.$apollo.mutate({
-          mutation: DELETE_QUIZ_QUESTION,
-          variables: {
-            id
-          },
-          update: store => {
-            const data = store.readQuery({
-              query: TEST_QUERY,
-              variables: { id: this.$route.params.id }
-            });
-            store.writeQuery({
-              query: TEST_QUERY,
-              variables: { id: this.$route.params.id },
-              data: {
-                ...data,
-                test: {
-                  ...data.test,
-                  questions: data.test.questions.filter(item => item.id !== id)
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          this.$apollo.mutate({
+            mutation: DELETE_QUIZ_QUESTION,
+            variables: {
+              id
+            },
+            update: store => {
+              const data = store.readQuery({
+                query: TEST_QUERY,
+                variables: { id: this.$route.params.id }
+              });
+              store.writeQuery({
+                query: TEST_QUERY,
+                variables: { id: this.$route.params.id },
+                data: {
+                  ...data,
+                  test: {
+                    ...data.test,
+                    questions: data.test.questions.filter(
+                      item => item.id !== id
+                    )
+                  }
                 }
-              }
-            });
-          }
-        });
-      } catch (e) {
-        errorHandler(e);
+              });
+            }
+          });
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     }
   }

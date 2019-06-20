@@ -6,7 +6,7 @@
           <h2 class="title">Join Quiz</h2>
           <form>
             <base-input label="Code" :v="$v.code" v-model="code" type="text" />
-            <base-button type="info" @click="submit">Join</base-button>
+            <base-button type="info" @click="submit" :disabled="loading">Join</base-button>
           </form>
         </div>
       </div>
@@ -23,6 +23,7 @@
 <script>
 import POST_JOIN_QUIZ_SESSION from '../graphql/Quiz/PostJoinQuizSession.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -37,7 +38,7 @@ export default {
   data: () => ({
     code: ''
   }),
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   validations: {
     code: {
       required
@@ -51,6 +52,7 @@ export default {
   methods: {
     async submit() {
       if (!this.$v.invalid) {
+        this.loading = true;
         try {
           await this.$apollo.mutate({
             mutation: POST_JOIN_QUIZ_SESSION,
@@ -60,6 +62,7 @@ export default {
         } catch (e) {
           errorHandler(e);
         }
+        this.loading = false;
       }
     }
   }

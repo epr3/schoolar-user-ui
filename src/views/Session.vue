@@ -9,7 +9,7 @@
         </div>
         <div class="card" v-if="profile && profile.professor">
           <div class="card-content">
-            <base-button type="primary" @click="closeSession">Close Session</base-button>
+            <base-button type="primary" @click="closeSession" :disabled="loading">Close Session</base-button>
           </div>
         </div>
       </template>
@@ -48,6 +48,7 @@ import QuestionList from '../containers/QuestionList.vue';
 
 import BaseButton from '../components/BaseButton.vue';
 
+import loadingMixin from '../mixins/loadingMixin';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 import errorHandler from '../utils/errorHandler';
 
@@ -59,7 +60,7 @@ export default {
       routeParam: this.$route.params.id
     };
   },
-  mixins: [profileQueryMixin],
+  mixins: [profileQueryMixin, loadingMixin],
   filters: {
     toHumanDate(value) {
       return DateTime.fromISO(value).toFormat('dd-MM-yyyy HH:mm');
@@ -107,6 +108,7 @@ export default {
       });
     },
     async closeSession() {
+      this.loading = true;
       try {
         await this.$apollo.mutate({
           mutation: CLOSE_SESSION,
@@ -115,6 +117,7 @@ export default {
       } catch (e) {
         errorHandler(e);
       }
+      this.loading = false;
     }
   }
 };

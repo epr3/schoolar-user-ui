@@ -19,7 +19,7 @@
         <p v-html="convertToHTML(item.description)"/>
       </div>
 
-      <base-button type="primary" @click="submitAnswer">Submit</base-button>
+      <base-button type="primary" @click="submitAnswer" :disabled="loading">Submit</base-button>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@ import marked from 'marked';
 import QUIZ_SESSION_QUERY from '../graphql/Quiz/StudentQuizSession.gql';
 import SUBMIT_ANSWER from '../graphql/Quiz/SubmitQuizQuestionAnswer.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -42,7 +43,7 @@ export default {
   data: () => ({
     currentAnswer: ''
   }),
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   validations: {
     currentAnswer: {
       required
@@ -79,6 +80,7 @@ export default {
   },
   methods: {
     async submitAnswer() {
+      this.loading = true;
       try {
         await this.$apollo.mutate({
           mutation: SUBMIT_ANSWER,
@@ -106,6 +108,7 @@ export default {
       } catch (e) {
         errorHandler(e);
       }
+      this.loading = false;
     },
     convertToHTML(text) {
       marked.setOptions({

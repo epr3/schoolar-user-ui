@@ -4,11 +4,9 @@
       <div class="card">
         <div class="card-content">
           <template v-if="event">
+            <h5 class="subtitle">{{ event.subject.name }} - {{ event.eventType.type }}</h5>
             <h5 class="subtitle">
-              {{ event.subject.name }} - {{ event.eventType.type }}
-            </h5>
-            <h5 class="subtitle">
-              <font-awesome-icon icon="building" />
+              <font-awesome-icon icon="building"/>
               {{ event.room }}
             </h5>
             <h5 class="subtitle">
@@ -23,16 +21,15 @@
           </template>
           <base-button
             @click="createSession"
+            :disabled="loading"
             v-if="profile && profile.professor"
             type="primary"
-          >
-            Create live QA session
-          </base-button>
+          >Create live QA session</base-button>
         </div>
       </div>
       <div class="card">
         <div class="card-content">
-          <session-list />
+          <session-list/>
         </div>
       </div>
     </div>
@@ -53,6 +50,8 @@ import AuthLayout from '../layouts/AuthLayout.vue';
 import SessionList from '../containers/SessionList.vue';
 
 import BaseButton from '../components/BaseButton.vue';
+
+import loadingMixin from '../mixins/loadingMixin';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 
 import errorHandler from '../utils/errorHandler';
@@ -82,7 +81,7 @@ export default {
       }
     }
   },
-  mixins: [profileQueryMixin],
+  mixins: [profileQueryMixin, loadingMixin],
   components: {
     AuthLayout,
     SessionList,
@@ -90,30 +89,34 @@ export default {
   },
   methods: {
     async createSession() {
-      try {
-        await this.$apollo.mutate({
-          mutation: POST_SESSION,
-          variables: {
-            session: {
-              eventId: this.$route.params.id
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          await this.$apollo.mutate({
+            mutation: POST_SESSION,
+            variables: {
+              session: {
+                eventId: this.$route.params.id
+              }
+            },
+            update: (store, { data: { postSession } }) => {
+              const data = store.readQuery({
+                query: SESSIONS_QUERY,
+                variables: { eventId: this.$route.params.id }
+              });
+              data.sessions.push(postSession);
+              store.writeQuery({
+                query: SESSIONS_QUERY,
+                data,
+                variables: { eventId: this.$route.params.id }
+              });
+              this.$router.push(`/sessions/${postSession.id}`);
             }
-          },
-          update: (store, { data: { postSession } }) => {
-            const data = store.readQuery({
-              query: SESSIONS_QUERY,
-              variables: { eventId: this.$route.params.id }
-            });
-            data.sessions.push(postSession);
-            store.writeQuery({
-              query: SESSIONS_QUERY,
-              data,
-              variables: { eventId: this.$route.params.id }
-            });
-            this.$router.push(`/sessions/${postSession.id}`);
-          }
-        });
-      } catch (e) {
-        errorHandler(e);
+          });
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     }
   }

@@ -21,7 +21,7 @@
                 :v="$v.password"
                 v-model="password"
               />
-              <base-button type="primary" @click="loginMethod">
+              <base-button type="primary" @click="loginMethod" :disabled="loading">
                 Login
               </base-button>
               <div class="field">
@@ -41,6 +41,7 @@
 import LOGIN from '../graphql/Auth/Login.gql';
 import { onLogin } from '../plugins/vue-apollo.js';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required, email } from 'vuelidate/lib/validators';
 
@@ -63,6 +64,7 @@ export default {
   methods: {
     async loginMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         try {
           this.$apollo.mutate({
             mutation: LOGIN,
@@ -82,10 +84,11 @@ export default {
         } catch (e) {
           errorHandler(e);
         }
+        this.loading = false;
       }
     }
   },
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   validations: {
     email: {
       required,

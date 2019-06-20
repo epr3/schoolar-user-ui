@@ -14,7 +14,7 @@
       </form>
     </template>
     <template #modal-footer>
-      <base-button @click="submitMethod" type="primary">Submit</base-button>
+      <base-button @click="submitMethod" type="primary" :disabled="loading">Submit</base-button>
     </template>
   </base-modal-content>
 </template>
@@ -22,9 +22,10 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 
-import SUBJECTS_QUERY from '../graphql/Subject/Subjects.gql';
+import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByFacultyId.gql';
 import POST_COURSE from '../graphql/Course/PostCourse.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -44,7 +45,7 @@ export default {
     name: '',
     courseFile: null
   }),
-  mixins: [profileQueryMixin, validationMixin],
+  mixins: [profileQueryMixin, validationMixin, loadingMixin],
   props: {
     subjectId: {
       type: String,
@@ -63,6 +64,7 @@ export default {
     },
     async submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         try {
           await this.$apollo.mutate({
             mutation: POST_COURSE,
@@ -94,11 +96,12 @@ export default {
               });
             }
           });
+          this.modalClose();
         } catch (e) {
           errorHandler(e);
         }
       }
-      this.modalClose();
+      this.loading = false;
     }
   },
   components: {

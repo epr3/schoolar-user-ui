@@ -8,7 +8,12 @@
             <h5 class="subtitle">@{{ quizSession.test.subject.name }}</h5>
             <p>Status: {{ quizSession.userSession.status }}</p>
           </template>
-          <base-button type="primary" v-if="!testStarted" @click="startTest">Start test</base-button>
+          <base-button
+            type="primary"
+            v-if="!testStarted"
+            @click="startTest"
+            :disabled="loading"
+          >Start test</base-button>
           <time-remaining
             v-else-if="quizSession && !testFinished && quizSession.userSession.startedAt"
             :join-date="quizSession.userSession.startedAt"
@@ -20,6 +25,7 @@
             Total questions: {{ quizSession.test.questions.length }}
           </div>
           <base-button
+            :disabled="loading"
             @click="endTest"
             type="primary"
             v-if="testStarted && !testFinished"
@@ -43,6 +49,8 @@ import gql from 'graphql-tag';
 
 import { DateTime } from 'luxon';
 
+import loadingMixin from '../mixins/loadingMixin';
+
 import QUIZ_SESSION_QUERY from '../graphql/Quiz/StudentQuizSession.gql';
 import START_QUIZ from '../graphql/Quiz/StartQuiz.gql';
 import END_QUIZ from '../graphql/Quiz/EndQuiz.gql';
@@ -65,6 +73,7 @@ export default {
       results: null
     };
   },
+  mixins: [loadingMixin],
   filters: {
     humanDate(value) {
       return DateTime.fromISO(value).toFormat('dd MMM yyyy HH:mm');
@@ -105,7 +114,7 @@ export default {
   },
   methods: {
     async endTest() {
-      this.testFinished = true;
+      this.loading = true;
       try {
         await this.$apollo.mutate({
           mutation: END_QUIZ,
@@ -130,14 +139,16 @@ export default {
                 }
               }
             });
+            this.testFinished = true;
           }
         });
       } catch (e) {
         errorHandler(e);
       }
+      this.loading = false;
     },
     async startTest() {
-      this.testStarted = true;
+      this.loading = true;
       try {
         await this.$apollo.mutate({
           mutation: START_QUIZ,
@@ -162,11 +173,13 @@ export default {
                 }
               }
             });
+            this.testStarted = true;
           }
         });
       } catch (e) {
         errorHandler(e);
       }
+      this.loading = false;
     }
   },
   watch: {

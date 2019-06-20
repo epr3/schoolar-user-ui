@@ -21,7 +21,7 @@
       </form>
     </template>
     <template #modal-footer>
-      <base-button @click="submitMethod" type="primary">Submit</base-button>
+      <base-button @click="submitMethod" type="primary" :disabled="loading">Submit</base-button>
     </template>
   </base-modal-content>
 </template>
@@ -34,6 +34,7 @@ import UPDATE_TEST from '../graphql/Quiz/UpdateTest.gql';
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
 import SUBJECTS_QUERY from '../graphql/Subject/Subjects.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -57,7 +58,7 @@ export default {
   apollo: {
     subjects: SUBJECTS_QUERY
   },
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   components: {
     BaseTextarea,
     BaseInput,
@@ -110,6 +111,7 @@ export default {
     },
     async submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         if (this.id) {
           try {
             await this.$apollo.mutate({
@@ -142,6 +144,7 @@ export default {
                 });
               }
             });
+            this.modalClose();
           } catch (e) {
             errorHandler(e);
           }
@@ -162,11 +165,12 @@ export default {
                 store.writeQuery({ query: TESTS_QUERY, data });
               }
             });
+            this.modalClose();
           } catch (e) {
             errorHandler(e);
           }
         }
-        this.modalClose();
+        this.loading = false;
       }
     }
   }

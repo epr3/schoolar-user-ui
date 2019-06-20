@@ -61,6 +61,7 @@ import DELETE_ANSWER from '../graphql/Answer/DeleteAnswer.gql';
 import DELETE_QUESTION from '../graphql/Question/DeleteQuestion.gql';
 
 import AnswerForm from '../containers/AnswerForm.vue';
+import loadingMixin from '../mixins/loadingMixin';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 import errorHandler from '../utils/errorHandler';
 
@@ -74,7 +75,7 @@ export default {
       permitShowQuestionActions: this.isOwner
     };
   },
-  mixins: [profileQueryMixin],
+  mixins: [profileQueryMixin, loadingMixin],
   components: {
     AnswerForm
   },
@@ -145,32 +146,40 @@ export default {
       });
     },
     postRating() {
-      try {
-        this.$apollo.mutate({
-          mutation: POST_RATING,
-          variables: {
-            rating: {
-              userId: this.profile.user.id,
-              questionId: this.id
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          this.$apollo.mutate({
+            mutation: POST_RATING,
+            variables: {
+              rating: {
+                userId: this.profile.user.id,
+                questionId: this.id
+              }
             }
-          }
-        });
-        this.modalClose();
-      } catch (e) {
-        errorHandler(e);
+          });
+          this.modalClose();
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     },
     deleteRating() {
-      try {
-        this.$apollo.mutate({
-          mutation: DELETE_RATING,
-          variables: {
-            id: this.ratingObj.id
-          }
-        });
-        this.modalClose();
-      } catch (e) {
-        errorHandler(e);
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          this.$apollo.mutate({
+            mutation: DELETE_RATING,
+            variables: {
+              id: this.ratingObj.id
+            }
+          });
+          this.modalClose();
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     },
     deleteQuestionAction(id) {

@@ -34,8 +34,10 @@
 <script>
 import { DateTime } from 'luxon';
 
+import loadingMixin from '../mixins/loadingMixin';
 import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
 import DELETE_QUIZ_SESSION from '../graphql/Quiz/DeleteQuizSession.gql';
+import errorHandler from '../utils/errorHandler';
 
 export default {
   name: 'test-item',
@@ -44,6 +46,7 @@ export default {
       return DateTime.fromISO(value).toFormat('dd MMM yyyy HH:mm');
     }
   },
+  mixins: [loadingMixin],
   props: {
     id: {
       type: String,
@@ -71,23 +74,31 @@ export default {
     }
   },
   methods: {
-    deleteSessionAction(id) {
-      this.$apollo.mutate({
-        mutation: DELETE_QUIZ_SESSION,
-        variables: {
-          id
-        },
-        update: store => {
-          const data = store.readQuery({ query: SESSIONS_QUERY });
-          store.writeQuery({
-            query: SESSIONS_QUERY,
-            data: {
-              ...data,
-              quizSessions: data.quizSessions.filter(item => item.id !== id)
+    async deleteSessionAction(id) {
+      if (!this.loading) {
+        this.loading = true;
+        try {
+          await this.$apollo.mutate({
+            mutation: DELETE_QUIZ_SESSION,
+            variables: {
+              id
+            },
+            update: store => {
+              const data = store.readQuery({ query: SESSIONS_QUERY });
+              store.writeQuery({
+                query: SESSIONS_QUERY,
+                data: {
+                  ...data,
+                  quizSessions: data.quizSessions.filter(item => item.id !== id)
+                }
+              });
             }
           });
+        } catch (e) {
+          errorHandler(e);
         }
-      });
+        this.loading = false;
+      }
     }
   }
 };

@@ -8,15 +8,8 @@
           </div>
           <div class="card-content">
             <form>
-              <base-input
-                label="Email"
-                type="email"
-                :v="$v.email"
-                v-model="email"
-              />
-              <base-button type="primary" @click="resetMethod">
-                Send email
-              </base-button>
+              <base-input label="Email" type="email" :v="$v.email" v-model="email"/>
+              <base-button type="primary" @click="resetMethod" :disabled="loading">Send email</base-button>
             </form>
           </div>
         </div>
@@ -27,6 +20,10 @@
 
 <script>
 import FORGOT_PASS from '../graphql/Auth/ForgotPass.gql';
+
+import errorHandler from '../utils/errorHandler';
+
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -38,9 +35,9 @@ import BaseButton from '@/components/BaseButton.vue';
 export default {
   name: 'forgot-password',
   data: () => ({
-    email: '',
+    email: ''
   }),
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   components: {
     GuestLayout,
     BaseInput,
@@ -52,15 +49,21 @@ export default {
     }
   },
   methods: {
-    resetMethod() {
+    async resetMethod() {
       if (!this.$v.$invalid) {
-        this.$apollo.mutate({
-          mutation: FORGOT_PASS,
-          variables: {
-            email: this.email
-          }
-        });
-        this.$router.replace('/login');
+        this.loading = true;
+        try {
+          await this.$apollo.mutate({
+            mutation: FORGOT_PASS,
+            variables: {
+              email: this.email
+            }
+          });
+          this.$router.replace('/login');
+        } catch (e) {
+          errorHandler(e);
+        }
+        this.loading = false;
       }
     }
   }

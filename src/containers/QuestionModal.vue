@@ -14,7 +14,7 @@
       </form>
     </template>
     <template #modal-footer>
-      <base-button @click="submitMethod" type="primary">Submit</base-button>
+      <base-button @click="submitMethod" type="primary" :disabled="loading">Submit</base-button>
     </template>
   </base-modal-content>
 </template>
@@ -25,6 +25,7 @@ import { mapState, mapMutations } from 'vuex';
 import POST_QUESTION from '../graphql/Question/PostQuestion.gql';
 import UPDATE_QUESTION from '../graphql/Question/UpdateQuestion.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -40,7 +41,7 @@ export default {
   data: () => ({
     description: ''
   }),
-  mixins: [profileQueryMixin, validationMixin],
+  mixins: [profileQueryMixin, validationMixin, loadingMixin],
   props: {
     question: {
       type: Object,
@@ -64,6 +65,7 @@ export default {
     },
     async submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         if (this.question) {
           try {
             await this.$apollo.mutate({
@@ -77,6 +79,7 @@ export default {
                 }
               }
             });
+            this.modalClose();
           } catch (e) {
             errorHandler(e);
           }
@@ -92,11 +95,12 @@ export default {
                 }
               }
             });
+            this.modalClose();
           } catch (e) {
             errorHandler(e);
           }
         }
-        this.modalClose();
+        this.loading = false;
       }
     }
   },

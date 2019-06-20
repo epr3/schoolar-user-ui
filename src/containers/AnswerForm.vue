@@ -6,7 +6,7 @@
       placeholder="Type your answer here"
       v-model="description"
     />
-    <base-button @click="submitMethod" type="primary">Submit</base-button>
+    <base-button @click="submitMethod" type="primary" :disabled="loading">Submit</base-button>
   </form>
 </template>
 
@@ -15,6 +15,7 @@ import POST_ANSWER from '../graphql/Answer/PostAnswer.gql';
 import UPDATE_ANSWER from '../graphql/Answer/UpdateAnswer.gql';
 import ANSWER_QUERY from '../graphql/Answer/Answer.gql';
 
+import loadingMixin from '../mixins/loadingMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -54,7 +55,7 @@ export default {
       required: true
     }
   },
-  mixins: [validationMixin],
+  mixins: [validationMixin, loadingMixin],
   validations: {
     description: {
       required
@@ -63,6 +64,7 @@ export default {
   methods: {
     submitMethod() {
       if (!this.$v.$invalid) {
+        this.loading = true;
         if (this.id) {
           try {
             this.$apollo.mutate({
@@ -96,6 +98,7 @@ export default {
           } catch (e) {
             errorHandler(e);
           }
+          this.loading = false;
         }
       }
     }

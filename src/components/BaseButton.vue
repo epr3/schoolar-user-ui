@@ -1,11 +1,5 @@
 <template>
-  <router-link
-    tag="button"
-    v-if="routerPath"
-    :to="routerPath"
-    class="button"
-    :class="btnStyle"
-  >
+  <router-link tag="button" v-if="routerPath" :to="routerPath" class="button" :class="btnStyle">
     <slot></slot>
   </router-link>
   <button
@@ -79,6 +73,10 @@ export default {
 
       if (this.type) {
         style += `is-${this.type} `;
+      }
+
+      if (this.disabled) {
+        style += 'is-loading';
       }
 
       return style.slice(0, -1);
