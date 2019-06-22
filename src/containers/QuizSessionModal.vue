@@ -58,7 +58,7 @@ import EVENTS_QUERY from '../graphql/Event/ProfessorEvents.gql';
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
 
 import { validationMixin } from 'vuelidate';
-import { required } from 'vuelidate/lib/validators';
+import { required, numeric, minValue } from 'vuelidate/lib/validators';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 
 import BaseInput from '@/components/BaseInput.vue';
@@ -105,22 +105,30 @@ export default {
   computed: {
     ...mapState('Modal', ['modalOpen']),
     eventsSelect() {
+      const nullObj = { id: '43ui5hhi2t', value: null, label: 'None' };
       return this.events.length
-        ? this.events.map(item => ({
-            label: `${item.subject.name}-${item.eventType.type}-${
-              item.group.number
-            }`,
-            value: item.id
-          }))
-        : [];
+        ? [
+            nullObj,
+            ...this.events.map(item => ({
+              label: `${item.subject.name}-${item.eventType.type}-${
+                item.group.number
+              }`,
+              value: item.id
+            }))
+          ]
+        : [nullObj];
     },
     testsSelect() {
+      const nullObj = { id: '3264ytet', value: null, label: 'None' };
       return this.tests.length
-        ? this.tests.map(item => ({
-            label: item.title,
-            value: item.id
-          }))
-        : [];
+        ? [
+            nullObj,
+            ...this.tests.map(item => ({
+              label: item.title,
+              value: item.id
+            }))
+          ]
+        : [nullObj];
     }
   },
   methods: {
@@ -167,7 +175,7 @@ export default {
     BaseDateTimePicker
   },
   validations: {
-    duration: { required },
+    duration: { required, numeric, minValue: minValue(0) },
     eventId: { required },
     startPeriod: { required },
     endPeriod: { required },

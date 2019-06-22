@@ -3,14 +3,24 @@
     <div class="container-fluid" :style="{ padding: '1rem' }">
       <div class="card">
         <div class="card-content">
-          <div class="field is-grouped">
-            <base-select label="Group" :v="$v.groupId" v-model="groupId" :options="groupSelect"/>
-            <base-select
-              label="Professors"
-              :v="$v.userId"
-              v-model="userId"
-              :options="professorSelect"
-            />
+          <div class="columns" :style="{ display: 'flex', justifyContent: 'space-between' }">
+            <div class="column">
+              <base-select
+                label="Filter by group"
+                :v="$v.groupId"
+                v-model="groupId"
+                :options="groupSelect"
+              />
+            </div>
+            <div class="column">
+              <base-select
+                v-if="profile && profile.student"
+                label="Filter by professor"
+                :v="$v.userId"
+                v-model="userId"
+                :options="professorSelect"
+              />
+            </div>
           </div>
         </div>
         <div class="content" :style="{ padding: '16px'}">
@@ -239,18 +249,26 @@ export default {
   },
   computed: {
     professorSelect() {
-      return this.professors.map(item => ({
-        id: item.id,
-        value: item.userId,
-        label: `${item.title} ${item.name} ${item.surname}`
-      }));
+      return [
+        ...this.professors.map(item => ({
+          id: item.id,
+          value: item.userId,
+          label: `${item.title} ${item.name} ${item.surname}`
+        })),
+        { id: 'rewttw', value: null, label: 'None' }
+      ];
     },
     groupSelect() {
-      return this.groups.map(item => ({
+      const groupSelect = this.groups.map(item => ({
         id: item.id,
         value: item.id,
         label: item.number
       }));
+
+      if (this.profile && this.profile.professor) {
+        groupSelect.push({ id: 'fsafsafa', value: null, label: 'None' });
+      }
+      return groupSelect;
     },
     daysComputed() {
       return this.days.map(item => item.toFormat('cccc'));
@@ -273,9 +291,7 @@ export default {
             type: item.eventType.type,
             subject: item.subject.name,
             professor: item.professor
-              ? `${item.professor.title} ${item.professor.name} ${
-                  item.professor.surname
-                }`
+              ? `${item.professor.name} ${item.professor.surname}`
               : null,
             group: item.group ? item.group.number : null,
             startTime: DateTime.fromISO(item.startTime).toFormat('HH:mm'),

@@ -2,10 +2,14 @@
   <div class="card" @click="$emit('click')" :style="{ marginBottom: '10px' }">
     <div class="card-header" :style="{ backgroundColor: color, height: '20px' }"/>
     <div class="card-content">
-      <p>{{ subject }} - {{ type }}</p>
+      <p>{{ subject }}</p>
+      <p>
+        <font-awesome-icon icon="align-justify"/>
+        {{ type }}
+      </p>
       <p v-if="professor">
         <font-awesome-icon icon="user-tie"/>
-        {{ professor }}
+        <small>{{ professor }}</small>
       </p>
       <p v-if="group">
         <font-awesome-icon icon="users"/>

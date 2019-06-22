@@ -1,12 +1,10 @@
 <template>
   <div class="field">
+    <label class="label"> {{ label }} </label>
     <div class="control">
       <div class="select">
         <select v-model="model" :value="value">
-          <option :value="null">{{ label }}</option>
-          <option v-for="item in options" :value="item.value" :key="item.id">
-            {{ item.label }}
-          </option>
+          <option v-for="item in options" :value="item.value" :key="item.id">{{ item.label }}</option>
         </select>
       </div>
     </div>

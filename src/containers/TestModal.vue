@@ -93,13 +93,17 @@ export default {
   computed: {
     ...mapState('Modal', ['modalOpen', 'modalComponent']),
     subjectSelect() {
+      const nullObj = { id: '4556yujhbv', value: null, label: 'None' };
       return this.subjects.length
-        ? this.subjects.map(item => ({
-            id: item.id,
-            label: item.name,
-            value: item.id
-          }))
-        : [];
+        ? [
+            nullObj,
+            ...this.subjects.map(item => ({
+              id: item.id,
+              label: item.name,
+              value: item.id
+            }))
+          ]
+        : [nullObj];
     }
   },
   methods: {
