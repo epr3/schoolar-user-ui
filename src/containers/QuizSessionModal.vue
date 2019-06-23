@@ -2,14 +2,25 @@
   <base-modal-content modal-title="Add new test session" :modal-close-action="modalClose">
     <template #modal-body>
       <form>
-        <base-input
-          label="Duration(min)"
-          type="number"
-          :v="$v.duration"
-          placeholder="1"
-          v-model="duration"
-        />
-        <base-select label="Event" :v="$v.eventId" v-model="eventId" :options="eventsSelect"/>
+        <div class="field is-grouped">
+          <base-input
+            label="Duration(min)"
+            type="number"
+            :v="$v.duration"
+            placeholder="1"
+            v-model="duration"
+          />
+          <base-input label="Room" type="text" :v="$v.room" placeholder="2000" v-model="room"/>
+        </div>
+        <div class="field is-grouped">
+          <base-select label="Event" :v="$v.eventId" v-model="eventId" :options="eventsSelect"/>
+          <base-select
+            label="Event Type"
+            :v="$v.eventTypeId"
+            v-model="eventTypeId"
+            :options="eventTypesSelect"
+          />
+        </div>
         <base-select label="Test" :v="$v.testId" v-model="testId" :options="testsSelect"/>
         <div class="field is-grouped">
           <base-date-time-picker
@@ -55,6 +66,7 @@ import loadingMixin from '../mixins/loadingMixin';
 import POST_SESSION from '../graphql/Quiz/PostQuizSession.gql';
 import SESSIONS_QUERY from '../graphql/Quiz/QuizSessions.gql';
 import EVENTS_QUERY from '../graphql/Event/ProfessorEvents.gql';
+import EVENT_TYPES_QUERY from '../graphql/EventType/EventTypes.gql';
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
 
 import { validationMixin } from 'vuelidate';
@@ -72,13 +84,16 @@ export default {
   name: 'quiz-session-modal',
   data() {
     return {
+      room: '',
       duration: 0,
       eventId: null,
       startPeriod: '',
       endPeriod: '',
       testId: null,
+      eventTypeId: null,
       events: [],
-      tests: []
+      tests: [],
+      eventTypes: []
     };
   },
   async mounted() {
@@ -99,22 +114,46 @@ export default {
     this.events = [...eventsResponse.data.events];
   },
   apollo: {
-    tests: TESTS_QUERY
+    tests: TESTS_QUERY,
+    eventTypes: {
+      query: gql`
+        ${EVENT_TYPES_QUERY}
+      `,
+      variables: {
+        isTest: 1
+      }
+    }
   },
   mixins: [validationMixin, profileQueryMixin, loadingMixin],
   computed: {
     ...mapState('Modal', ['modalOpen']),
+    eventTypesSelect() {
+      const nullObj = { id: 'rdgfewar', value: null, label: 'None' };
+      return this.eventTypes.length
+        ? [
+            nullObj,
+            ...this.eventTypes
+              .filter(item => item.isTest)
+              .map(item => ({
+                label: item.type,
+                value: item.id
+              }))
+          ]
+        : [nullObj];
+    },
     eventsSelect() {
       const nullObj = { id: '43ui5hhi2t', value: null, label: 'None' };
       return this.events.length
         ? [
             nullObj,
-            ...this.events.map(item => ({
-              label: `${item.subject.name}-${item.eventType.type}-${
-                item.group.number
-              }`,
-              value: item.id
-            }))
+            ...this.events
+              .filter(item => !item.eventType.isTest)
+              .map(item => ({
+                label: `${item.subject.name}-${item.eventType.type}-${
+                  item.group.number
+                }`,
+                value: item.id
+              }))
           ]
         : [nullObj];
     },
@@ -148,9 +187,11 @@ export default {
               session: {
                 duration: parseInt(this.duration),
                 eventId: this.eventId,
+                eventTypeId: this.eventTypeId,
                 startPeriod: DateTime.fromJSDate(this.startPeriod).toISO(),
                 endPeriod: DateTime.fromJSDate(this.endPeriod).toISO(),
-                testId: this.testId
+                testId: this.testId,
+                room: this.room
               }
             },
             update: (store, { data: { postQuizSession } }) => {
@@ -179,7 +220,9 @@ export default {
     eventId: { required },
     startPeriod: { required },
     endPeriod: { required },
-    testId: { required }
+    testId: { required },
+    eventTypeId: { required },
+    room: { required }
   }
 };
 </script>

@@ -33,6 +33,7 @@ query StudentEvents(
       id
       type
       color
+      isTest
     }
   }
 }

@@ -1,7 +1,8 @@
-query EventTypes {
-  eventTypes {
+query EventTypes($isTest: Int!) {
+  eventTypes: eventTypes(isTest: $isTest) {
     id
     type
     color
+    isTest
   }
 }

@@ -1,4 +1,9 @@
-query ProfessorEvents($userId: ID, $startDate: String, $endDate: String, $groupId: ID) {
+query ProfessorEvents(
+  $userId: ID
+  $startDate: String
+  $endDate: String
+  $groupId: ID
+) {
   events: eventsByQuery(
     userId: $userId
     startDate: $startDate
@@ -27,6 +32,7 @@ query ProfessorEvents($userId: ID, $startDate: String, $endDate: String, $groupI
       id
       type
       color
+      isTest
     }
   }
 }

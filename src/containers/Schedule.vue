@@ -64,7 +64,7 @@
                         :end-time="event.endTime"
                         :color="event.color"
                       >
-                        <template #footer>
+                        <template v-if="!event.isTest" #footer>
                           <div
                             class="card-footer-item"
                             @click="$router.push(`/schedule/${event.eventId}/sessions`)"
@@ -115,7 +115,7 @@
                   :end-time="event.endTime"
                   :color="event.color"
                 >
-                  <template #footer>
+                  <template v-if="!event.isTest" #footer>
                     <div
                       class="card-footer-item"
                       @click="$router.push(`/schedule/${event.eventId}/sessions`)"
@@ -290,6 +290,7 @@ export default {
             room: item.room,
             type: item.eventType.type,
             subject: item.subject.name,
+            isTest: item.eventType.isTest,
             professor: item.professor
               ? `${item.professor.name} ${item.professor.surname}`
               : null,
@@ -326,7 +327,8 @@ export default {
           userId: this.userId,
           startDate: this.weekHandles.startOfWeek.toFormat('dd-LL-yyyy'),
           endDate: this.weekHandles.endOfWeek.toFormat('dd-LL-yyyy')
-        }
+        },
+        fetchPolicy: 'network-only'
       });
       this.events = [...eventsResponse.data.events];
       this.loading = false;
