@@ -27,14 +27,17 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
+
 import { mapState, mapMutations } from 'vuex';
 
 import POST_TEST from '../graphql/Quiz/PostTest.gql';
 import UPDATE_TEST from '../graphql/Quiz/UpdateTest.gql';
 import TESTS_QUERY from '../graphql/Quiz/Tests.gql';
-import SUBJECTS_QUERY from '../graphql/Subject/Subjects.gql';
+import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByUserId.gql';
 
 import loadingMixin from '../mixins/loadingMixin';
+import profileMixin from '../mixins/profileQueryMixin';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 
@@ -52,13 +55,22 @@ export default {
       description: '',
       title: '',
       subjectId: null,
-      subjects: []
+      subjectsByUserId: []
     };
   },
   apollo: {
-    subjects: SUBJECTS_QUERY
+    subjectsByUserId: {
+      query: gql`
+        ${SUBJECTS_QUERY}
+      `,
+      variables() {
+        return {
+          userId: this.profile.user.id
+        };
+      }
+    }
   },
-  mixins: [validationMixin, loadingMixin],
+  mixins: [validationMixin, loadingMixin, profileMixin],
   components: {
     BaseTextarea,
     BaseInput,
@@ -94,10 +106,10 @@ export default {
     ...mapState('Modal', ['modalOpen', 'modalComponent']),
     subjectSelect() {
       const nullObj = { id: '4556yujhbv', value: null, label: 'None' };
-      return this.subjects.length
+      return this.subjectsByUserId.length
         ? [
             nullObj,
-            ...this.subjects.map(item => ({
+            ...this.subjectsByUserId.map(item => ({
               id: item.id,
               label: item.name,
               value: item.id

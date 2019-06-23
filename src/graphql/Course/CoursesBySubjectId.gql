@@ -1,9 +1,0 @@
-query CoursesBySubjectId($subjectId: ID!) {
-  courses: coursesBySubjectId(subjectId: $subjectId) {
-    id
-    name
-    coursePath
-    subjectId
-    userId
-  }
-}

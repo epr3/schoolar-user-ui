@@ -129,6 +129,24 @@ const router = new Router({
       }
     },
     {
+      path: '/users/:id',
+      name: 'coursesByUser',
+      component: () =>
+        import(/* webpackChunkName: "coursesUserList" */ './views/CoursesByUser.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/subjects/:id',
+      name: 'coursesBySubject',
+      component: () =>
+        import(/* webpackChunkName: "coursesSubjectList" */ './views/CoursesBySubject.vue'),
+      meta: {
+        auth: true
+      }
+    },
+    {
       path: '/courses',
       name: 'courses',
       component: () =>

@@ -119,12 +119,23 @@
                     <div
                       class="card-footer-item"
                       @click="$router.push(`/schedule/${event.eventId}/sessions`)"
-                    >Sessions</div>
+                    >
+                      Sessions
+                    </div>
                     <div
                       v-if="profile && profile.student"
                       @click="$router.push(`/schedule/${event.eventId}/results`)"
                       class="card-footer-item"
-                    >Results</div>
+                    >
+                      Results
+                    </div>
+                    <div
+                      v-if="profile && profile.student"
+                      @click="$router.push(`/subjects/${event.subjectId}`)"
+                      class="card-footer-item"
+                    >
+                      Courses
+                    </div>
                   </template>
                 </event-card>
               </div>
@@ -290,6 +301,7 @@ export default {
             room: item.room,
             type: item.eventType.type,
             subject: item.subject.name,
+            subjectId: item.subject.id,
             isTest: item.eventType.isTest,
             professor: item.professor
               ? `${item.professor.name} ${item.professor.surname}`

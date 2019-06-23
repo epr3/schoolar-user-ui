@@ -2,9 +2,7 @@
   <div>
     <nav class="navbar is-info" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <div class="navbar-item" @click="$router.push('/')">
-          Schoolar
-        </div>
+        <div class="navbar-item" @click="$router.push('/')">Schoolar</div>
 
         <a
           role="button"
@@ -22,28 +20,30 @@
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
           <router-link class="navbar-item" to="/" exact>Home</router-link>
-          <router-link class="navbar-item" to="/courses">Courses</router-link>
+          <router-link
+            class="navbar-item"
+            to="/courses"
+          >All Courses</router-link>
+          <router-link
+            v-if="this.profile && this.profile.professor"
+            class="navbar-item"
+            :to="`/users/${this.profile.professor.userId}`"
+          >My Courses</router-link>
           <router-link
             v-if="this.profile && this.profile.professor"
             class="navbar-item"
             to="/tests"
-          >
-            Quizes
-          </router-link>
+          >Quizes</router-link>
           <router-link
             v-if="this.profile && this.profile.student"
             class="navbar-item"
             to="/quiz/join"
-          >
-            Join quiz
-          </router-link>
+          >Join quiz</router-link>
           <router-link
             v-if="this.profile && this.profile.student"
             class="navbar-item"
             to="/quiz/results"
-          >
-            Results
-          </router-link>
+          >Results</router-link>
         </div>
 
         <div class="navbar-end">
@@ -55,15 +55,10 @@
       </div>
     </nav>
     <div class="alert-list" v-if="errors.length">
-      <base-alert
-        v-for="(error, index) in errors"
-        :key="index"
-        :message="error"
-        type="danger"
-      />
+      <base-alert v-for="(error, index) in errors" :key="index" :message="error" type="danger"/>
     </div>
     <slot></slot>
-    <modal-container />
+    <modal-container/>
   </div>
 </template>
 

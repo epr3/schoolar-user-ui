@@ -1,0 +1,6 @@
+query Subject($id: ID!) {
+  subject: subjectById(id: $id) {
+    id
+    name
+  }
+}

@@ -1,0 +1,20 @@
+query CoursesByQuery($subjectId: ID, $userId: ID) {
+  coursesByQuery: coursesByQuery(subjectId: $subjectId, userId: $userId) {
+    id
+    name
+    coursePath
+    subjectId
+    courseFilename
+    userId
+    professor {
+      id
+      name
+      surname
+      title
+    }
+    subject {
+      id
+      name
+    }
+  }
+}

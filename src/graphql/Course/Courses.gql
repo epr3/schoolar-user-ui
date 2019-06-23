@@ -3,6 +3,7 @@ query Courses {
     id
     name
     coursePath
+    courseFilename
     subjectId
     userId
   }

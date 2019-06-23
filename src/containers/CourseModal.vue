@@ -11,6 +11,7 @@
           v-model="name"
         />
         <base-file-input v-model="courseFile" :v="$v.courseFile"/>
+        <base-select label="Subject" :v="$v.subjectId" v-model="subjectId" :options="subjectSelect"/>
       </form>
     </template>
     <template #modal-footer>
@@ -20,9 +21,11 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
 import { mapState, mapMutations } from 'vuex';
 
-import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByFacultyId.gql';
+import SUBJECTS_QUERY from '../graphql/Subject/SubjectsByUserId.gql';
+import COURSES_QUERY from '../graphql/Course/CoursesByQuery.gql';
 import POST_COURSE from '../graphql/Course/PostCourse.gql';
 
 import loadingMixin from '../mixins/loadingMixin';
@@ -32,6 +35,7 @@ import { required } from 'vuelidate/lib/validators';
 import profileQueryMixin from '../mixins/profileQueryMixin';
 
 import BaseInput from '@/components/BaseInput.vue';
+import BaseSelect from '@/components/BaseSelect.vue';
 import BaseFileInput from '@/components/BaseFileInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
 
@@ -43,17 +47,37 @@ export default {
   name: 'course-modal',
   data: () => ({
     name: '',
-    courseFile: null
+    courseFile: null,
+    subjectsByUserId: [],
+    subjectId: null
   }),
   mixins: [profileQueryMixin, validationMixin, loadingMixin],
-  props: {
-    subjectId: {
-      type: String,
-      required: true
+  apollo: {
+    subjectsByUserId: {
+      query: gql`
+        ${SUBJECTS_QUERY}
+      `,
+      variables() {
+        return {
+          userId: this.profile.user.id
+        };
+      }
     }
   },
   computed: {
-    ...mapState('Modal', ['modalOpen', 'modalComponent'])
+    ...mapState('Modal', ['modalOpen', 'modalComponent']),
+    subjectSelect() {
+      const nullObj = { id: 'rdgfewar', value: null, label: 'None' };
+      return this.subjectsByUserId.length
+        ? [
+            nullObj,
+            ...this.subjectsByUserId.map(item => ({
+              label: item.name,
+              value: item.id
+            }))
+          ]
+        : [nullObj];
+    }
   },
   methods: {
     ...mapMutations({
@@ -78,21 +102,14 @@ export default {
             },
             update: (store, { data: { postCourse } }) => {
               const data = store.readQuery({
-                query: SUBJECTS_QUERY,
-                variables: { facultyId: this.$route.params.id }
+                query: COURSES_QUERY,
+                variables: { userId: this.profile.user.id }
               });
+              data.coursesByQuery.push(postCourse);
               store.writeQuery({
-                query: SUBJECTS_QUERY,
-                data: {
-                  ...data,
-                  subjects: data.subjects.map(item => {
-                    if (item.id === postCourse.subjectId) {
-                      item.courses.push(postCourse);
-                    }
-                    return item;
-                  })
-                },
-                variables: { facultyId: this.$route.params.id }
+                query: COURSES_QUERY,
+                data,
+                variables: { userId: this.profile.user.id }
               });
             }
           });
@@ -108,13 +125,17 @@ export default {
     BaseModalContent,
     BaseButton,
     BaseInput,
-    BaseFileInput
+    BaseFileInput,
+    BaseSelect
   },
   validations: {
     name: {
       required
     },
     courseFile: {
+      required
+    },
+    subjectId: {
       required
     }
   }

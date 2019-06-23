@@ -1,0 +1,8 @@
+query SubjectsByUserId($userId: ID!) {
+  subjectsByUserId: subjectsByUserId(userId: $userId) {
+    id
+    name
+    credits
+    facultyId
+  }
+}
