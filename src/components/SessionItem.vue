@@ -24,7 +24,7 @@ export default {
   name: 'session-item',
   filters: {
     toHumanDate(value) {
-      return DateTime.fromISO(value).toFormat('dd-LL-yyyy HH:mm');
+      return DateTime.fromJSDate(new Date(value)).toFormat('dd-LL-yyyy HH:mm');
     }
   },
   props: {

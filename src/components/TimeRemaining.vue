@@ -17,9 +17,9 @@ export default {
   name: 'time-remaining',
   data() {
     return {
-      timeRemaining: DateTime.fromISO(this.joinDate)
+      timeRemaining: DateTime.fromJSDate(new Date(this.joinDate))
         .plus({ minutes: this.duration })
-        .diff(DateTime.local(), ['hours', 'minutes', 'seconds'])
+        .diff(DateTime.utc(), ['hours', 'minutes', 'seconds'])
         .toObject(),
       timerInterval: null,
       testFinished: false,
@@ -28,9 +28,9 @@ export default {
   },
   mounted() {
     this.timerInterval = setInterval(() => {
-      this.timeRemaining = DateTime.fromISO(this.joinDate)
+      this.timeRemaining = DateTime.fromJSDate(new Date(this.joinDate))
         .plus({ minutes: this.duration })
-        .diff(DateTime.local(), ['hours', 'minutes', 'seconds'])
+        .diff(DateTime.utc(), ['hours', 'minutes', 'seconds'])
         .toObject();
     }, 1000);
     if (Duration.fromObject(this.timeRemaining).as('milliseconds') < 0) {

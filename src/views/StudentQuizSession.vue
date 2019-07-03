@@ -76,7 +76,7 @@ export default {
   mixins: [loadingMixin],
   filters: {
     humanDate(value) {
-      return DateTime.fromISO(value).toFormat('dd MMM yyyy HH:mm');
+      return DateTime.fromJSDate(new Date(value)).toFormat('dd MMM yyyy HH:mm');
     }
   },
   apollo: {

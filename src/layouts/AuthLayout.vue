@@ -7,9 +7,11 @@
         <a
           role="button"
           class="navbar-burger burger"
+          :class="{ 'is-active': showNavbar }"
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
+          @click="showNavbar = !showNavbar"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -17,7 +19,7 @@
         </a>
       </div>
 
-      <div id="navbarBasicExample" class="navbar-menu">
+      <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': showNavbar }">
         <div class="navbar-start">
           <router-link class="navbar-item" to="/" exact>Home</router-link>
           <router-link

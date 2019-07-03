@@ -43,7 +43,7 @@ export default {
   name: 'test-item',
   filters: {
     humanDate(value) {
-      return DateTime.fromISO(value).toFormat('dd MMM yyyy HH:mm');
+      return DateTime.fromJSDate(new Date(value)).toFormat('dd MMM yyyy HH:mm');
     }
   },
   mixins: [loadingMixin],

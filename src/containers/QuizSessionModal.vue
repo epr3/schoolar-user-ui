@@ -10,10 +10,10 @@
             placeholder="1"
             v-model="duration"
           />
-          <base-input label="Room" type="text" :v="$v.room" placeholder="2000" v-model="room"/>
+          <base-input label="Room" type="text" :v="$v.room" placeholder="2000" v-model="room" />
         </div>
         <div class="field is-grouped">
-          <base-select label="Event" :v="$v.eventId" v-model="eventId" :options="eventsSelect"/>
+          <base-select label="Event" :v="$v.eventId" v-model="eventId" :options="eventsSelect" />
           <base-select
             label="Event Type"
             :v="$v.eventTypeId"
@@ -21,7 +21,7 @@
             :options="eventTypesSelect"
           />
         </div>
-        <base-select label="Test" :v="$v.testId" v-model="testId" :options="testsSelect"/>
+        <base-select label="Test" :v="$v.testId" v-model="testId" :options="testsSelect" />
         <div class="field is-grouped">
           <base-date-time-picker
             label="Start period"
@@ -149,9 +149,7 @@ export default {
             ...this.events
               .filter(item => !item.eventType.isTest)
               .map(item => ({
-                label: `${item.subject.name}-${item.eventType.type}-${
-                  item.group.number
-                }`,
+                label: `${item.subject.name}-${item.eventType.type}-${item.group.number}`,
                 value: item.id
               }))
           ]
@@ -188,8 +186,12 @@ export default {
                 duration: parseInt(this.duration),
                 eventId: this.eventId,
                 eventTypeId: this.eventTypeId,
-                startPeriod: DateTime.fromJSDate(this.startPeriod).toISO(),
-                endPeriod: DateTime.fromJSDate(this.endPeriod).toISO(),
+                startPeriod: DateTime.fromJSDate(this.startPeriod).toSQL({
+                  includeOffset: false
+                }),
+                endPeriod: DateTime.fromJSDate(this.endPeriod).toSQL({
+                  includeOffset: false
+                }),
                 testId: this.testId,
                 room: this.room
               }

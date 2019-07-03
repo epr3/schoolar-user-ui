@@ -12,5 +12,9 @@ mutation PostCourse($course: CourseInput!) {
       surname
       title
     }
+    subject {
+      id
+      name
+    }
   }
 }
